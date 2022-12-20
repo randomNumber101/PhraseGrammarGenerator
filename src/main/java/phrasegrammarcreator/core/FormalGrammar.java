@@ -19,9 +19,9 @@ public class FormalGrammar{
     private String name;
     private Vocabulary vocabulary;
     private List<Rule> rules;
-
     private WordDictionary dictionary;
     private Phrase startPhrase;
+
     private List<Phrase> derivations;
     private DerivationsCalculator calculator;
     private DerivationChooser chooser;
@@ -57,4 +57,19 @@ public class FormalGrammar{
     }
 
 
+    public List<Rule> getRules() {
+        return rules;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Vocabulary getVocabulary() {
+        return vocabulary;
+    }
+
+    public WordDictionary getDictionary() {
+        return dictionary;
+    }
 }

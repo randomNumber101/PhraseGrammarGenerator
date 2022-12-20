@@ -1,7 +1,6 @@
 package phrasegrammarcreator.core.phrases.variables;
 
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -24,5 +23,12 @@ public class Vocabulary {
         return variables.keySet();
     }
 
+    public Collection<Variable> getVariables() {
+        return variables.values();
+    }
+
+    public String toString() {
+        return variables.toString();
+    }
 
 }
