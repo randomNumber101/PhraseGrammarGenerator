@@ -1,0 +1,29 @@
+{
+    "Settings" : {},
+    "Grammars": [
+        {
+            "name" : "Grammar1",
+            "non-terminals": ["A", "B", "C", "D"],
+            "terminals" : ["n", "jn", "d"],
+            "rules" : ["A -> C", "C -> D A", "B A-> D n"],
+            "dictionary" : {
+                "n" : ["NEIN"],
+                "d" : ["DEIN"],
+                "jn" : ["JA", "NEIN"]
+            },
+            "start-phrase": "A"
+        },
+        {
+            "name" : "Grammar2",
+            "non-terminals": ["S","A", "B", "F", "D"],
+            "terminals" : ["n", "jn", "d"],
+            "rules" : ["A -> d", "F -> A D", "B A ->D n"],
+            "dictionary" : {
+                "n" : ["NEIN"],
+                "d" : ["DEIN"],
+                "jn" : ["JA", "NEIN"]
+            },
+            "start-phrase": "S"
+        }
+    ]
+}

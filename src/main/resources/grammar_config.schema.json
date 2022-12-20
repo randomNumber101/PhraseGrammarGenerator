@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Config",
+    "definitions": {
+        "Config": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Settings": {
+                    "$ref": "#/definitions/Settings"
+                },
+                "Grammars": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Grammar"
+                    }
+                }
+            },
+            "required": [
+                "Grammars",
+                "Settings"
+            ],
+            "title": "GrammarConfig"
+        },
+        "Grammar": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "non-terminals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "terminals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": " *(\\w)( \\w)* *(->) *(\\w)( \\w)* *"
+                    }
+                },
+                "dictionary": {
+                    "$ref": "#/definitions/Dictionary"
+                },
+                "start-phrase": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "dictionary",
+                "name",
+                "non-terminals",
+                "rules",
+                "terminals",
+                "start-phrase"
+            ],
+            "title": "Grammar"
+        },
+        "Dictionary": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "Dictionary"
+        },
+        "Settings": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "Settings"
+        }
+    }
+}
