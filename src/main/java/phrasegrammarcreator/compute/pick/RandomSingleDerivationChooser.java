@@ -16,8 +16,8 @@ public class RandomSingleDerivationChooser extends DerivationChooser {
     }
 
     @Override
-    public List<Derivation> pick(DerivationSet derivationSet) {
+    public Derivation pick(DerivationSet derivationSet) {
         // Pick one random element
-        return List.of(derivationSet.getRandom());
+        return derivationSet.getRandom();
     }
 }

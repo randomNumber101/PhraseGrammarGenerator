@@ -17,7 +17,7 @@ public class Util {
         else {
             int index = 0;
             for (T t : c) {
-                String newLine = String.format("\t%d: %s\n", index++, transformer.print(t));
+                String newLine = String.format("\t[%d] %s\n", index++, transformer.print(t));
                 out.append(newLine);
             }
         }

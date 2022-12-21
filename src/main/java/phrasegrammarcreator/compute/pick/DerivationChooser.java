@@ -13,5 +13,6 @@ public abstract class DerivationChooser {
         this.rules = rules;
     }
 
-    public abstract List<Derivation> pick(DerivationSet pd);
+    // TODO: Implement picking multiple derivations at once
+    public abstract Derivation pick(DerivationSet pd);
 }

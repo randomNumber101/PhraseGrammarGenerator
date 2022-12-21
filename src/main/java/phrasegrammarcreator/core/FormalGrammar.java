@@ -6,13 +6,13 @@ import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
 import phrasegrammarcreator.compute.calculate.MixedCalculator;
 import phrasegrammarcreator.compute.pick.DerivationChooser;
 import phrasegrammarcreator.compute.pick.RandomSingleDerivationChooser;
+import phrasegrammarcreator.core.derive.impl.DerivationPointer;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
 import phrasegrammarcreator.core.phrases.variables.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FormalGrammar{
@@ -42,17 +42,16 @@ public class FormalGrammar{
     }
 
     public void next(){
-        if (derivations.getRoot().isLeaf()) {
 
-        }
     }
 
     public DerivationSet getNextPossibleDerivations() {
-        if (derivations.getRoot().isLeaf()) {
-            derivations.add(startPhrase);
-        }
-        Phrase head = derivations.get(derivations.size() - 1);
-        return calculator.calculate(head, lastDerivation, lastPicked);
+        if (!derivations.getHead().isCalculated()) {
+            derivations.calculateHead(calculator);
+        };
+        return derivations.getHead().getPointer().stream()
+                .map(DerivationPointer::getDerivation)
+                .collect(DerivationSet.toSet());
     }
 
 
@@ -70,5 +69,9 @@ public class FormalGrammar{
 
     public WordDictionary getDictionary() {
         return dictionary;
+    }
+
+    public Phrase getStartPhrase() {
+        return startPhrase;
     }
 }
