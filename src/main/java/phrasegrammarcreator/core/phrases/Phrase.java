@@ -1,11 +1,14 @@
 package phrasegrammarcreator.core.phrases;
 
 
+import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.Occurence;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
@@ -26,6 +29,29 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
         if (interval.to > this.size())
             return null;
         return new SubPhrase(this, interval);
+    }
+
+    public Phrase deriveBy(Derivation derivation) {
+       Rule rule = derivation.getRule();
+       Occurence occurence = derivation.getOccurence();
+       if (occurence.from < 0 || occurence.to > this.size())
+           return null;
+       // Split variable list in parts before and after occurrences and merge them using the derived sub phrase.
+       List<Variable> currentVariables = getInstanceBuilders(this);
+       List<Variable> derivedSubPart = getInstanceBuilders(rule.getTarget().toPhrase());
+
+       List<Variable> beforeOccurrence = currentVariables.subList(0, occurence.from);
+       List<Variable> afterOccurrence = currentVariables.subList(occurence.to, size());
+
+       beforeOccurrence.addAll(derivedSubPart);
+       beforeOccurrence.addAll(afterOccurrence);
+
+       return new Phrase(beforeOccurrence);
+    }
+
+
+    public List<Variable> getInstanceBuilders(Collection<VariableInstance> variableInstances) {
+        return variableInstances.stream().map(vi -> (Variable) vi.getBuilder()).toList();
     }
 
     @Override

@@ -27,9 +27,8 @@ public class DerivationSet extends HashSet<Derivation> {
     }
 
     public DerivationSet deleteAllInSection(Occurence o) {
-        List<Derivation> list = List.of(getArray());
+        List<Derivation> list = new ArrayList<>(List.of(getArray()));
         Collections.sort(list);
-
         for (Derivation d : list) {
             //Elements before occurrence may cross section
             if (d.getOccurence().to > o.from)
@@ -39,7 +38,6 @@ public class DerivationSet extends HashSet<Derivation> {
             if (d.getOccurence().from >= o.to)
                 break;
         }
-
         return this;
     }
 

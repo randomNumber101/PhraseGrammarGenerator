@@ -6,6 +6,7 @@ import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
 import phrasegrammarcreator.compute.calculate.MixedCalculator;
 import phrasegrammarcreator.compute.pick.DerivationChooser;
 import phrasegrammarcreator.compute.pick.RandomSingleDerivationChooser;
+import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
 import phrasegrammarcreator.core.phrases.variables.WordDictionary;
@@ -22,10 +23,9 @@ public class FormalGrammar{
     private WordDictionary dictionary;
     private Phrase startPhrase;
 
-    private List<Phrase> derivations;
+    private DerivationTree derivations;
     private DerivationsCalculator calculator;
     private DerivationChooser chooser;
-
     private DerivationSet lastDerivation;
     private Derivation lastPicked;
 
@@ -36,20 +36,19 @@ public class FormalGrammar{
         this.dictionary = dictionary;
         this.startPhrase = startPhrase;
 
-        derivations = new ArrayList<>();
+        derivations = new DerivationTree(startPhrase);
         calculator = new MixedCalculator(rules);
         chooser = new RandomSingleDerivationChooser(rules);
     }
 
     public void next(){
-
-        if (derivations.isEmpty()) {
+        if (derivations.getRoot().isLeaf()) {
 
         }
     }
 
     public DerivationSet getNextPossibleDerivations() {
-        if (derivations.isEmpty()) {
+        if (derivations.getRoot().isLeaf()) {
             derivations.add(startPhrase);
         }
         Phrase head = derivations.get(derivations.size() - 1);
