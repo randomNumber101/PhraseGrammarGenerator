@@ -1,6 +1,7 @@
 package phrasegrammarcreator.io.print.info;
 
 import phrasegrammarcreator.core.FormalGrammar;
+import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
@@ -8,9 +9,7 @@ import phrasegrammarcreator.core.phrases.variables.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.print.Util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,25 +22,13 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
 
     @Override
     public String toString(FormalGrammar watched) {
-        PrintStream previous = out;
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final String utf8 = StandardCharsets.UTF_8.name();
-        try (PrintStream ps = new PrintStream(baos, true, utf8)) {
-            out = ps;
-            printName();
-            printVocabulary();
-            printRules();
-            printDictionary();
-            printStartPhrase();
-            printPossibleDerivations();
-            String printed = baos.toString(utf8);
-            out = previous;
-            baos.close();
-            return printed;
-        }
-        catch (Exception e) {
-            return null;
-        }
+        return printToString(
+            this::printName,
+            this::printVocabulary,
+            this::printRules,
+            this::printDictionary,
+            this::printStartPhrase
+        );
     }
 
     public void printName() {
@@ -94,5 +81,10 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
                 d -> d.getRule().toString(),
                 true));
         out.println();
+    }
+
+    public void printDerivations() {
+        DerivationTree tree = watched.getDerivationTree();
+
     }
 }

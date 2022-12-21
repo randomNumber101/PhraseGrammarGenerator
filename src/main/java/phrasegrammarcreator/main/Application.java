@@ -20,8 +20,10 @@ public class Application {
         try {
             Config c = loadConfig();
             FormalGrammar grammar = c.getGrammarList().get(0);
+            grammar.next();
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
+            System.out.println("⁶");
         }
         catch (Exception e) {
             e.printStackTrace();

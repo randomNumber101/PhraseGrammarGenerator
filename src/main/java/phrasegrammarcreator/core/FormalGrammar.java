@@ -74,4 +74,8 @@ public class FormalGrammar{
     public Phrase getStartPhrase() {
         return startPhrase;
     }
+
+    public DerivationTree getDerivationTree() {
+        return derivations;
+    }
 }

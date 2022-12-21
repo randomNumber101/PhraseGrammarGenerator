@@ -15,6 +15,10 @@ public class Occurence implements Comparable<Occurence>{
         return new Occurence(from + shift, to + shift);
     }
 
+    public Occurence extendBy(int extension) {
+        return new Occurence(from, to + extension);
+    }
+
     @Override
     public int compareTo(@NotNull Occurence o) {
         // Sort by interval start
