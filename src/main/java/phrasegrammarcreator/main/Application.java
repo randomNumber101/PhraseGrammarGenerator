@@ -21,11 +21,7 @@ public class Application {
             Config c = loadConfig();
             FormalGrammar grammar = c.getGrammarList().get(0);
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
-            grammarInfo.printName();
-            grammarInfo.printVocabulary();
-            grammarInfo.printRules();
-            grammarInfo.printDictionary();
-            grammarInfo.printPossibleDerivations();
+            grammarInfo.printInfo();
         }
         catch (Exception e) {
             e.printStackTrace();

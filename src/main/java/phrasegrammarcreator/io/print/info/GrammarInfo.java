@@ -32,7 +32,7 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
             printVocabulary();
             printRules();
             printDictionary();
-            printPossibleDerivations();
+            printStartPhrase();
             printPossibleDerivations();
             String printed = baos.toString(utf8);
             out = previous;
@@ -78,6 +78,12 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
         builder.append(dictionary.toString());
         builder.append("\n");
         out.println(builder);
+    }
+
+    public void printStartPhrase() {
+        out.println("Start phrase: ");
+        out.println("\t" + watched.getStartPhrase());
+        out.println();
     }
 
     public void printPossibleDerivations() {

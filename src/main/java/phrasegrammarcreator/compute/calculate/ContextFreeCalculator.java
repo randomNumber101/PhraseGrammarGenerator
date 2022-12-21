@@ -66,12 +66,18 @@ public class ContextFreeCalculator extends DerivationsCalculator{
         return derivations;
     }
 
+    public List<ContextFreeRule> getApplicableRules(Variable variable) {
+        if (variable.getType() == Variable.Type.TERMINAL || variableApplicableRules.get(variable) == null)
+            return new ArrayList<>();
+        return variableApplicableRules.get(variable);
+    }
+
     private DerivationSet calculateNaive(Phrase p) {
         DerivationSet out = new DerivationSet();
         for (int i = 0; i < p.size(); i++) {
             VariableInstance vi = p.get(i);
             if (vi.getType() == Variable.Type.NON_TERMINAL) {
-                out.add(variableApplicableRules.get(vi.getBuilder()), new SingleOccurence(i));
+                out.add(getApplicableRules(vi.getBuilder()), new SingleOccurence(i));
             }
         }
         return out;

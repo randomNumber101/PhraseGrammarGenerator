@@ -4,16 +4,17 @@ import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class DerivationSet extends HashSet<Derivation> {
 
+    public DerivationSet(Collection<? extends Derivation> c) {
+        super(c);
+    }
 
     public DerivationSet() {
         super();
-    }
-    public DerivationSet(Collection<? extends Derivation> c) {
-        super(c);
     }
 
     public Derivation getRandom() {
@@ -65,4 +66,18 @@ public class DerivationSet extends HashSet<Derivation> {
             add(r, o);
         }
     }
+    public static
+    Collector<Derivation, ?, DerivationSet> toSet() {
+        return Collector.of(DerivationSet::new, DerivationSet::add,
+                (left, right) -> {
+                    if (left.size() < right.size()) {
+                        right.addAll(left); return right;
+                    } else {
+                        left.addAll(right); return left;
+                    }
+                },
+                Collector.Characteristics.UNORDERED);
+    }
+
+
 }

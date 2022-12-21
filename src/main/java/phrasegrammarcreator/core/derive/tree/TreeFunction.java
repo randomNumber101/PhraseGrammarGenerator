@@ -1,6 +1,6 @@
 package phrasegrammarcreator.core.derive.tree;
 
-public interface TreeFunction<T> {
+public interface TreeFunction<T, P extends Pointer> {
 
     /**
      * Applies function on node of depth and returns whether to keep traversing.
@@ -8,5 +8,5 @@ public interface TreeFunction<T> {
      * @param depth int
      * @return whether to keep traversing
      */
-    public boolean execute(Node<T> node, int depth);
+    public boolean execute(Node<T, P> node, int depth);
 }

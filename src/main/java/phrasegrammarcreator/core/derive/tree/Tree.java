@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class Tree<T> {
-
-    private Node<T> root;
-    private Node<T> head;
+public class Tree<T, P extends Pointer> {
+    protected Node<T,P> root;
+    protected Node<T,P> head;
     public Tree(T data) {
         root = new Node<>(data, null);
         head = root;
     }
 
-    public Tree(Node<T> ofNode) {
+    public Tree(Node<T,P> ofNode) {
         root = ofNode;
         head = root;
     }
-    public Node<T> getRoot() {
+    public Node<T,P> getRoot() {
         return root;
     }
-    public List<Node<T>> getLayer(int i) {
-        List<Node<T>> layerNodes = new ArrayList<>();
-        TreeFunction<T> function = (node, depth) -> {
+    public List<Node<T,P>> getLayer(int i) {
+        List<Node<T,P>> layerNodes = new ArrayList<>();
+        TreeFunction<T,P> function = (node, depth) -> {
             if (depth > i) {
                 return false;
             }
@@ -33,9 +32,9 @@ public class Tree<T> {
         breadthFirstSearch(function);
         return layerNodes;
     }
-    public List<Node<T>> getBottomNodes() {
-        List<Node<T>> bottomNodes = new ArrayList<>();
-        TreeFunction<T> addBottomNodes = (node, depth) -> {
+    public List<Node<T,P>> getBottomNodes() {
+        List<Node<T,P>> bottomNodes = new ArrayList<>();
+        TreeFunction<T,P> addBottomNodes = (node, depth) -> {
             if (node.isLeaf()) {
                 bottomNodes.add(node);
             }
@@ -45,43 +44,31 @@ public class Tree<T> {
         return bottomNodes;
     }
 
-    public Node<T> getHead() {
-        return head;
-    }
-    public void setHead(Node<T> node) {
-        if (!contains(node))
-            return;
-        head = node;
-    }
-
-    public List<Pointer<T>> getHeadPointer() {
-        return head.getPointer();
-    }
-    public List<Node<T>> getPathOf(Node<T> node) {
+    public List<Node<T,P>> getPathOf(Node<T,P> node) {
         if (!contains(node))
             return null;
-        Stack<Node<T>> path = new Stack<>();
-        Node<T> current = node;
+        Stack<Node<T,P>> path = new Stack<>();
+        Node<T,P> current = node;
         while (current.getParent() != null) {
             path.push(current);
             current = current.getParent();
         }
-        path.push(root);
+        path.push(getRoot());
         return new ArrayList<>(path);
     }
 
-    public boolean contains(Node<T> node) {
-        Node<T> upmostParent = node;
+    public boolean contains(Node<T,P> node) {
+        Node<T,P> upmostParent = node;
         while (upmostParent.getParent() != null) {
-            upmostParent = node.getParent();
+            upmostParent = upmostParent.getParent();
         }
-        return root == upmostParent;
+        return getRoot().equals(upmostParent);
     }
 
     public int getCount() {
         // Box integer into array to retrieve a 'pointer'
         final int[] count = {0};
-        TreeFunction<T> countFunction = (node, depth) -> {
+        TreeFunction<T,P> countFunction = (node, depth) -> {
             count[0]++;
             return true;
         };
@@ -89,12 +76,12 @@ public class Tree<T> {
         return count[0];
     }
 
-    public void breadthFirstSearch(TreeFunction<T> function) {
-        List<Node<T>> current = List.of(root);
+    public void breadthFirstSearch(TreeFunction<T,P> function) {
+        List<Node<T,P>> current = List.of(getRoot());
         int depth = 0;
         while (true) {
-            List<Node<T>> nextLevel = new ArrayList<>();
-            for (Node<T> node : current) {
+            List<Node<T,P>> nextLevel = new ArrayList<>();
+            for (Node<T,P> node : current) {
                 nextLevel.addAll(node.getChildren());
                 if (!function.execute(node, depth))
                     return;
@@ -106,18 +93,18 @@ public class Tree<T> {
         }
     }
 
-    public void depthFirstSearch(TreeFunction<T> function) {
-        depthFirstSearch(root, function, 0);
+    public void depthFirstSearch(TreeFunction<T,P> function) {
+        depthFirstSearch(getRoot(), function, 0);
     }
 
-    private boolean depthFirstSearch(Node<T> node, TreeFunction<T> function, int depth) {
-        List<Node<T>> children = node.getChildren();
+    private boolean depthFirstSearch(Node<T,P> node, TreeFunction<T,P> function, int depth) {
+        List<Node<T,P>> children = node.getChildren();
         // If root, execute function
         if (children.isEmpty()) {
             return function.execute(node, depth);
         }
         // Dig deeper
-        for (Node<T> c: children) {
+        for (Node<T,P> c: children) {
             if (!depthFirstSearch(c, function, depth + 1))
                 // Abort traversing if function returns false
                 return false;
