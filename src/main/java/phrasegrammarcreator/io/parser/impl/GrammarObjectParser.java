@@ -11,14 +11,14 @@ import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;
 import phrasegrammarcreator.io.parser.core.SingleValueParser;
-import phrasegrammarcreator.io.parser.impl.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
     private SingleValueParser<NonTerminal> nonTerminalParser;
     private SingleValueParser<Terminal> terminalParser;
-    private SingleValueParser<Rule> ruleParser;
+    private SingleValueParser<List<Rule>> ruleParser;
     private PhraseParser phraseParser;
     private DictionaryParser dictionaryParser;
 
@@ -45,8 +45,11 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
         List<Terminal> terminals = tArrayParser.parse(object.getJSONArray("terminals"));
 
         // Parse rules
-        JsonArrayParser<String, Rule> ruleArrayParser = new JsonArrayParser<>(ruleParser);
-        List<Rule> rules = ruleArrayParser.parse(object.getJSONArray("rules"));
+        JsonArrayParser<String, List<Rule>> ruleArrayParser = new JsonArrayParser<>(ruleParser);
+        List<Rule> rules = ruleArrayParser.
+                parse(object.getJSONArray("rules"))
+                .stream().flatMap(Collection::stream)
+                .toList();
 
         // Parse dictionary
         dictionaryParser = new DictionaryParser(terminals);

@@ -45,7 +45,7 @@
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "pattern": " *(\\w)( \\w)* *(->) *(\\w)( \\w)* *"
+                        "pattern": " *(\\w+)( \\w+)* *(->)( *(\\w+)( \\w+)*)( *\\| *(\\w)+( \\w+)*)*"
                     }
                 },
                 "dictionary": {

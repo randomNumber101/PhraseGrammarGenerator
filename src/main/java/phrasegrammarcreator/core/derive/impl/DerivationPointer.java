@@ -10,6 +10,8 @@ public class DerivationPointer extends Pointer<Phrase, DerivationPointer> {
     private Phrase from;
     private Derivation derivation;
 
+    private DerivationNode pointingTo;
+
     public DerivationPointer(Phrase from, Derivation derivation) {
         super();
         this.from = from;
@@ -26,14 +28,38 @@ public class DerivationPointer extends Pointer<Phrase, DerivationPointer> {
         return derivation;
     }
 
-    @Override
-    protected Node<Phrase, DerivationPointer> build(Node<Phrase, DerivationPointer> parent) {
+    protected DerivationNode build(DerivationNode parent) {
         if (pointingTo != null)
             return pointingTo;
         else {
             Phrase derived = from.deriveBy(derivation);
-            return new Node<>(derived, parent);
+            return new DerivationNode(derived, parent);
         }
+    }
+    @Override
+    protected Node<Phrase, DerivationPointer> build(Node<Phrase, DerivationPointer> parent) {
+        if (parent instanceof DerivationNode)
+            return build((DerivationNode) parent);
+        else {
+            if (pointingTo != null)
+                return pointingTo;
+            else {
+                Phrase derived = from.deriveBy(derivation);
+                return new Node<>(derived, parent);
+            }
+        }
+
+    }
+
+    public DerivationNode getPointingTo() {
+        return pointingTo;
+    }
+
+    public boolean isInitialized() {
+        return pointingTo != null;
+    }
+    public void initialize(DerivationNode parent) {
+        pointingTo = build(parent);
     }
 
 }

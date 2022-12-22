@@ -27,7 +27,8 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
             this::printVocabulary,
             this::printRules,
             this::printDictionary,
-            this::printStartPhrase
+            this::printStartPhrase,
+            this::printPossibleDerivations
         );
     }
 
@@ -37,7 +38,7 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
     }
     public void printRules() {
         String header = "Rules:";
-        out.println(Util.printCollection(header, watched.getRules(), Rule::toString));
+        out.println(Util.formatCollection(header, watched.getRules(), Rule::toString));
         out.println();
     }
 
@@ -75,7 +76,7 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
 
     public void printPossibleDerivations() {
         String header = "Possible Derivations:";
-        out.println(Util.printCollection(
+        out.println(Util.formatCollection(
                 header,
                 watched.getNextPossibleDerivations(),
                 d -> d.getRule().toString(),

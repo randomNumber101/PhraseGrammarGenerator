@@ -12,8 +12,9 @@ public abstract class Pointer<T, P extends Pointer> {
     public boolean isInitialized() {
         return pointingTo != null;
     }
-    public void initialize(Node<T,P> parent) {
+    public Node<T,P> initialize(Node<T,P> parent) {
         pointingTo = build(parent);
+        return pointingTo;
     }
 
     public Node<T,P> getPointingTo() {

@@ -50,7 +50,7 @@ public class ContextFreeCalculator extends DerivationsCalculator{
 
         // Shift derivations after interval
         int lengthChange = lastPicked.getRule().getLengthChange();
-        Occurence derivedInterval = new Occurence(sourceInterval.from, sourceInterval.to + lengthChange);
+        Occurence derivedInterval = sourceInterval.extendBy(lengthChange);
         List<Derivation> sortedList = new ArrayList<>(List.of(derivations.getArray()));
         Collections.sort(sortedList);
         for (Derivation d : sortedList) {

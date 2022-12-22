@@ -2,6 +2,7 @@ package phrasegrammarcreator.main;
 
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.io.parser.ConfigLoader;
+import phrasegrammarcreator.io.print.info.DerivationTreeInfo;
 import phrasegrammarcreator.io.print.info.GrammarInfo;
 
 import java.io.*;
@@ -20,10 +21,14 @@ public class Application {
         try {
             Config c = loadConfig();
             FormalGrammar grammar = c.getGrammarList().get(0);
-            grammar.next();
+
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
-            System.out.println("⁶");
+            for (int i = 0; i < 12; i++, grammar.next()){}
+
+
+            DerivationTreeInfo treeInfo = new DerivationTreeInfo(System.out, grammar.getDerivationTree());
+            treeInfo.printInfo();
         }
         catch (Exception e) {
             e.printStackTrace();

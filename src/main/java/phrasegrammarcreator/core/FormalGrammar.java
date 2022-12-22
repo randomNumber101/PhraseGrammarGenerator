@@ -42,7 +42,7 @@ public class FormalGrammar{
     }
 
     public void next(){
-
+        derivations.deriveHead(calculator, chooser);
     }
 
     public DerivationSet getNextPossibleDerivations() {

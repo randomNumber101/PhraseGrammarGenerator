@@ -42,4 +42,13 @@ public class VariableInstance<T extends Variable> {
     public String toString() {
         return builder.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof VariableInstance<?>) {
+            return getBuilder().equals(((VariableInstance<?>) other).getBuilder());
+        }
+        else
+            return super.equals(other);
+    }
 }

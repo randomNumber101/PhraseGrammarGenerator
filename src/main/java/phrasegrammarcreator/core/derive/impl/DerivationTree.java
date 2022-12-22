@@ -7,6 +7,7 @@ import phrasegrammarcreator.core.derive.tree.Tree;
 import phrasegrammarcreator.core.phrases.Phrase;
 
 import java.util.List;
+import java.util.Stack;
 
 public class DerivationTree extends Tree<Phrase, DerivationPointer> {
 
@@ -19,7 +20,8 @@ public class DerivationTree extends Tree<Phrase, DerivationPointer> {
     }
 
     public DerivationNode deriveHead(DerivationsCalculator calculator, DerivationChooser chooser) {
-        return derive(calculator, chooser, getHead());
+        head = derive(calculator, chooser, getHead());
+        return head;
     }
 
     public void calculateHead(DerivationsCalculator calculator) {
@@ -51,6 +53,23 @@ public class DerivationTree extends Tree<Phrase, DerivationPointer> {
 
     public DerivationNode getRoot() {
         return root;
+    }
+
+    public DerivationPath getPathOf(DerivationNode node) {
+        if (!contains(node))
+            return null;
+        Stack<DerivationNode> path = new Stack<>();
+        DerivationNode current = node;
+        while (current.getParent() != null) {
+            path.push(current);
+            current = current.getParent();
+        }
+        DerivationPath derivationPath = new DerivationPath();
+        while (!path.empty()) {
+            derivationPath.add(path.pop());
+        }
+
+        return derivationPath;
     }
 
 

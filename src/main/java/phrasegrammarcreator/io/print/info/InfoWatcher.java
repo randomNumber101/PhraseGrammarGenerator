@@ -1,6 +1,7 @@
 package phrasegrammarcreator.io.print.info;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
@@ -28,11 +29,10 @@ public abstract class InfoWatcher<T> {
             printed = baos.toString(utf8);
             baos.close();
             return printed;
-        }
-        catch (Exception e) {
-            return null;
-        }
-        finally {
+        } catch (IOException e) {
+            e.printStackTrace(out);
+            throw new RuntimeException(e);
+        } finally {
             out = previous;
         }
     }

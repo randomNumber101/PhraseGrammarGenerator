@@ -35,7 +35,10 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
        Rule rule = derivation.getRule();
        Occurence occurence = derivation.getOccurence();
        if (occurence.from < 0 || occurence.to > this.size())
-           return null;
+           throw new IndexOutOfBoundsException
+                   (String.format("Cannot derive phrase. Interval (%d,%d) out of bounds (0,%d)",
+                           occurence.from, occurence.to, this.size()));
+
        // Split variable list in parts before and after occurrences and merge them using the derived sub phrase.
        List<Variable> currentVariables = getInstanceBuilders(this);
        List<Variable> derivedSubPart = getInstanceBuilders(rule.getTarget().toPhrase());
@@ -43,10 +46,13 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
        List<Variable> beforeOccurrence = currentVariables.subList(0, occurence.from);
        List<Variable> afterOccurrence = currentVariables.subList(occurence.to, size());
 
-       beforeOccurrence.addAll(derivedSubPart);
-       beforeOccurrence.addAll(afterOccurrence);
+       ArrayList<Variable> rejoined = new ArrayList<>();
+       rejoined.addAll(beforeOccurrence);
+       rejoined.addAll(derivedSubPart);
+       rejoined.addAll(afterOccurrence);
 
-       return new Phrase(beforeOccurrence);
+
+       return new Phrase(rejoined);
     }
 
 

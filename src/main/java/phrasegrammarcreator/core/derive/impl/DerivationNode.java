@@ -39,7 +39,7 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
                         .findFirst().orElseThrow();
 
         chosenPointer.initialize(this);
-        DerivationNode child = (DerivationNode) chosenPointer.getPointingTo();
+        DerivationNode child = chosenPointer.getPointingTo();
         return child;
     }
     public DerivationSet calculate(DerivationsCalculator calculator) {
@@ -83,7 +83,7 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
     }
 
     public void addAll(Collection<Derivation> set) {
-        set.forEach(derivation -> addPointer(new DerivationPointer(data, derivation)));
+            set.forEach(derivation -> addPointer(new DerivationPointer(data, derivation)));
     }
 
     @Override
