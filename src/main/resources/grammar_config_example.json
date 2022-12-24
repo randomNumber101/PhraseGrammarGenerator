@@ -5,7 +5,7 @@
             "name" : "Grammar1",
             "non-terminals": ["A", "B", "C", "D"],
             "terminals" : ["n", "jn", "d"],
-            "rules" : ["A -> C", "C -> D A", "B A-> D n| jn"],
+            "rules" : ["A -> C", "C -> D A", "B A-> D n| jn", "D D D -> n B"],
             "dictionary" : {
                 "n"  :  ["NEIN"],
                 "d"  :  ["DEIN"],

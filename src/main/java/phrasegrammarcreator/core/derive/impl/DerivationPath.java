@@ -7,9 +7,11 @@ import java.util.List;
 public class DerivationPath extends ArrayList<DerivationNode> {
 
     public DerivationPath() {}
+
     public DerivationPath(Collection<DerivationNode> nodes) {
         super(nodes);
     }
+
     public List<DerivationPointer> getDerivations() {
         ArrayList<DerivationPointer> pointers = new ArrayList<>();
         for (int i = 0; i < size() - 1; i ++) {

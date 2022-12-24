@@ -2,8 +2,8 @@ package phrasegrammarcreator.compute.calculate;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
-import phrasegrammarcreator.compute.Occurence;
-import phrasegrammarcreator.compute.SingleOccurence;
+import phrasegrammarcreator.compute.Occurrence;
+import phrasegrammarcreator.compute.SingleOccurrence;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.SubPhrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContextFreeCalculator extends DerivationsCalculator{
 
@@ -37,31 +38,34 @@ public class ContextFreeCalculator extends DerivationsCalculator{
     }
 
     @Override
-    public DerivationSet calculate(Phrase p, DerivationSet lastDerivation, Derivation lastPicked) {
-        if (lastDerivation == null)
+    public DerivationSet calculate(Phrase p, DerivationSet lastDerivations, Derivation lastPicked) {
+        if (lastDerivations == null)
             return calculateNaive(p);
 
-        DerivationSet derivations = new DerivationSet(lastDerivation);
+        // Remove ContextSensitive derivations
+        DerivationSet derivations = lastDerivations.copy();
+        derivations.removeAll(derivations.stream()
+                .filter(d -> d.getRule().getSource().toPhrase().size() > 1)
+                .collect(Collectors.toSet()));
 
         // Remove derivations that cross interval that has been derived
-        Occurence sourceInterval = lastPicked.getOccurence();
+        Occurrence sourceInterval = lastPicked.getOccurence();
         derivations.deleteAllInSection(sourceInterval);
-
 
         // Shift derivations after interval
         int lengthChange = lastPicked.getRule().getLengthChange();
-        Occurence derivedInterval = sourceInterval.extendBy(lengthChange);
+        Occurrence derivedInterval = sourceInterval.extendedBy(lengthChange);
         List<Derivation> sortedList = new ArrayList<>(List.of(derivations.getArray()));
         Collections.sort(sortedList);
         for (Derivation d : sortedList) {
-            if (d.getOccurence().from >= derivedInterval.to) {
-                d.shift(lengthChange);
+            if (d.getOccurence().from >= sourceInterval.from) {
+                d.shiftBy(lengthChange);
             }
         }
 
         // Recalculate derivations only in new interval
         SubPhrase sp = p.getSubphrase(derivedInterval);
-        derivations.addAll(calculateNaive(sp));
+        derivations.addAll(calculateNaive(sp).shiftedBy(derivedInterval.from));
 
         return derivations;
     }
@@ -77,7 +81,7 @@ public class ContextFreeCalculator extends DerivationsCalculator{
         for (int i = 0; i < p.size(); i++) {
             VariableInstance vi = p.get(i);
             if (vi.getType() == Variable.Type.NON_TERMINAL) {
-                out.add(getApplicableRules(vi.getBuilder()), new SingleOccurence(i));
+                out.add(getApplicableRules(vi.getBuilder()), new SingleOccurrence(i));
             }
         }
         return out;

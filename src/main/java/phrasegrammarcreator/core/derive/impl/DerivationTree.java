@@ -64,6 +64,7 @@ public class DerivationTree extends Tree<Phrase, DerivationPointer> {
             path.push(current);
             current = current.getParent();
         }
+        path.push(current);
         DerivationPath derivationPath = new DerivationPath();
         while (!path.empty()) {
             derivationPath.add(path.pop());

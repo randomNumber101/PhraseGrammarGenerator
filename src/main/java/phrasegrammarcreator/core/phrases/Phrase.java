@@ -2,7 +2,7 @@ package phrasegrammarcreator.core.phrases;
 
 
 import phrasegrammarcreator.compute.Derivation;
-import phrasegrammarcreator.compute.Occurence;
+import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 import phrasegrammarcreator.core.rules.Rule;
@@ -25,7 +25,7 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
         }
     }
 
-    public SubPhrase getSubphrase(Occurence interval) {
+    public SubPhrase getSubphrase(Occurrence interval) {
         if (interval.to > this.size())
             return null;
         return new SubPhrase(this, interval);
@@ -33,18 +33,18 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
 
     public Phrase deriveBy(Derivation derivation) {
        Rule rule = derivation.getRule();
-       Occurence occurence = derivation.getOccurence();
-       if (occurence.from < 0 || occurence.to > this.size())
+       Occurrence occurrence = derivation.getOccurence();
+       if (occurrence.from < 0 || occurrence.to > this.size())
            throw new IndexOutOfBoundsException
                    (String.format("Cannot derive phrase. Interval (%d,%d) out of bounds (0,%d)",
-                           occurence.from, occurence.to, this.size()));
+                           occurrence.from, occurrence.to, this.size()));
 
        // Split variable list in parts before and after occurrences and merge them using the derived sub phrase.
        List<Variable> currentVariables = getInstanceBuilders(this);
        List<Variable> derivedSubPart = getInstanceBuilders(rule.getTarget().toPhrase());
 
-       List<Variable> beforeOccurrence = currentVariables.subList(0, occurence.from);
-       List<Variable> afterOccurrence = currentVariables.subList(occurence.to, size());
+       List<Variable> beforeOccurrence = currentVariables.subList(0, occurrence.from);
+       List<Variable> afterOccurrence = currentVariables.subList(occurrence.to, size());
 
        ArrayList<Variable> rejoined = new ArrayList<>();
        rejoined.addAll(beforeOccurrence);

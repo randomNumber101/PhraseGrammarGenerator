@@ -1,11 +1,12 @@
 package phrasegrammarcreator.io.print;
 
-import phrasegrammarcreator.compute.Occurence;
+import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,8 +24,8 @@ public class Visual {
         }
     }
 
-    public static String markOccurrence(Phrase phrase, Occurence occurence) {
-        return markOccurrences(phrase, occurence);
+    public static String markOccurrence(Phrase phrase, Occurrence occurrence) {
+        return markOccurrences(phrase, occurrence);
     }
 
     /**
@@ -35,7 +36,7 @@ public class Visual {
      * @param occurrences The intervals to mark
      * @return String of format like: AB [JRI]⁰ WQS [D]¹
      */
-    public static String markOccurrences(Phrase phrase, Occurence... occurrences) {
+    public static String markOccurrences(Phrase phrase, Occurrence... occurrences) {
         Set<Integer> froms = Arrays.stream(occurrences).map(o -> o.from).collect(Collectors.toSet());
         Set<Integer> tos = Arrays.stream(occurrences).map(o -> o.to).collect(Collectors.toSet());
         ArrayList<String> subStrings = phrase.stream()
@@ -61,6 +62,34 @@ public class Visual {
         }
         String out = builder.toString();
         return out.replaceAll(" +", " ");
+    }
+
+    public static List<String> printTable(List<String> header, List<List<String>> columns) {
+        ArrayList<Integer> widths = columns.stream().map(Util::maxLength).collect(Collectors.toCollection(ArrayList::new));
+        for (int i = 0; i < widths.size(); i++) {
+            widths.set(i, Math.max(widths.get(i), header.get(i).length()));
+        }
+
+        int width = columns.size();
+        int height = columns.isEmpty()? 0 : columns.get(0).size();
+
+        ArrayList<String> out = new ArrayList<>();
+        StringBuilder headerBuilder = new StringBuilder("   ");
+        for (int i = 0; i < widths.size(); i++) {
+            headerBuilder.append(Util.padMid(header.get(i), widths.get(i))).append("   ");
+        }
+        out.add(headerBuilder.toString());
+
+        for (int i = 0; i < height; i++) {
+            StringBuilder rowBuilder = new StringBuilder("║ ");
+            for (int j = 0; j < width; j++) {
+                String entry = columns.get(j).get(i);
+                rowBuilder.append(Util.padMid(entry, widths.get(j))).append(" ║ ");
+            }
+            out.add(rowBuilder.toString());
+        }
+
+        return out;
     }
 
 }

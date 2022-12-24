@@ -24,11 +24,12 @@ public class Application {
 
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
-            for (int i = 0; i < 12; i++, grammar.next()){}
+            for (int i = 0; i < 32; i++, grammar.next()){}
 
 
             DerivationTreeInfo treeInfo = new DerivationTreeInfo(System.out, grammar.getDerivationTree());
             treeInfo.printInfo();
+            grammarInfo.printPossibleDerivations();
         }
         catch (Exception e) {
             e.printStackTrace();

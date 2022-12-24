@@ -9,7 +9,7 @@
 
 package phrasegrammarcreator.compute.calculate.match;
 
-import phrasegrammarcreator.compute.Occurence;
+import phrasegrammarcreator.compute.Occurrence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class SuffixTree {
         fullText = text;
     }
 
-    public List<Occurence> searchText(String pattern) {
-        List<Occurence> result = new ArrayList<>();
+    public List<Occurrence> searchText(String pattern) {
+        List<Occurrence> result = new ArrayList<>();
         List<Node> nodes = getAllNodesInTraversePath(pattern, root, false);
 
         if (nodes.size() > 0) {
@@ -41,7 +41,7 @@ public class SuffixTree {
                 positions = positions.stream()
                         .sorted()
                         .collect(Collectors.toList());
-                positions.forEach(p -> result.add(new Occurence(p, p + pattern.length())));
+                positions.forEach(p -> result.add(new Occurrence(p, p + pattern.length())));
             }
         }
         return result;

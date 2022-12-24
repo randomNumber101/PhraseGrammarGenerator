@@ -12,7 +12,7 @@ import java.util.*;
 
 public class PossibleDerivations {
 
-    protected HashMap<Rule, List<Occurence>> applications;
+    protected HashMap<Rule, List<Occurrence>> applications;
 
     public PossibleDerivations() {
         applications = new HashMap<>();
@@ -22,19 +22,19 @@ public class PossibleDerivations {
         applications = new HashMap<>(copyOf.applications);
     }
 
-    public <R extends Rule> void addOccurrence(R r, Occurence o) {
+    public <R extends Rule> void addOccurrence(R r, Occurrence o) {
         if (!applications.containsKey(r))
             applications.put(r, new ArrayList<>());
         applications.get(r).add(o);
     }
 
-    public <R extends Rule> void  addOccurrences(R r, Collection<Occurence> o) {
+    public <R extends Rule> void  addOccurrences(R r, Collection<Occurrence> o) {
         if (!applications.containsKey(r))
             applications.put(r, new ArrayList<>());
         applications.get(r).addAll(o);
     }
 
-    public <R extends Rule> void addOccurrences(Collection<R> rules, Occurence o) {
+    public <R extends Rule> void addOccurrences(Collection<R> rules, Occurrence o) {
         for (Rule r : rules)
             addOccurrence(r, o);
     }
@@ -44,7 +44,7 @@ public class PossibleDerivations {
         Set<Rule> rules = applications.keySet();
         DerivationSet derivations = new DerivationSet();
         for (Rule r : rules)
-            for (Occurence o : applications.get(r))
+            for (Occurrence o : applications.get(r))
                 derivations.add(new Derivation(r, o));
 
         return derivations;

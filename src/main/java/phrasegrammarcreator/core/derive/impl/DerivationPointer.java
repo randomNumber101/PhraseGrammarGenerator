@@ -16,6 +16,12 @@ public class DerivationPointer extends Pointer<Phrase, DerivationPointer> {
         super();
         this.from = from;
         this.derivation = derivation;
+        if (derivation.getOccurence().to > from.size())
+            throw new IndexOutOfBoundsException(String.format(
+                    "Derivation out of bounds: Occurence %s not in phrase %s",
+                    derivation.getOccurence().toString(),
+                    from.toString()));
+
     }
     public DerivationPointer(Node<Phrase, DerivationPointer> node) {
         super(node);

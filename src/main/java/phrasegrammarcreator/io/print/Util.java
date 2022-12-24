@@ -1,9 +1,7 @@
 package phrasegrammarcreator.io.print;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Util {
 
@@ -47,34 +45,6 @@ public class Util {
             list.set(i, paddedS);
         }
         return list;
-    }
-
-    public static List<String> printTable(List<String> header, List<List<String>> columns) {
-        ArrayList<Integer> widths = columns.stream().map(Util::maxLength).collect(Collectors.toCollection(ArrayList::new));
-        for (int i = 0; i < widths.size(); i++) {
-            widths.set(i, Math.max(widths.get(i), header.get(i).length()));
-        }
-
-        int width = columns.size();
-        int height = columns.isEmpty()? 0 : columns.get(0).size();
-
-        ArrayList<String> out = new ArrayList<>();
-        StringBuilder headerBuilder = new StringBuilder("   ");
-        for (int i = 0; i < widths.size(); i++) {
-            headerBuilder.append(padMid(header.get(i), widths.get(i))).append("   ");
-        }
-        out.add(headerBuilder.toString());
-
-        for (int i = 0; i < height; i++) {
-            StringBuilder rowBuilder = new StringBuilder("║ ");
-            for (int j = 0; j < width; j++) {
-                String entry = columns.get(j).get(i);
-                rowBuilder.append(padMid(entry, widths.get(j))).append(" ║ ");
-            }
-            out.add(rowBuilder.toString());
-        }
-
-        return out;
     }
 
     public static String padLeft(String s, int size) {

@@ -32,6 +32,7 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
             derivations =
                     getPointer().stream().map(DerivationPointer::getDerivation).collect(DerivationSet.toSet());
         }
+
         Derivation chosen = chooser.pick(derivations);
         DerivationPointer chosenPointer =
                 getPointer().stream()
@@ -48,14 +49,16 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
             out = calculator.calculate(this.getData(), null, null);
         }
         else {
-            DerivationSet parentDerivations = this
+            DerivationSet parentDerivations =
+                    this
                     .getParent()
                     .getPointer()
                     .stream()
                     .map(DerivationPointer::getDerivation)
                     .collect(DerivationSet.toSet());
 
-            Derivation picked = this
+            Derivation picked =
+                    this
                     .getParent()
                     .getPointer().stream()
                     .filter(dp -> dp.isInitialized() && dp.getPointingTo().equals(this))

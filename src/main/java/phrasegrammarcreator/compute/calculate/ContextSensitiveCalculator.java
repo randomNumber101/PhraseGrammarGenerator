@@ -2,7 +2,7 @@ package phrasegrammarcreator.compute.calculate;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
-import phrasegrammarcreator.compute.Occurence;
+import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.compute.calculate.match.SuffixTree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Variable;
@@ -28,7 +28,7 @@ public class ContextSensitiveCalculator extends DerivationsCalculator{
         SuffixTree suffixTree = new SuffixTree(tokenizer.getTokenizedPhrase());
         DerivationSet output = new DerivationSet();
         for (Rule r : rules) {
-            List<Occurence> occurrences = suffixTree.searchText(tokenizer.tokenize(r.getSource().toPhrase()));
+            List<Occurrence> occurrences = suffixTree.searchText(tokenizer.tokenize(r.getSource().toPhrase()));
             output.add(r, occurrences);
         }
         return output;
