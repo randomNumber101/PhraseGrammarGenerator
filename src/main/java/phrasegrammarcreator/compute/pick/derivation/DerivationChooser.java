@@ -1,4 +1,4 @@
-package phrasegrammarcreator.compute.pick;
+package phrasegrammarcreator.compute.pick.derivation;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
@@ -13,6 +13,6 @@ public abstract class DerivationChooser {
         this.rules = rules;
     }
 
-    // TODO: Implement picking multiple derivations at once
+    // TODO: Implement picking multiple derivations at once. Idea: Aggregated Chooser / Calculator
     public abstract Derivation pick(DerivationSet pd);
 }

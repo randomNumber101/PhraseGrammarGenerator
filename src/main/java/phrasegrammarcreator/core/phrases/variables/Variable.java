@@ -1,10 +1,8 @@
 package phrasegrammarcreator.core.phrases.variables;
 
+import org.jetbrains.annotations.Nullable;
 import phrasegrammarcreator.core.phrases.Phrasable;
 import phrasegrammarcreator.core.phrases.Phrase;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 
 public abstract class Variable implements Phrasable {
 
@@ -18,10 +16,9 @@ public abstract class Variable implements Phrasable {
 
     public enum Type {
         NON_TERMINAL,
-        TERMINAL
+        TERMINAL,
+        WORD
     }
-    private ArrayList<Variable> derivedFrom;
-
 
     private String regex;
     private String name;

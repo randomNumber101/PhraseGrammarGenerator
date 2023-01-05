@@ -2,7 +2,7 @@ package phrasegrammarcreator.io.parser.impl;
 
 import org.json.JSONObject;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
-import phrasegrammarcreator.core.phrases.variables.WordDictionary;
+import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;
 import phrasegrammarcreator.io.parser.core.StringParser;

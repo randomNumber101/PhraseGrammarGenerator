@@ -5,9 +5,8 @@ import phrasegrammarcreator.io.parser.ConfigLoader;
 import phrasegrammarcreator.io.print.info.DerivationTreeInfo;
 import phrasegrammarcreator.io.print.info.GrammarInfo;
 
-import java.io.*;
+import java.io.File;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 public class Application {
 
@@ -48,14 +47,5 @@ public class Application {
 
         Config config = configLoader.validateAndParse(new File(configUri));
         return config;
-    }
-    private static void printStream(InputStream stream) throws IOException {
-        InputStreamReader streamReader =
-                new InputStreamReader(stream, StandardCharsets.UTF_8);
-        BufferedReader reader = new BufferedReader(streamReader);
-        String line;
-        while ((line = reader.readLine()) != null) {
-            System.out.println(line);
-        }
     }
 }

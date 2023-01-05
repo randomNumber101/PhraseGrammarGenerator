@@ -1,4 +1,4 @@
-package phrasegrammarcreator.compute.pick;
+package phrasegrammarcreator.compute.pick.derivation;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;

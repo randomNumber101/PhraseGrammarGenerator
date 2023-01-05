@@ -14,13 +14,13 @@ public class SubPhrase extends Phrase implements Phrasable{
         super();
         this.master = master;
         this.interval = interval;
-        List<VariableInstance> subList = master.subList(interval.from, interval.to);
+        List<VariableInstance<?>> subList = master.subList(interval.from, interval.to);
         this.addAll(subList);
     }
 
     @Override
     public Phrase toPhrase() {
-        return null;
+        return this;
     }
 
 }

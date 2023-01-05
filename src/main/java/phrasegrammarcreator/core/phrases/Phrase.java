@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
+public class Phrase extends ArrayList<VariableInstance<? extends Variable>> implements Phrasable {
 
 
 
@@ -56,7 +56,7 @@ public class Phrase extends ArrayList<VariableInstance> implements Phrasable {
     }
 
 
-    public List<Variable> getInstanceBuilders(Collection<VariableInstance> variableInstances) {
+    public List<Variable> getInstanceBuilders(Collection<VariableInstance<?>> variableInstances) {
         return variableInstances.stream().map(vi -> (Variable) vi.getBuilder()).toList();
     }
 

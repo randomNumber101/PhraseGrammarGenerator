@@ -4,13 +4,14 @@ import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
 import phrasegrammarcreator.compute.calculate.MixedCalculator;
-import phrasegrammarcreator.compute.pick.DerivationChooser;
-import phrasegrammarcreator.compute.pick.RandomSingleDerivationChooser;
+import phrasegrammarcreator.compute.pick.derivation.DerivationChooser;
+import phrasegrammarcreator.compute.pick.derivation.RandomSingleDerivationChooser;
+import phrasegrammarcreator.core.derive.impl.DerivationNode;
 import phrasegrammarcreator.core.derive.impl.DerivationPointer;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
-import phrasegrammarcreator.core.phrases.variables.WordDictionary;
+import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class FormalGrammar{
     private WordDictionary dictionary;
     private Phrase startPhrase;
 
-    private DerivationTree derivations;
+    private DerivationTree derivationTree;
     private DerivationsCalculator calculator;
     private DerivationChooser chooser;
     private DerivationSet lastDerivation;
@@ -36,20 +37,27 @@ public class FormalGrammar{
         this.dictionary = dictionary;
         this.startPhrase = startPhrase;
 
-        derivations = new DerivationTree(startPhrase);
+        derivationTree = new DerivationTree(startPhrase);
         calculator = new MixedCalculator(rules);
         chooser = new RandomSingleDerivationChooser(rules);
     }
 
     public void next(){
-        derivations.deriveHead(calculator, chooser);
+        derivationTree.deriveHead(calculator, chooser);
     }
 
     public DerivationSet getNextPossibleDerivations() {
-        if (!derivations.getHead().isCalculated()) {
-            derivations.calculateHead(calculator);
+        return getPossibleDerivations(getDerivationTree().getHead());
+    }
+
+    public DerivationSet getPossibleDerivations(DerivationNode node) {
+        if (!getDerivationTree().contains(node))
+            // TODO: Force derivation of node
+            throw new IllegalArgumentException("Node not part of grammar or not yet derived: " + node);
+        if (!node.isCalculated()) {
+            derivationTree.calculate(calculator, node);
         };
-        return derivations.getHead().getPointer().stream()
+        return node.getPointer().stream()
                 .map(DerivationPointer::getDerivation)
                 .collect(DerivationSet.toSet());
     }
@@ -76,6 +84,6 @@ public class FormalGrammar{
     }
 
     public DerivationTree getDerivationTree() {
-        return derivations;
+        return derivationTree;
     }
 }

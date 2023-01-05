@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Vocabulary {
 
+
     private final HashMap<String, Variable> variables;
 
     public Vocabulary() {
@@ -18,6 +19,8 @@ public class Vocabulary {
     public Variable getVariable(String regex) {
         return variables.get(regex);
     }
+
+
 
     public Set<String> getRegexes() {
         return variables.keySet();

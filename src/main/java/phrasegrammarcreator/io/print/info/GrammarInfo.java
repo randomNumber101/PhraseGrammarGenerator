@@ -5,7 +5,7 @@ import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
-import phrasegrammarcreator.core.phrases.variables.WordDictionary;
+import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.print.Util;
 

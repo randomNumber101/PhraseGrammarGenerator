@@ -71,7 +71,7 @@ public class ContextFreeCalculator extends DerivationsCalculator{
     }
 
     public List<ContextFreeRule> getApplicableRules(Variable variable) {
-        if (variable.getType() == Variable.Type.TERMINAL || variableApplicableRules.get(variable) == null)
+        if (variable.getType() != Variable.Type.NON_TERMINAL || variableApplicableRules.get(variable) == null)
             return new ArrayList<>();
         return variableApplicableRules.get(variable);
     }

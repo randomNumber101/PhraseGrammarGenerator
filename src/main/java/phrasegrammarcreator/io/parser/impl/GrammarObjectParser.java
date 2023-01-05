@@ -1,12 +1,13 @@
 package phrasegrammarcreator.io.parser.impl;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
-import phrasegrammarcreator.core.phrases.variables.WordDictionary;
+import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;
@@ -16,6 +17,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
+
+    Logger logger = Logger.getLogger(GrammarObjectParser.class.getName());
+
     private SingleValueParser<NonTerminal> nonTerminalParser;
     private SingleValueParser<Terminal> terminalParser;
     private SingleValueParser<List<Rule>> ruleParser;
@@ -58,6 +62,17 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
         // Parse startPhrase
         Phrase startPhrase = phraseParser.parse(object.getString("start-phrase"));
 
+        List<Terminal> noWordsTerminals = dictionary.getEmptyEntries();
+        if (!noWordsTerminals.isEmpty())
+            logger.warn(
+                    String.format("""
+                                    Some Terminals don't have words in the dictionary:\s
+                                    %s\s
+                                    Using their names for derivation instead.\s""",
+                            noWordsTerminals)
+            );
+
         return new FormalGrammar(name, vocabulary, rules, dictionary, startPhrase);
     }
+
 }

@@ -2,7 +2,7 @@ package phrasegrammarcreator.core.derive.impl;
 
 import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
-import phrasegrammarcreator.compute.pick.DerivationChooser;
+import phrasegrammarcreator.compute.pick.derivation.DerivationChooser;
 import phrasegrammarcreator.core.derive.tree.Tree;
 import phrasegrammarcreator.core.phrases.Phrase;
 
@@ -72,6 +72,8 @@ public class DerivationTree extends Tree<Phrase, DerivationPointer> {
 
         return derivationPath;
     }
+
+
 
 
 }
