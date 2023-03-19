@@ -2,6 +2,7 @@ package phrasegrammarcreator.compute;
 
 import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.Rule;
+import phrasegrammarcreator.main.Randomizer;
 
 import java.util.*;
 import java.util.stream.Collector;
@@ -9,7 +10,7 @@ import java.util.stream.Collector;
 public class DerivationSet extends HashSet<Derivation> {
 
 
-    Random random = new Random();
+    Random random = Randomizer.getInstance();
 
     public DerivationSet(Collection<? extends Derivation> c) {
         super();

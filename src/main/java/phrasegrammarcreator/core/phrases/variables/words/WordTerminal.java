@@ -3,6 +3,7 @@ package phrasegrammarcreator.core.phrases.variables.words;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.main.Randomizer;
 
 import java.util.List;
 import java.util.Random;
@@ -11,7 +12,7 @@ public class WordTerminal extends Terminal {
 
     private final WordDictionary wordDictionary;
     private final Terminal parent;
-    Random random = new Random();
+    Random random = Randomizer.getInstance();
 
     public WordTerminal(WordDictionary wordDictionary, Terminal parent) {
         super(parent.getRegex(), parent.getName());
@@ -35,7 +36,5 @@ public class WordTerminal extends Terminal {
     public Terminal getParent() {
         return parent;
     }
-
-
 
 }

@@ -61,8 +61,7 @@ public class ConfigLoader {
     }
 
     private InputStream getStream(File file) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream(file);
-        return fileInputStream;
+        return new FileInputStream(file);
     }
 
 }

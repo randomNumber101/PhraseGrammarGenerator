@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class EndPhrase extends ArrayList<Variable> {
 
-
-
     public enum BuildingPolicy {
         WORDS_ONLY,
         VARIABLE_NAMES;
@@ -37,8 +35,8 @@ public class EndPhrase extends ArrayList<Variable> {
         if (validate(policy, grammar, node)) {
             WordDictionary dictionary = grammar.getDictionary();
             for (VariableInstance<?> instance : node.getData()) {
-                if (instance.getBuilder() instanceof Terminal) {
-                    WordTerminal wordTerminal = dictionary.toWord((Terminal) instance.getBuilder());
+                if (instance.getBuilder() instanceof Terminal terminal) {
+                    WordTerminal wordTerminal = dictionary.toWord(terminal);
                     endPhrase.add(wordTerminal);
                 }
                 else {
@@ -56,7 +54,6 @@ public class EndPhrase extends ArrayList<Variable> {
     }
 
     public static boolean validate(BuildingPolicy policy, FormalGrammar grammar, DerivationNode node) {
-        WordDictionary wordDictionary = grammar.getDictionary();
         if (!grammar.getPossibleDerivations(node).isEmpty())
             return false;
         for (VariableInstance<?> i : node.getData()) {

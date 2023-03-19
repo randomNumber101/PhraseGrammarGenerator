@@ -3,6 +3,7 @@ package phrasegrammarcreator.compute.pick.derivation;
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.core.rules.Rule;
+import phrasegrammarcreator.main.Randomizer;
 
 import java.util.List;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class RandomSingleDerivationChooser extends DerivationChooser {
     Random random;
     public RandomSingleDerivationChooser(List<Rule> rules) {
         super(rules);
-        random = new Random();
+        random = Randomizer.getInstance();
     }
 
     @Override
