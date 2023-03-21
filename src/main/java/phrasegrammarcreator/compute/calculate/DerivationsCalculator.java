@@ -17,4 +17,6 @@ public abstract class DerivationsCalculator {
 
 
     public abstract DerivationSet calculate(Phrase p, DerivationSet lastPossibleDerivations, Derivation lastPicked);
+
+
 }

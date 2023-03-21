@@ -1,8 +1,8 @@
 package phrasegrammarcreator.main;
 
 import phrasegrammarcreator.core.FormalGrammar;
+import phrasegrammarcreator.core.derive.possibilities.PossibilitiesGenerator;
 import phrasegrammarcreator.io.parser.ConfigLoader;
-import phrasegrammarcreator.io.print.info.DerivationTreeInfo;
 import phrasegrammarcreator.io.print.info.GrammarInfo;
 
 import java.io.File;
@@ -23,12 +23,17 @@ public class Application {
 
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
+
+            /**
             for (int i = 0; i < 32; i++, grammar.next()){}
 
 
             DerivationTreeInfo treeInfo = new DerivationTreeInfo(System.out, grammar.getDerivationTree());
             treeInfo.printInfo();
             grammarInfo.printPossibleDerivations();
+            **/
+
+            PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
         }
         catch (Exception e) {
             e.printStackTrace();

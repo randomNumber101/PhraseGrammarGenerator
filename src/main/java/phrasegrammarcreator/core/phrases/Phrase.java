@@ -13,8 +13,6 @@ import java.util.List;
 
 public class Phrase extends ArrayList<VariableInstance<? extends Variable>> implements Phrasable {
 
-
-
     public Phrase() {
     }
 
@@ -74,5 +72,13 @@ public class Phrase extends ArrayList<VariableInstance<? extends Variable>> impl
     @Override
     public Phrase toPhrase() {
         return this;
+    }
+
+
+    public static Phrase join(List<Phrase> phrases) {
+        Phrase out = new Phrase();
+        for (Phrase p : phrases)
+            out.addAll(p);
+        return out;
     }
 }

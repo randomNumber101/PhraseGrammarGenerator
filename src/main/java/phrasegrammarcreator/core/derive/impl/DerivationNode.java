@@ -43,6 +43,8 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
         DerivationNode child = chosenPointer.getPointingTo();
         return child;
     }
+
+
     public DerivationSet calculate(DerivationsCalculator calculator) {
         DerivationSet out;
         if (this.getParent() == null) {

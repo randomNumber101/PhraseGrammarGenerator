@@ -20,8 +20,9 @@ import java.util.stream.Collectors;
 
 public class ContextFreeCalculator extends DerivationsCalculator{
 
+    //TODO: Replace by RuleContainer
     HashMap<Variable, List<ContextFreeRule>> variableApplicableRules;
-    protected ContextFreeCalculator(List<ContextFreeRule> cfRules) {
+    protected ContextFreeCalculator( List<ContextFreeRule> cfRules) {
         super((List<Rule>)(List<?>) cfRules);
         variableApplicableRules = new HashMap<>();
         computeVariableRules(cfRules);

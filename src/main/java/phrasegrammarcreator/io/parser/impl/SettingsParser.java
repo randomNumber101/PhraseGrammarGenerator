@@ -12,7 +12,7 @@ public class SettingsParser extends JSonObjectParser<Settings> {
     @Override
     public Settings parse(JSONObject object) throws Exception {
 
-        String outPath = object.getString("output_dir");
+        String outPath = object.getString("output-dir");
         File f = new File(outPath);
         if (f.exists() && f.isDirectory())
             return new Settings("path");
