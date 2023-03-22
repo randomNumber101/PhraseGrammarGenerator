@@ -6,12 +6,13 @@
         {
             "name" : "Grammar1",
             "non-terminals": ["A", "B", "C", "D"],
-            "terminals" : ["n", "jn", "d"],
-            "rules" : ["A -> C | A | C A", "C -> D A | C", "B-> D n | jn", "D-> n B"],
+            "terminals" : ["a", "b", "c"],
+            "rules" : ["A -> A B| B| B C| a", "B -> b", "C -> A | c"],
             "dictionary" : {
-                "n"  :  ["NEIN"],
-                "d"  :  ["DEIN"],
-                "jn" :  ["JA", "NEIN"]
+                "a"  :  ["a"],
+                "b"  :  ["b"],
+                "c" :  ["c"]
+
             },
             "start-phrase": "A C A B A"
         },

@@ -21,22 +21,6 @@ public class ProductPossibilities extends Possibilities {
         }
     }
 
-    @Override
-    public long getCount() {
-        long product = 1;
-        for (Possibilities p: factors) {
-            product *= p.getCount();
-        }
-        return product;
-    }
-
-    @Override
-    public void calculateNext() {
-        factors.forEach(Possibilities::calculateNext);
-    }
-
-
-
     public <S,T> S accept(PossibilityTreeAggregator<S,T> aggregator) {
         return aggregator.product(factors.stream().map(cp -> cp.accept(aggregator)).toList());
     }

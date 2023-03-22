@@ -10,15 +10,22 @@ public class PossibilitiesGenerator {
     CfRuleContainer rc;
     ProductPossibilities root;
 
+    int CAP = 1000000;
+    int DEPTH_CAP = 20;
+
     public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {
         rc = new CfRuleContainer(grammar);
         root = new ProductPossibilities(rc, start);
-        printInfo();
-        root.calculateNext();
-        printInfo();
-        root.calculateNext();
-        printInfo();
-        root.calculateNext();
+
+        long currentPossibilities = 0;
+        int depth = 0;
+        do {
+            root.calculateNext();
+            printInfo();
+            currentPossibilities = root.getCount();
+        }
+        while(currentPossibilities < CAP && depth++ < DEPTH_CAP);
+
         System.out.println("Ps: " + root.getCount());
         Phrase first = root.iterator().next();
         System.out.println(first.toString(" "));

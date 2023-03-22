@@ -13,6 +13,7 @@ public class DerivationSet extends HashSet<Derivation> {
     Random random = Randomizer.getInstance();
 
     public DerivationSet(Collection<? extends Derivation> c) {
+
         super();
         for (Derivation d : c) {
             this.add(new Derivation(d.getRule(), d.getOccurence()));
