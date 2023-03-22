@@ -1,13 +1,13 @@
-package phrasegrammarcreator.io.print.info;
+package phrasegrammarcreator.io.console.info;
 
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
-import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
+import phrasegrammarcreator.core.phrases.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
-import phrasegrammarcreator.io.print.Util;
+import phrasegrammarcreator.io.console.Util;
 
 import java.io.PrintStream;
 import java.util.Collection;

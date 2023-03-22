@@ -1,7 +1,9 @@
 package phrasegrammarcreator.core.derive.possibilities;
 
 import phrasegrammarcreator.core.FormalGrammar;
+import phrasegrammarcreator.core.derive.possibilities.tree.ProductPossibilities;
 import phrasegrammarcreator.core.phrases.Phrase;
+import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 
 public class PossibilitiesGenerator {
 
@@ -18,6 +20,16 @@ public class PossibilitiesGenerator {
         printInfo();
         root.calculateNext();
         System.out.println("Ps: " + root.getCount());
+        Phrase first = root.iterator().next();
+        System.out.println(first.toString(" "));
+        VariableInstance current = first.get(0);
+        do {
+            System.out.print(current + " <- ");
+            current = current.getDerivedFrom();
+        }
+        while (current != null);
+        System.out.println("root");
+
     }
 
     private void printInfo() {

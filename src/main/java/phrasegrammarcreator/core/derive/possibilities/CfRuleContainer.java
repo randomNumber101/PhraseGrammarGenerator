@@ -39,7 +39,7 @@ public class CfRuleContainer {
     }
 
     public List<Phrase> getPhrasesFor(Variable v) {
-        return getRulesFor(v).stream().map(Rule::getTarget).toList();
+        return getRulesFor(v).stream().map(ContextFreeRule::getTarget).map(Phrase::cleanCopy).toList();
     }
 
     public List<ContextFreeRule> forceContextFree(List<Rule> rules) {

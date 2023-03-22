@@ -2,6 +2,7 @@ package phrasegrammarcreator.core.rules;
 
 
 import phrasegrammarcreator.core.phrases.Phrasable;
+import phrasegrammarcreator.core.phrases.Phrase;
 
 public abstract class Rule<T extends Phrasable, S extends Phrasable> {
 
@@ -21,8 +22,8 @@ public abstract class Rule<T extends Phrasable, S extends Phrasable> {
         return derivationSource;
     }
 
-    public S getTarget() {
-        return derivationTarget;
+    public Phrase getTarget() {
+        return derivationTarget.toPhrase().cleanCopy();
     }
 
     public int getLengthChange() {

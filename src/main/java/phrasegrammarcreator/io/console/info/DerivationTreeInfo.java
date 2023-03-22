@@ -1,15 +1,15 @@
-package phrasegrammarcreator.io.print.info;
+package phrasegrammarcreator.io.console.info;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.core.derive.impl.DerivationNode;
 import phrasegrammarcreator.core.derive.impl.DerivationPath;
-import phrasegrammarcreator.core.derive.impl.DerivationPointer;
+import phrasegrammarcreator.core.derive.impl.SingleDerivationPointer;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.derive.tree.Node;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.rules.Rule;
-import phrasegrammarcreator.io.print.Visual;
+import phrasegrammarcreator.io.console.Visual;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class DerivationTreeInfo extends InfoWatcher<DerivationTree> {
         }
 
         DerivationPath path =  watched.getPathOf(ofNode);
-        List<DerivationPointer> derivationPath = path.getDerivations();
+        List<SingleDerivationPointer> derivationPath = path.getDerivations();
         List<String> header = List.of("FROM", "TO", "RULE", "HEAD");
 
         ArrayList<String> froms = new ArrayList<>(List.of(""));
@@ -74,7 +74,7 @@ public class DerivationTreeInfo extends InfoWatcher<DerivationTree> {
         out.println();
     }
 
-    private void printTree(Node<Phrase, DerivationPointer> root, int depth) {
+    private void printTree(Node<Phrase, SingleDerivationPointer> root, int depth) {
         String rootRule = "ROOT";
         if (root.getParent() != null)
             rootRule = root.getParent().getPointer().stream()
@@ -83,8 +83,8 @@ public class DerivationTreeInfo extends InfoWatcher<DerivationTree> {
 
         printTreeInfo(root.getData().toString(" ") +" (used "+ rootRule + ")", depth, true);
 
-        List<Node<Phrase, DerivationPointer>> children = root.getChildren();
-        ArrayList<DerivationPointer> pointers = root.getPointer().stream()
+        List<Node<Phrase, SingleDerivationPointer>> children = root.getChildren();
+        ArrayList<SingleDerivationPointer> pointers = root.getPointer().stream()
                 .filter(dp -> !dp.isInitialized())
                 .sorted(Comparator.comparing(l -> l.getDerivation().getOccurence()))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -96,7 +96,7 @@ public class DerivationTreeInfo extends InfoWatcher<DerivationTree> {
             String rule = p.getRule().toString() + " "+ p.getOccurence().toString();
             printTreeInfo(  " ... " + rule, depth + 1, false);
         }
-        for (Node<Phrase, DerivationPointer> child : children) {
+        for (Node<Phrase, SingleDerivationPointer> child : children) {
             printTree(child, depth + 1);
         }
     }

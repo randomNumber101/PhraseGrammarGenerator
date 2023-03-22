@@ -1,7 +1,7 @@
 package phrasegrammarcreator.compute.pick.words;
 
 import phrasegrammarcreator.core.phrases.variables.Variable;
-import phrasegrammarcreator.core.phrases.variables.words.WordTerminal;
+import phrasegrammarcreator.core.phrases.words.WordTerminal;
 
 public class MixedWordGenerator extends WordGenerator<Variable> {
 

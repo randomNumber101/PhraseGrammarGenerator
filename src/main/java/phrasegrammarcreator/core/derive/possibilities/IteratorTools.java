@@ -1,5 +1,7 @@
 package phrasegrammarcreator.core.derive.possibilities;
 
+import phrasegrammarcreator.core.phrases.Phrase;
+
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -93,5 +95,33 @@ public class IteratorTools {
                 return combination;
             }
         };
+    }
+
+    public static List<List<Phrase>> cartesianProduct(List<List<Phrase>> lists) {
+        if (lists == null || lists.isEmpty()) {
+            return Collections.emptyList();
+        } else if (lists.size() == 1) {
+            List<List<Phrase>> result = new ArrayList<>();
+            for (Phrase element : lists.get(0)) {
+                List<Phrase> tuple = new ArrayList<>();
+                tuple.add(element);
+                result.add(tuple);
+            }
+            return result;
+        } else {
+            List<List<Phrase>> result = new ArrayList<>();
+            List<Phrase> firstList = lists.get(0);
+            List<List<Phrase>> remainingLists = lists.subList(1, lists.size());
+            List<List<Phrase>> remainingTuples = cartesianProduct(remainingLists);
+            for (Phrase element : firstList) {
+                for (List<Phrase> tuple : remainingTuples) {
+                    List<Phrase> newTuple = new ArrayList<>();
+                    newTuple.add(element);
+                    newTuple.addAll(tuple);
+                    result.add(newTuple);
+                }
+            }
+            return result;
+        }
     }
 }

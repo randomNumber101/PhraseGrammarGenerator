@@ -4,6 +4,8 @@ import org.jetbrains.annotations.Nullable;
 import phrasegrammarcreator.core.phrases.Phrasable;
 import phrasegrammarcreator.core.phrases.Phrase;
 
+import java.util.List;
+
 public abstract class Variable implements Phrasable {
 
     public String getRegex() {
@@ -33,12 +35,17 @@ public abstract class Variable implements Phrasable {
         this.regex = regex;
     }
 
+    @Override
+    public Phrase toPhrase() {
+        return new Phrase(List.of(this));
+    }
+
     public String toString() {
         return name;
     }
 
     public abstract Type getType();
-    public abstract VariableInstance createInstance(Phrase phrase);
+    public abstract VariableInstance<?> createInstance();
 
 
     public static Variable ofRegex(Type type, Vocabulary dict, String regex, @Nullable String name) {

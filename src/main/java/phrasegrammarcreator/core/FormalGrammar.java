@@ -7,11 +7,11 @@ import phrasegrammarcreator.compute.calculate.MixedCalculator;
 import phrasegrammarcreator.compute.pick.derivation.DerivationChooser;
 import phrasegrammarcreator.compute.pick.derivation.RandomSingleDerivationChooser;
 import phrasegrammarcreator.core.derive.impl.DerivationNode;
-import phrasegrammarcreator.core.derive.impl.DerivationPointer;
+import phrasegrammarcreator.core.derive.impl.SingleDerivationPointer;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
-import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
+import phrasegrammarcreator.core.phrases.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class FormalGrammar{
             derivationTree.calculate(calculator, node);
         };
         return node.getPointer().stream()
-                .map(DerivationPointer::getDerivation)
+                .map(SingleDerivationPointer::getDerivation)
                 .collect(DerivationSet.toSet());
     }
 

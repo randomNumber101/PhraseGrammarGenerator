@@ -7,7 +7,7 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
-import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
+import phrasegrammarcreator.core.phrases.words.WordDictionary;
 import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;

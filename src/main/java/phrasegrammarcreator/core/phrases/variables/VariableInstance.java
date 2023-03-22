@@ -1,22 +1,17 @@
 package phrasegrammarcreator.core.phrases.variables;
 
 
-import phrasegrammarcreator.core.phrases.Phrase;
-
 public class VariableInstance<T extends Variable> {
 
     private final T builder;
-    private Phrase phrase;
     private VariableInstance<?> derivedFrom;
 
-    public VariableInstance(T builder, Phrase phrase) {
+    public VariableInstance(T builder) {
         this.builder = builder;
-        this.phrase = phrase;
     }
 
-    public VariableInstance(T builder, Phrase phrase, VariableInstance<?> derivedFrom) {
+    public VariableInstance(T builder, VariableInstance<?> derivedFrom) {
         this.builder = builder;
-        this.phrase = phrase;
         this.derivedFrom = derivedFrom;
     }
 
@@ -24,12 +19,8 @@ public class VariableInstance<T extends Variable> {
         return derivedFrom;
     }
 
-    public Phrase getPhrase() {
-        return phrase;
-    }
-
-    public void setPhrase(Phrase phrase) {
-        this.phrase = phrase;
+    public void setDerivedFrom(VariableInstance<?> parent) {
+        derivedFrom = parent;
     }
 
     public T getBuilder() {

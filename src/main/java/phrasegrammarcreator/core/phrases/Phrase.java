@@ -18,15 +18,41 @@ public class Phrase extends ArrayList<VariableInstance<? extends Variable>> impl
 
     public Phrase(List<Variable> variables) {
         for (Variable var : variables) {
-            VariableInstance<?> instance = var.createInstance(this);
+            VariableInstance<?> instance = var.createInstance();
             this.add(instance);
         }
+    }
+
+    public Phrase(List<VariableInstance<?>> is, boolean copy) {
+        List<? extends VariableInstance<?>> instances = is;
+        if (copy) {
+                instances = is.stream()
+                    .map(VariableInstance::getBuilder)
+                    .map(Variable::createInstance)
+                    .toList();
+        }
+        this.addAll(instances);
+    }
+
+    public Phrase cleanCopy() {
+        return new Phrase(getInstanceBuilders(this));
     }
 
     public SubPhrase getSubphrase(Occurrence interval) {
         if (interval.to > this.size())
             return null;
         return new SubPhrase(this, interval);
+    }
+
+    public void setDerivedFromAll(VariableInstance<?> parent) {
+        this.forEach(vi -> vi.setDerivedFrom(parent));
+    }
+
+    public void setDerivedFromInBound(VariableInstance<?> parent, Occurrence o) {
+        if (o.from < 0 || o.to > size())
+            throw new IndexOutOfBoundsException("Occurence is not within Phrase bounds.");
+        for (int i = o.from; i < o.to; i++)
+            this.get(i).setDerivedFrom(parent);
     }
 
     public Phrase deriveBy(Derivation derivation) {
@@ -38,23 +64,23 @@ public class Phrase extends ArrayList<VariableInstance<? extends Variable>> impl
                            occurrence.from, occurrence.to, this.size()));
 
        // Split variable list in parts before and after occurrences and merge them using the derived sub phrase.
-       List<Variable> currentVariables = getInstanceBuilders(this);
-       List<Variable> derivedSubPart = getInstanceBuilders(rule.getTarget().toPhrase());
+       List<VariableInstance<?>> beforeOccurrence = this.subList(0, occurrence.from);
+       List<VariableInstance<?>> afterOccurrence = this.subList(occurrence.to, size());
 
-       List<Variable> beforeOccurrence = currentVariables.subList(0, occurrence.from);
-       List<Variable> afterOccurrence = currentVariables.subList(occurrence.to, size());
+       Phrase replacement = rule.getTarget();
+       // TODO: This works only if ContextFreeGrammar
+       replacement.setDerivedFromAll(this.get(occurrence.from));
 
-       ArrayList<Variable> rejoined = new ArrayList<>();
+       ArrayList<VariableInstance<?>> rejoined = new ArrayList<>();
        rejoined.addAll(beforeOccurrence);
-       rejoined.addAll(derivedSubPart);
+       rejoined.addAll(replacement);
        rejoined.addAll(afterOccurrence);
 
-
-       return new Phrase(rejoined);
+       return new Phrase(rejoined, false);
     }
 
 
-    public List<Variable> getInstanceBuilders(Collection<VariableInstance<?>> variableInstances) {
+    public static List<Variable> getInstanceBuilders(Collection<VariableInstance<?>> variableInstances) {
         return variableInstances.stream().map(vi -> (Variable) vi.getBuilder()).toList();
     }
 

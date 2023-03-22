@@ -1,4 +1,4 @@
-package phrasegrammarcreator.core.phrases.variables.words;
+package phrasegrammarcreator.core.phrases.words;
 
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 

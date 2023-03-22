@@ -12,8 +12,8 @@ public class DerivationPath extends ArrayList<DerivationNode> {
         super(nodes);
     }
 
-    public List<DerivationPointer> getDerivations() {
-        ArrayList<DerivationPointer> pointers = new ArrayList<>();
+    public List<SingleDerivationPointer> getDerivations() {
+        ArrayList<SingleDerivationPointer> pointers = new ArrayList<>();
         for (int i = 0; i < size() - 1; i ++) {
             DerivationNode current = get(i);
             DerivationNode next = get(i + 1);

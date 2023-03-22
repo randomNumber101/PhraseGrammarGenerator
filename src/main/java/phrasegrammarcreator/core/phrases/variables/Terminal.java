@@ -1,10 +1,6 @@
 package phrasegrammarcreator.core.phrases.variables;
 
 
-import phrasegrammarcreator.core.phrases.Phrase;
-
-import java.util.List;
-
 public class Terminal extends Variable {
 
     public Terminal(String regex) {
@@ -16,17 +12,12 @@ public class Terminal extends Variable {
     }
 
     @Override
-    public Phrase toPhrase() {
-        return new Phrase(List.of(this));
-    }
-
-    @Override
     public Type getType() {
         return Type.TERMINAL;
     }
 
     @Override
-    public VariableInstance<Terminal> createInstance(Phrase phrase) {
-        return new VariableInstance<Terminal>(this, phrase);
+    public VariableInstance<Terminal> createInstance() {
+        return new VariableInstance<Terminal>(this);
     }
 }

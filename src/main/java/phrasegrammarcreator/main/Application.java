@@ -2,8 +2,11 @@ package phrasegrammarcreator.main;
 
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.derive.possibilities.PossibilitiesGenerator;
+import phrasegrammarcreator.core.phrases.Phrase;
+import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.io.console.info.DerivationTreeInfo;
+import phrasegrammarcreator.io.console.info.GrammarInfo;
 import phrasegrammarcreator.io.parser.ConfigLoader;
-import phrasegrammarcreator.io.print.info.GrammarInfo;
 
 import java.io.File;
 import java.net.URI;
@@ -24,14 +27,24 @@ public class Application {
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
 
-            /**
+
             for (int i = 0; i < 32; i++, grammar.next()){}
 
 
             DerivationTreeInfo treeInfo = new DerivationTreeInfo(System.out, grammar.getDerivationTree());
             treeInfo.printInfo();
-            grammarInfo.printPossibleDerivations();
-            **/
+            //grammarInfo.printPossibleDerivations();
+
+            Phrase headPhrase = grammar.getDerivationTree().getHead().getData();
+            System.out.println(headPhrase.toString(" "));
+            VariableInstance current = headPhrase.get(0);
+            do {
+                System.out.print(current + " <- ");
+                current = current.getDerivedFrom();
+            }
+            while (current != null);
+            System.out.println("root");
+
 
             PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
         }

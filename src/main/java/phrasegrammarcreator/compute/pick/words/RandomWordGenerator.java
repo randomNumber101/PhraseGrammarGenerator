@@ -1,6 +1,6 @@
 package phrasegrammarcreator.compute.pick.words;
 
-import phrasegrammarcreator.core.phrases.variables.words.WordTerminal;
+import phrasegrammarcreator.core.phrases.words.WordTerminal;
 
 public class RandomWordGenerator extends WordGenerator<WordTerminal>{
     @Override

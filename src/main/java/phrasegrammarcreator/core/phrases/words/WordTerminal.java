@@ -1,6 +1,5 @@
-package phrasegrammarcreator.core.phrases.variables.words;
+package phrasegrammarcreator.core.phrases.words;
 
-import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 import phrasegrammarcreator.main.Randomizer;
@@ -28,9 +27,13 @@ public class WordTerminal extends Terminal {
         return options.get(random.nextInt(options.size()));
     }
 
+    public List<String> getAllWords() {
+        return wordDictionary.get(parent);
+    }
+
     @Override
-    public VariableInstance<Terminal> createInstance(Phrase phrase) {
-        return new WordInstance(this, phrase, getRandomWord());
+    public VariableInstance<Terminal> createInstance() {
+        return new WordInstance(this, getRandomWord());
     }
 
     public Terminal getParent() {

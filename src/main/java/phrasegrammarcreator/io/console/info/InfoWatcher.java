@@ -1,4 +1,4 @@
-package phrasegrammarcreator.io.print.info;
+package phrasegrammarcreator.io.console.info;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,38 +1,27 @@
 package phrasegrammarcreator.core.phrases;
 
-import phrasegrammarcreator.compute.pick.words.WordGenerator;
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.derive.impl.DerivationNode;
 import phrasegrammarcreator.core.phrases.variables.Terminal;
-import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.core.phrases.variables.words.WordDictionary;
-import phrasegrammarcreator.core.phrases.variables.words.WordTerminal;
+import phrasegrammarcreator.core.phrases.words.WordDictionary;
+import phrasegrammarcreator.core.phrases.words.WordTerminal;
 
 import java.util.ArrayList;
 
-public class EndPhrase extends ArrayList<Variable> {
+public class EndPhrase extends ArrayList<WordTerminal> {
 
-    public enum BuildingPolicy {
-        WORDS_ONLY,
-        VARIABLE_NAMES;
+    FormalGrammar grammar;
+    DerivationNode node;
+
+    private EndPhrase(FormalGrammar grammar, DerivationNode node) {
+        this.grammar = grammar;
+        this.node = node;
     }
 
-    private EndPhrase() {}
-
-    // TODO: Generators cannot operate context sensitive yet
-    public String generateSentence(WordGenerator<Variable> generator) {
-        return this.stream()
-                .map(generator::nextString)
-                .map(s -> s + " ")
-                .reduce("", String::concat)
-                .strip();
-    }
-
-
-    public static EndPhrase ofPhrase(BuildingPolicy policy, FormalGrammar grammar, DerivationNode node) {
-        EndPhrase endPhrase = new EndPhrase();
-        if (validate(policy, grammar, node)) {
+    public static EndPhrase ofPhrase(FormalGrammar grammar, DerivationNode node) {
+        EndPhrase endPhrase = new EndPhrase(grammar, node);
+        if (validate(grammar, node)) {
             WordDictionary dictionary = grammar.getDictionary();
             for (VariableInstance<?> instance : node.getData()) {
                 if (instance.getBuilder() instanceof Terminal terminal) {
@@ -40,12 +29,7 @@ public class EndPhrase extends ArrayList<Variable> {
                     endPhrase.add(wordTerminal);
                 }
                 else {
-                    switch (policy) {
-                        case WORDS_ONLY -> throw new IllegalArgumentException("Only terminals allowed in EndPhrases.");
-                        case VARIABLE_NAMES -> {
-                            endPhrase.add(instance.getBuilder());
-                        }
-                    }
+                    throw new IllegalArgumentException("Only terminals allowed in EndPhrases.");
                 }
             }
 
@@ -53,18 +37,11 @@ public class EndPhrase extends ArrayList<Variable> {
         return endPhrase;
     }
 
-    public static boolean validate(BuildingPolicy policy, FormalGrammar grammar, DerivationNode node) {
+    public static boolean validate(FormalGrammar grammar, DerivationNode node) {
         if (!grammar.getPossibleDerivations(node).isEmpty())
             return false;
         for (VariableInstance<?> i : node.getData()) {
-            switch (policy) {
-                case WORDS_ONLY -> {
-                    if (!(i.getBuilder() instanceof Terminal)) return false;
-                }
-                case VARIABLE_NAMES -> {
-                    continue;
-                }
-            }
+            if (!(i.getBuilder() instanceof Terminal)) return false;
         }
         return true;
     }

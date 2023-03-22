@@ -1,4 +1,4 @@
-package phrasegrammarcreator.io.print;
+package phrasegrammarcreator.io.console;
 
 import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.core.phrases.Phrase;

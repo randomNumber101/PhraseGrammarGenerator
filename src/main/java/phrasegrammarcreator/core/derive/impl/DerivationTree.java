@@ -9,7 +9,7 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import java.util.List;
 import java.util.Stack;
 
-public class DerivationTree extends Tree<Phrase, DerivationPointer> {
+public class DerivationTree extends Tree<Phrase, SingleDerivationPointer> {
 
     private DerivationNode root;
     private DerivationNode head;
@@ -47,7 +47,7 @@ public class DerivationTree extends Tree<Phrase, DerivationPointer> {
             return;
         head = node;
     }
-    public List<DerivationPointer> getHeadPointer() {
+    public List<SingleDerivationPointer> getHeadPointer() {
         return head.getPointer();
     }
 

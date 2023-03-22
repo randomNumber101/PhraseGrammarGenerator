@@ -1,4 +1,4 @@
-package phrasegrammarcreator.io.print;
+package phrasegrammarcreator.io.console;
 
 import java.util.Collection;
 import java.util.List;

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DerivationNode extends Node<Phrase, DerivationPointer> {
+public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
     private boolean calculated = false;
     private DerivationNode parent;
-    protected List<DerivationPointer> children;
+    protected List<SingleDerivationPointer> children;
 
     public DerivationNode(Phrase data, DerivationNode parent) {
         super(data, parent);
@@ -30,11 +30,11 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
         }
         else {
             derivations =
-                    getPointer().stream().map(DerivationPointer::getDerivation).collect(DerivationSet.toSet());
+                    getPointer().stream().map(SingleDerivationPointer::getDerivation).collect(DerivationSet.toSet());
         }
 
         Derivation chosen = chooser.pick(derivations);
-        DerivationPointer chosenPointer =
+        SingleDerivationPointer chosenPointer =
                 getPointer().stream()
                         .filter(dp -> dp.getDerivation().equals(chosen))
                         .findFirst().orElseThrow();
@@ -56,7 +56,7 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
                     .getParent()
                     .getPointer()
                     .stream()
-                    .map(DerivationPointer::getDerivation)
+                    .map(SingleDerivationPointer::getDerivation)
                     .collect(DerivationSet.toSet());
 
             Derivation picked =
@@ -88,11 +88,11 @@ public class DerivationNode extends Node<Phrase, DerivationPointer> {
     }
 
     public void addAll(Collection<Derivation> set) {
-            set.forEach(derivation -> addPointer(new DerivationPointer(data, derivation)));
+            set.forEach(derivation -> addPointer(new SingleDerivationPointer(data, derivation)));
     }
 
     @Override
-    public List<DerivationPointer> getPointer() {
+    public List<SingleDerivationPointer> getPointer() {
         return children;
     }
 

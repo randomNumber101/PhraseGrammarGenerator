@@ -13,8 +13,6 @@ import java.util.Date;
 
 public class FileGenerator {
 
-
-
     public static void save(DataSet dataSet) {
         JsonFactory factory = new JsonFactory();
         File outputFile = new File(Settings.getInstance().outputDir + File.separator + generateName(dataSet));
