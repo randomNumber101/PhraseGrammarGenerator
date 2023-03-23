@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Datum {
-
-    private String input;
-    private String label;
+    public final String input;
+    public final String label;
 
     public Datum(String input, String label) {
         this.input = input;

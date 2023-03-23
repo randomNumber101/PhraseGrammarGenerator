@@ -51,9 +51,9 @@ public class FormalGrammar{
     }
 
     public DerivationSet getPossibleDerivations(DerivationNode node) {
-        if (!getDerivationTree().contains(node))
-            // TODO: Force derivation of node
-            throw new IllegalArgumentException("Node not part of grammar or not yet derived: " + node);
+        //if (!getDerivationTree().contains(node))
+        //    // TODO: Force derivation of node
+        //    throw new IllegalArgumentException("Node not part of grammar or not yet derived: " + node);
         if (!node.isCalculated()) {
             derivationTree.calculate(calculator, node);
         };

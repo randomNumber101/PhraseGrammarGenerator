@@ -46,4 +46,7 @@ public class EndPhrase extends ArrayList<WordTerminal> {
         return true;
     }
 
+    public DerivationNode getNode() {
+        return node;
+    }
 }

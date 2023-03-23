@@ -44,6 +44,9 @@ public class Application {
             **/
 
             PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
+
+            //EndPhrase.ofPhrase(grammar, );
+
         }
         catch (Exception e) {
             e.printStackTrace();

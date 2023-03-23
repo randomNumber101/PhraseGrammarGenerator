@@ -10,11 +10,6 @@ public class VariableInstance<T extends Variable> {
         this.builder = builder;
     }
 
-    public VariableInstance(T builder, VariableInstance<?> derivedFrom) {
-        this.builder = builder;
-        this.derivedFrom = derivedFrom;
-    }
-
     public VariableInstance<?> getDerivedFrom() {
         return derivedFrom;
     }
