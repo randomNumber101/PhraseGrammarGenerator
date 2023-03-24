@@ -46,5 +46,9 @@ public class ChoicePossibilities extends Possibilities {
         return container;
     }
 
+    public List<Phrase> getDerivationPhrases() {
+        return to;
+    }
+
 
 }

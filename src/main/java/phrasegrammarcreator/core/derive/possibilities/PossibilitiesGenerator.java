@@ -18,6 +18,7 @@ public class PossibilitiesGenerator {
     int DEPTH_CAP = 20;
 
     public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {
+
         rc = new CfRuleContainer(grammar);
         root = new ProductPossibilities(rc, start);
 
@@ -32,6 +33,18 @@ public class PossibilitiesGenerator {
 
         System.out.println("Ps: " + root.getCount());
 
+
+        for (Phrase p : root) {
+            DerivationNode dummy = new DerivationNode(p, null);
+            if (EndPhrase.validate(grammar, dummy)) {
+                EndPhrase ep = EndPhrase.ofPhrase(grammar, dummy);
+                Datum datum = new AllCombinationsBracketedGenerator().generate(ep).get(0);
+                System.out.printf("{\n\t input : %s \n\t label: %s \n}", datum.input, datum.label);
+            }
+        }
+    }
+
+    private void printData(FormalGrammar grammar) {
         for (Phrase p : root) {
             DerivationNode dummy = new DerivationNode(p, null);
             if (EndPhrase.validate(grammar, dummy)) {

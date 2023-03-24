@@ -20,7 +20,9 @@ public class DerivationTree extends Tree<Phrase, SingleDerivationPointer> {
     }
 
     public DerivationNode deriveHead(DerivationsCalculator calculator, DerivationChooser chooser) {
-        head = derive(calculator, chooser, getHead());
+        DerivationNode next = derive(calculator, chooser, getHead());
+        if (next != null)
+            head = next;
         return head;
     }
 

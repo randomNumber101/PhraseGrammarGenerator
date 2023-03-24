@@ -13,6 +13,8 @@ import java.util.List;
 
 public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
     private boolean calculated = false;
+
+    private boolean fullyDerived = false;
     private DerivationNode parent;
     protected List<SingleDerivationPointer> children;
 
@@ -24,14 +26,18 @@ public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
     }
 
     public DerivationNode derive(DerivationsCalculator calculator, DerivationChooser chooser) {
+
         DerivationSet derivations;
-        if (! isCalculated()) {
+        if (!isCalculated()) {
             derivations = calculate(calculator);
         }
         else {
             derivations =
                     getPointer().stream().map(SingleDerivationPointer::getDerivation).collect(DerivationSet.toSet());
         }
+        
+        if (derivations.isEmpty())
+            return null;
 
         Derivation chosen = chooser.pick(derivations);
         SingleDerivationPointer chosenPointer =

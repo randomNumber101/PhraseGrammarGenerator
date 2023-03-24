@@ -5,10 +5,10 @@ import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
 import phrasegrammarcreator.compute.calculate.MixedCalculator;
 import phrasegrammarcreator.compute.pick.derivation.DerivationChooser;
-import phrasegrammarcreator.compute.pick.derivation.RandomSingleDerivationChooser;
+import phrasegrammarcreator.compute.pick.derivation.SmartChooser;
 import phrasegrammarcreator.core.derive.impl.DerivationNode;
-import phrasegrammarcreator.core.derive.impl.SingleDerivationPointer;
 import phrasegrammarcreator.core.derive.impl.DerivationTree;
+import phrasegrammarcreator.core.derive.impl.SingleDerivationPointer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
 import phrasegrammarcreator.core.phrases.words.WordDictionary;
@@ -39,7 +39,7 @@ public class FormalGrammar{
 
         derivationTree = new DerivationTree(startPhrase);
         calculator = new MixedCalculator(rules);
-        chooser = new RandomSingleDerivationChooser(rules);
+        chooser = new SmartChooser(this, rules);
     }
 
     public void next(){
