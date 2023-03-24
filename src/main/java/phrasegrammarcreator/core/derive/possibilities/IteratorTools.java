@@ -3,17 +3,42 @@ package phrasegrammarcreator.core.derive.possibilities;
 import phrasegrammarcreator.core.phrases.Phrase;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class IteratorTools {
 
 
+    public static <I,O> Iterator<O> apply(Iterator<I> it, Function<I,O> function) {
+        return new Iterator<O>() {
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public O next() {
+                return function.apply(it.next());
+            }
+        };
+    }
+
     public static  <T> Iterator<T> concat(List<Iterator<T>> iterators) {
         Stream<T> concatenated = iterators.stream().flatMap(iterator ->
             StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false));
         return concatenated.iterator();
     }
+
+    public static  <T> Iterator<T> concat(Iterator<Iterator<T>> iterators) {
+        Stream<T> stream = StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(iterators, Spliterator.ORDERED), true)
+                .flatMap(it -> StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(it, Spliterator.ORDERED), false)
+                );
+        return stream.iterator();
+    }
+
 
     public static <T> Iterator<List<T>> combine(List<Iterator<T>> iterators) {
         int count = iterators.size();

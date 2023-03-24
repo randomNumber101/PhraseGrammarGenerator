@@ -26,7 +26,6 @@ public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
     }
 
     public DerivationNode derive(DerivationsCalculator calculator, DerivationChooser chooser) {
-
         DerivationSet derivations;
         if (!isCalculated()) {
             derivations = calculate(calculator);
@@ -79,6 +78,15 @@ public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
         this.addAll(out);
         calculated = true;
         return out;
+    }
+
+    public DerivationSet getPossibleDerivations(DerivationsCalculator calculator) {
+        if (!isCalculated())
+            calculate(calculator);
+
+        return getPointer().stream()
+                .map(SingleDerivationPointer::getDerivation)
+                .collect(DerivationSet.toSet());
     }
 
     public boolean isCalculated() {

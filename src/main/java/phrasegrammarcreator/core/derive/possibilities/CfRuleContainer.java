@@ -13,11 +13,12 @@ import java.util.List;
 
 public class CfRuleContainer {
 
+    private final List<ContextFreeRule> rules;
     HashMap<Variable, List<ContextFreeRule>> variableApplicableRules;
 
-    public CfRuleContainer(FormalGrammar grammar) {
-        List<Rule> rules = grammar.getRules();
-        computeVariableRules(forceContextFree(rules));
+    public CfRuleContainer(List<Rule> rules) {
+        this.rules = forceContextFree(rules);
+        computeVariableRules(this.rules);
     }
 
     private void computeVariableRules(List<ContextFreeRule> cfRules) {
@@ -43,6 +44,10 @@ public class CfRuleContainer {
                     .map(ContextFreeRule::getTarget)
                     .map(Phrase::cleanCopy)
                     .toList();
+    }
+
+    public List<ContextFreeRule> getRules() {
+        return rules;
     }
 
     public List<ContextFreeRule> forceContextFree(List<Rule> rules) {

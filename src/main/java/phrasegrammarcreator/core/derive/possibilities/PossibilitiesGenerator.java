@@ -8,8 +8,12 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 import phrasegrammarcreator.core.phrases.words.generate.AllCombinationsBracketedGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
+import phrasegrammarcreator.main.GenerationInstance;
 
-public class PossibilitiesGenerator {
+import java.util.Iterator;
+import java.util.function.Function;
+
+public class PossibilitiesGenerator implements Function<GenerationInstance, Iterator<Phrase>> {
 
     CfRuleContainer rc;
     ProductPossibilities root;
@@ -19,7 +23,7 @@ public class PossibilitiesGenerator {
 
     public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {
 
-        rc = new CfRuleContainer(grammar);
+        rc = grammar.getRuleContainer();
         root = new ProductPossibilities(rc, start);
 
         long currentPossibilities = 0;
@@ -34,6 +38,7 @@ public class PossibilitiesGenerator {
         System.out.println("Ps: " + root.getCount());
 
 
+        /*
         for (Phrase p : root) {
             DerivationNode dummy = new DerivationNode(p, null);
             if (EndPhrase.validate(grammar, dummy)) {
@@ -42,6 +47,8 @@ public class PossibilitiesGenerator {
                 System.out.printf("{\n\t input : %s \n\t label: %s \n}", datum.input, datum.label);
             }
         }
+
+        */
     }
 
     private void printData(FormalGrammar grammar) {
@@ -73,4 +80,8 @@ public class PossibilitiesGenerator {
     }
 
 
+    @Override
+    public Iterator<Phrase> apply(GenerationInstance generationInstance) {
+        return null;
+    }
 }

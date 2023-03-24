@@ -7,12 +7,21 @@
             "additionalProperties": false,
             "properties": {
                 "Settings": {
-                    "$ref": "#/definitions/Settings"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Setting"
+                    }
                 },
                 "Grammars": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Grammar"
+                    }
+                },
+                "Outputs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Output"
                     }
                 }
             },
@@ -70,10 +79,26 @@
             "additionalProperties": true,
             "title": "Dictionary"
         },
-        "Settings": {
+        "Setting": {
             "type": "object",
             "additionalProperties": true,
             "title": "Settings"
+        },
+        "Output": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "Output",
+            "properties": {
+                "Grammar": {
+                    "type": "integer"
+                },
+                "Setting": {
+                    "type": "integer"
+                },
+                "Path": {
+                    "type": "string"
+                }
+            }
         }
     }
 }

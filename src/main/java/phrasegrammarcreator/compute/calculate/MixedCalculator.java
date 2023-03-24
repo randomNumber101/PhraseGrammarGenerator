@@ -2,6 +2,7 @@ package phrasegrammarcreator.compute.calculate;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
+import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.ContextSensitiveRule;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class MixedCalculator extends DerivationsCalculator{
 
-    protected List<ContextFreeRule> cfRules;
+    protected List<Rule> cfRules;
     protected List<ContextSensitiveRule> csRules;
 
     protected ContextFreeCalculator cfCalculator;
@@ -25,11 +26,11 @@ public class MixedCalculator extends DerivationsCalculator{
 
         for (Rule r: rules) {
             if (r instanceof ContextFreeRule)
-                cfRules.add((ContextFreeRule) r);
+                cfRules.add(r);
             else if (r instanceof ContextSensitiveRule)
                 csRules.add((ContextSensitiveRule) r);
         }
-        cfCalculator = new ContextFreeCalculator(cfRules);
+        cfCalculator = new ContextFreeCalculator(new CfRuleContainer(cfRules));
         csCalculator = new ContextSensitiveCalculator(csRules);
     }
 

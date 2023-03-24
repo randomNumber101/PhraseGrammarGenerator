@@ -26,6 +26,8 @@ public class Application {
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
             grammarInfo.printInfo();
 
+            /*
+
 
             for (int i = 0; i < 32; i++, grammar.next()){}
 
@@ -43,6 +45,8 @@ public class Application {
             }
             while (current != null);
             System.out.println("root");
+
+            */
 
 
             //PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());

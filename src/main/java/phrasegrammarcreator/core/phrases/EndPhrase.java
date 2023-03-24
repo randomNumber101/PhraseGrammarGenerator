@@ -38,8 +38,6 @@ public class EndPhrase extends ArrayList<WordTerminal> {
     }
 
     public static boolean validate(FormalGrammar grammar, DerivationNode node) {
-        if (!grammar.getPossibleDerivations(node).isEmpty())
-            return false;
         for (VariableInstance<?> i : node.getData()) {
             if (!(i.getBuilder() instanceof Terminal)) return false;
         }

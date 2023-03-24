@@ -38,9 +38,9 @@ public class SmartChooser extends DerivationChooser{
 
     private STRATEGY strategy = STRATEGY.NARROW_DOWN_SOFTMAX;
 
-    public SmartChooser(FormalGrammar grammar, List<Rule> rules) {
-        super(rules);
-        CfRuleContainer container = new CfRuleContainer(grammar);
+    public SmartChooser(FormalGrammar grammar) {
+        super((List<Rule>)(List<?>) grammar.getRuleContainer().getRules());
+        CfRuleContainer container = grammar.getRuleContainer();
         variablePossibilities = new HashMap<>();
         variableWeights = new HashMap<>();
         ruleWeights = new HashMap<>();

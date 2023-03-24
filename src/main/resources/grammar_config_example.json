@@ -1,7 +1,9 @@
 {
-    "Settings" : {
-        "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out"
-    },
+    "Settings" : [
+        {
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out"
+        }
+    ],
     "Grammars": [
         {
             "name" : "Grammar1",
@@ -20,13 +22,20 @@
             "name" : "Grammar2",
             "non-terminals": ["S","A", "B", "F", "D"],
             "terminals" : ["n", "jn", "d"],
-            "rules" : ["A -> d", "F -> A D", "B A -> D n | F"],
+            "rules" : ["A -> d", "F -> A D", "B -> D n | F"],
             "dictionary" : {
                 "n" : ["NEIN"],
                 "d" : ["DEIN"],
                 "jn" : ["JA", "NEIN"]
             },
             "start-phrase": "S"
+        }
+    ],
+    "Outputs": [
+        {
+            "Grammar" : 0,
+            "Setting" : 1,
+            "Path" : "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out"
         }
     ]
 }

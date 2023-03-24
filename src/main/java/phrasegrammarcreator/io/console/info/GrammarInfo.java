@@ -27,8 +27,7 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
             this::printVocabulary,
             this::printRules,
             this::printDictionary,
-            this::printStartPhrase,
-            this::printPossibleDerivations
+            this::printStartPhrase
         );
     }
 
@@ -72,20 +71,5 @@ public class GrammarInfo extends InfoWatcher<FormalGrammar>{
         out.println("Start phrase: ");
         out.println("\t" + watched.getStartPhrase());
         out.println();
-    }
-
-    public void printPossibleDerivations() {
-        String header = "Possible Derivations:";
-        out.println(Util.formatCollection(
-                header,
-                watched.getNextPossibleDerivations(),
-                d -> d.getRule().toString(),
-                true));
-        out.println();
-    }
-
-    public void printDerivations() {
-        DerivationTree tree = watched.getDerivationTree();
-
     }
 }
