@@ -35,7 +35,20 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
 
     JoinPipe<Datum, DataSet> dataMergePipe;
 
-    public ExecutionPipeline(FormalGrammar grammar) {
+
+
+    @Override
+    public DataSet apply(GenerationInstance generationInstance) {
+        innitialize(generationInstance.grammar());
+
+        return possibilityPipe
+                .andThen(derivationPipe)
+                .andThen(dataPipe)
+                .andThen(dataMergePipe)
+                .apply(generationInstance);
+    }
+
+    public void innitialize(FormalGrammar grammar) {
         this.grammar = grammar;
 
         PossibilitiesGenerator pg = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
@@ -54,18 +67,9 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
                     new MetaInformation(grammar.getName(),
                             "Masks random word of sentence.",
                             "SingleMaskingTask",
-                            Randomizer.getInstance().getSeed());
+                            Randomizer.getInstance().getSeed()
+                            );
             return new DataSet(metaInformation, datumIterator);
         });
-    }
-
-
-    @Override
-    public DataSet apply(GenerationInstance generationInstance) {
-        return possibilityPipe
-                .andThen(derivationPipe)
-                .andThen(dataPipe)
-                .andThen(dataMergePipe)
-                .apply(generationInstance);
     }
 }

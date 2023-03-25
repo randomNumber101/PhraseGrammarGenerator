@@ -6,20 +6,26 @@ import java.util.List;
 
 public class Config {
 
-    private Settings settings;
+    private List<Settings> settings;
 
     private List<FormalGrammar> grammarList;
 
-    public Config(Settings settings, List<FormalGrammar> grammarList) {
+    private List<GenerationInstance> instances;
+
+    public Config(List<Settings> settings, List<FormalGrammar> grammarList, List<GenerationInstance> instances) {
         this.settings = settings;
         this.grammarList = grammarList;
+        this.instances = instances;
     }
-
-    public Settings getSettings() {
+    public List<Settings> getSettings() {
         return settings;
     }
 
     public List<FormalGrammar> getGrammarList() {
         return grammarList;
+    }
+
+    public List<GenerationInstance> getInstances() {
+        return instances;
     }
 }

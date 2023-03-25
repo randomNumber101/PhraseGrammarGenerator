@@ -11,6 +11,7 @@ public class MetaInformation {
     private String task;
     private long randomSeed;
 
+
     public MetaInformation(String dataName, String desciption, String task, long randomSeed) {
         this.dataName = dataName;
         this.desciption = desciption;

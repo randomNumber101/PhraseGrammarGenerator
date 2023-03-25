@@ -3,6 +3,7 @@ package phrasegrammarcreator.io.out;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
 import phrasegrammarcreator.main.Settings;
@@ -14,15 +15,16 @@ import java.util.Iterator;
 
 public class FileGenerator {
 
-    public static void save(DataSet dataSet) {
+    public static void save(String outputDir, DataSet dataSet) {
         JsonFactory factory = new JsonFactory();
-        File outputFile = new File(Settings.getInstance().outputDir + File.separator + generateName(dataSet));
+        File outputFile = new File(outputDir + File.separator + generateName(dataSet));
         outputFile.getParentFile().mkdirs();
         if (outputFile.exists())
-            outputFile = new File(Settings.getInstance().outputDir + File.separator + generateStampedName(dataSet));
+            outputFile = new File(outputDir + File.separator + generateStampedName(dataSet));
 
         try(OutputStream out = new FileOutputStream(outputFile)) {
             JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
+            generator.setCodec(new ObjectMapper());
 
             generator.writeStartObject();
 

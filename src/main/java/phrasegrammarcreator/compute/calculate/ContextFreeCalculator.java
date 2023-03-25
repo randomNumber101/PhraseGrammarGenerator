@@ -24,6 +24,7 @@ public class ContextFreeCalculator extends DerivationsCalculator{
     CfRuleContainer cfRuleContainer;
     public ContextFreeCalculator( CfRuleContainer ruleContainer) {
         super((List<Rule>)(List<?>) ruleContainer.getRules());
+        cfRuleContainer = ruleContainer;
     }
 
 

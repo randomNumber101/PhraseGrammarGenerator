@@ -5,7 +5,9 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 import phrasegrammarcreator.io.console.info.DerivationTreeInfo;
 import phrasegrammarcreator.io.console.info.GrammarInfo;
+import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.parser.ConfigLoader;
+import phrasegrammarcreator.main.pipeline.ExecutionPipeline;
 
 import java.io.File;
 import java.net.URI;
@@ -52,6 +54,9 @@ public class Application {
             //PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
 
             //EndPhrase.ofPhrase(grammar, );
+
+            ExecutionPipeline pipeline = new ExecutionPipeline();
+            FileGenerator.save(c.getInstances().get(0).settings().outputDir(), pipeline.apply(c.getInstances().get(0)));
 
         }
         catch (Exception e) {

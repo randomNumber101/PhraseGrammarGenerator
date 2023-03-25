@@ -18,7 +18,7 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
     CfRuleContainer rc;
     ProductPossibilities root;
 
-    int CAP = 10000;
+    int CAP = 100000;
     int DEPTH_CAP = 20;
 
     public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {

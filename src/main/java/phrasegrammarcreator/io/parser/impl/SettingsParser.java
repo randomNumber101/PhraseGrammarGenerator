@@ -15,7 +15,7 @@ public class SettingsParser extends JSonObjectParser<Settings> {
         String outPath = object.getString("output-dir");
         File f = new File(outPath);
         if (f.exists() && f.isDirectory())
-            return new Settings("path");
+            return new Settings(f.getAbsolutePath());
         else
             throw new ParseException("'output-dir' is no valid directory. ", 0);
     }
