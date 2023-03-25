@@ -26,18 +26,6 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
         rc = grammar.getRuleContainer();
         root = new ProductPossibilities(rc, start);
 
-        long currentPossibilities = 0;
-        int depth = 0;
-        do {
-            root.calculateNext();
-            printInfo();
-            currentPossibilities = root.getCount();
-        }
-        while(currentPossibilities < CAP && depth++ < DEPTH_CAP);
-
-        System.out.println("Ps: " + root.getCount());
-
-
         /*
         for (Phrase p : root) {
             DerivationNode dummy = new DerivationNode(p, null);
@@ -54,7 +42,7 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
     private void printData(FormalGrammar grammar) {
         for (Phrase p : root) {
             DerivationNode dummy = new DerivationNode(p, null);
-            if (EndPhrase.validate(grammar, dummy)) {
+            if (EndPhrase.validate(dummy)) {
                 EndPhrase ep = EndPhrase.ofPhrase(grammar, dummy);
                 Datum datum = new AllCombinationsBracketedGenerator().generate(ep).get(0);
                 System.out.printf("{\n\t input : %s \n\t label: %s \n}", datum.input, datum.label);
@@ -82,6 +70,14 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
 
     @Override
     public Iterator<Phrase> apply(GenerationInstance generationInstance) {
-        return null;
+        long currentPossibilities = 0;
+        int depth = 0;
+        do {
+            root.calculateNext();
+            printInfo();
+            currentPossibilities = root.getCount();
+        }
+        while(currentPossibilities < CAP && depth++ < DEPTH_CAP);
+        return root.iterator();
     }
 }

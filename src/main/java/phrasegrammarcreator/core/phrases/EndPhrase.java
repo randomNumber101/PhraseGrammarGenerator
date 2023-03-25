@@ -21,7 +21,7 @@ public class EndPhrase extends ArrayList<WordTerminal> {
 
     public static EndPhrase ofPhrase(FormalGrammar grammar, DerivationNode node) {
         EndPhrase endPhrase = new EndPhrase(grammar, node);
-        if (validate(grammar, node)) {
+        if (validate(node)) {
             WordDictionary dictionary = grammar.getDictionary();
             for (VariableInstance<?> instance : node.getData()) {
                 if (instance.getBuilder() instanceof Terminal terminal) {
@@ -37,7 +37,7 @@ public class EndPhrase extends ArrayList<WordTerminal> {
         return endPhrase;
     }
 
-    public static boolean validate(FormalGrammar grammar, DerivationNode node) {
+    public static boolean validate(DerivationNode node) {
         for (VariableInstance<?> i : node.getData()) {
             if (!(i.getBuilder() instanceof Terminal)) return false;
         }

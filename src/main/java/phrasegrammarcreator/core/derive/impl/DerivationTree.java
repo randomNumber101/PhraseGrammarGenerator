@@ -23,7 +23,7 @@ public class DerivationTree extends Tree<Phrase, SingleDerivationPointer> {
         DerivationNode next = derive(calculator, chooser, getHead());
         if (next != null)
             head = next;
-        return head;
+        return next;
     }
 
     public void calculateHead(DerivationsCalculator calculator) {

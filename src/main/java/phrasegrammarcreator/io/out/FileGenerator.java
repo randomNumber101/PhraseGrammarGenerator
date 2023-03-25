@@ -10,6 +10,7 @@ import phrasegrammarcreator.main.Settings;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 public class FileGenerator {
 
@@ -24,12 +25,15 @@ public class FileGenerator {
             JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
 
             generator.writeStartObject();
-                generator.writeObjectField("meta", dataSet.getMetaInformation());
-                generator.writeFieldName("data");
-                    generator.writeStartArray();
-                        for (Datum datum : dataSet.getData())
-                            generator.writeObject(datum);
-                    generator.writeEndArray();
+
+            generator.writeObjectField("meta", dataSet.getMetaInformation());
+            generator.writeFieldName("data");
+            generator.writeStartArray();
+            for (Iterator<Datum> it = dataSet.getData(); it.hasNext(); ) {
+                Datum datum = it.next();
+                generator.writeObject(datum);
+            }
+            generator.writeEndArray();
             generator.writeEndObject();
 
         } catch (FileNotFoundException e) {
