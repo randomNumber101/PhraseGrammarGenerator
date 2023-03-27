@@ -11,10 +11,9 @@
             "terminals" : ["a", "b", "c"],
             "rules" : ["A -> A B| B| B C| a", "B -> b", "C -> A | c"],
             "dictionary" : {
-                "a"  :  ["a"],
+                "a"  :  ["YES", "NO"],
                 "b"  :  ["b"],
                 "c" :  ["c"]
-
             },
             "start-phrase": "A C A B A"
         },

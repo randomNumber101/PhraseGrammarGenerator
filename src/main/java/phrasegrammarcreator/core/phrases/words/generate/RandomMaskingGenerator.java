@@ -5,22 +5,36 @@ import phrasegrammarcreator.io.out.jsonObjects.Datum;
 import phrasegrammarcreator.main.Randomizer;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class RandomMaskingGenerator extends OutputGenerator{
+
+    public RandomMaskingGenerator(WordGenerationPolicy policy) {
+        super(policy);
+    }
+
     @Override
-    public List<Datum> generate(EndPhrase endPhrase) {
+    protected void initialize(EndPhrase endPhrase) {
+        return;
+    }
 
-        Randomizer randomizer = Randomizer.getInstance();
-        int maskedWord = randomizer.nextInt(endPhrase.size());
+    @Override
+    protected Function<List<String>, String> getInputGenerator() {
+        return parts -> String.join(" ", parts);
+    }
 
-        String label = "";
-        String input = "";
+    @Override
+    protected Function<List<String>, String> getLabelGenerator() {
+        return parts -> {
+            Randomizer randomizer = Randomizer.getInstance();
+            int maskedWord = randomizer.nextInt(parts.size());
 
-        for (int i = 0; i < endPhrase.size(); i++) {
-            label += endPhrase.get(0).getRandomWord() + " ";
-            input += (i == maskedWord? "[MASK]" : endPhrase.get(0).getRandomWord()) + " ";
-        }
+            StringBuilder label = new StringBuilder();
 
-        return List.of(new Datum(input, label));
+            for (int i = 0; i < parts.size(); i++) {
+                label.append(i == maskedWord ? "[MASK] " : parts.get(i)).append(" ");
+            }
+            return label.toString().strip();
+        };
     }
 }

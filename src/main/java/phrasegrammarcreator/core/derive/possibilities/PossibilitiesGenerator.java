@@ -1,13 +1,9 @@
 package phrasegrammarcreator.core.derive.possibilities;
 
 import phrasegrammarcreator.core.FormalGrammar;
-import phrasegrammarcreator.core.derive.impl.DerivationNode;
 import phrasegrammarcreator.core.derive.possibilities.tree.ProductPossibilities;
-import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.core.phrases.words.generate.AllCombinationsBracketedGenerator;
-import phrasegrammarcreator.io.out.jsonObjects.Datum;
 import phrasegrammarcreator.main.GenerationInstance;
 
 import java.util.Iterator;
@@ -21,33 +17,20 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
     int CAP = 100000;
     int DEPTH_CAP = 20;
 
-    public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {
+    private int depth;
 
+    public PossibilitiesGenerator(FormalGrammar grammar, Phrase start) {
         rc = grammar.getRuleContainer();
         root = new ProductPossibilities(rc, start);
-
-        /*
-        for (Phrase p : root) {
-            DerivationNode dummy = new DerivationNode(p, null);
-            if (EndPhrase.validate(grammar, dummy)) {
-                EndPhrase ep = EndPhrase.ofPhrase(grammar, dummy);
-                Datum datum = new AllCombinationsBracketedGenerator().generate(ep).get(0);
-                System.out.printf("{\n\t input : %s \n\t label: %s \n}", datum.input, datum.label);
-            }
-        }
-
-        */
+        depth = 0;
     }
 
-    private void printData(FormalGrammar grammar) {
-        for (Phrase p : root) {
-            DerivationNode dummy = new DerivationNode(p, null);
-            if (EndPhrase.validate(dummy)) {
-                EndPhrase ep = EndPhrase.ofPhrase(grammar, dummy);
-                Datum datum = new AllCombinationsBracketedGenerator().generate(ep).get(0);
-                System.out.printf("{\n\t input : %s \n\t label: %s \n}", datum.input, datum.label);
-            }
-        }
+    public PossibilitiesGenerator(FormalGrammar grammar, Phrase start, int countCap, int depthCap) {
+        rc = grammar.getRuleContainer();
+        root = new ProductPossibilities(rc, start);
+        depth = 0;
+        CAP = countCap;
+        DEPTH_CAP = depthCap;
     }
 
     private void printInfo() {
@@ -71,7 +54,6 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
     @Override
     public Iterator<Phrase> apply(GenerationInstance generationInstance) {
         long currentPossibilities = 0;
-        int depth = 0;
         do {
             root.calculateNext();
             printInfo();
@@ -79,5 +61,13 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
         }
         while(currentPossibilities < CAP && depth++ < DEPTH_CAP);
         return root.iterator();
+    }
+
+    public long getCurrentCount() {
+        return root.getCount();
+    }
+
+    public int getCurrentDepth() {
+        return depth;
     }
 }

@@ -5,15 +5,13 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.core.phrases.words.WordTerminal;
-import phrasegrammarcreator.io.out.jsonObjects.Datum;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 
-
-public class AllCombinationsBracketedGenerator extends OutputGenerator{
+public class BracketTreeGenerator extends OutputGenerator{
 
     public static final String OPEN = "(";
     public static final String CLOSE = ")";
@@ -22,16 +20,21 @@ public class AllCombinationsBracketedGenerator extends OutputGenerator{
 
     public HashMap<VariableInstance<?>, Integer> depths;
 
+    BracketCounter[] brackets;
+
+    public BracketTreeGenerator(WordGenerationPolicy policy) {
+        super(policy);
+    }
+
 
     @Override
-    public List<Datum> generate(EndPhrase ep) {
-
+    public void initialize(EndPhrase ep) {
         Phrase p = ep.getNode().getData();
         depths = new HashMap<>();
         int treeDepth = treeDepth(ep);
 
-        // Initizalize Bracket Counters and Offset by Node Depth Off-Set
-        BracketCounter[] brackets = new BracketCounter[ep.size()];
+        // Initialize Bracket Counters and Offset by Node Depth Off-Set
+        brackets = new BracketCounter[ep.size()];
         for (int i = 0; i < ep.size(); i++) {
             VariableInstance<?> node = p.get(i);
             int delta = treeDepth - nodeDepth(node);
@@ -41,7 +44,7 @@ public class AllCombinationsBracketedGenerator extends OutputGenerator{
             createDummyNodes(node, delta);
         }
 
-        /*brackets = {AllCombinationsBracketedGenerator$BracketCounter[12]@1902}
+        /*
          * Search in leafs for next highest nodes that are identical and create brackets.
         * Gradually increase search height
         * */
@@ -74,12 +77,6 @@ public class AllCombinationsBracketedGenerator extends OutputGenerator{
             VariableInstance<?> realParent = getParent(node, delta + 1);
             node.setDerivedFrom(realParent);
         }
-
-        String[] parts = ep.stream().map(WordTerminal::getRandomWord).toArray(String[]::new);
-        String input = generateBrackets(parts, brackets);
-        String label = String.join(" ", parts);
-
-        return List.of(new Datum(input, label));
     }
 
 
@@ -94,12 +91,12 @@ public class AllCombinationsBracketedGenerator extends OutputGenerator{
         current.setDerivedFrom(realParent);
     }
 
-    private String generateBrackets(String[] parts, BracketCounter[] brackets) {
+    private String generateBrackets(List<String> parts, BracketCounter[] brackets) {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < parts.length; i++) {
+        for (int i = 0; i < parts.size(); i++) {
             String bracketed =
                     OPEN.repeat(brackets[i].getOpenBrackets())
-                    + parts[i]
+                    + parts.get(i)
                     + CLOSE.repeat(brackets[i].getClosedBrackets());
             builder.append(bracketed);
         }
@@ -140,6 +137,16 @@ public class AllCombinationsBracketedGenerator extends OutputGenerator{
         }
         depths.put(instance, depth);
         return depth;
+    }
+
+    @Override
+    protected Function<List<String>, String> getInputGenerator() {
+        return parts -> String.join(" ", parts);
+    }
+
+    @Override
+    protected Function<List<String>, String> getLabelGenerator() {
+        return parts -> generateBrackets(parts, brackets);
     }
 
 

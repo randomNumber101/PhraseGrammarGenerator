@@ -31,6 +31,10 @@ public class WordTerminal extends Terminal {
         return wordDictionary.get(parent);
     }
 
+    public int getWordCount() {
+        return wordDictionary.get(parent).size();
+    }
+
     @Override
     public VariableInstance<Terminal> createInstance() {
         return new WordInstance(this, getRandomWord());

@@ -4,6 +4,7 @@ import phrasegrammarcreator.core.phrases.Phrase;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -48,26 +49,9 @@ public class IteratorTools {
         }
 
         int[] posCounts = Arrays.stream(loaded).mapToInt(List::size).toArray();
-        Iterator<Integer[]> combinationIter = combinations(posCounts);
+        Iterator<int[]> combinationIter = combinations(posCounts);
 
-        return new Iterator<List<T>>() {
-            @Override
-            public boolean hasNext() {
-                return combinationIter.hasNext();
-            }
-
-            @Override
-            public List<T> next() {
-                List<T> out = new ArrayList<>();
-                Integer[] nextCombination = combinationIter.next();
-
-                for (int i = 0; i < count; i++) {
-                    out.add(loaded[i].get(nextCombination[i]));
-                }
-
-                return out;
-            }
-        };
+        return getCombination(combinationIter, loaded);
     }
 
 
@@ -78,9 +62,8 @@ public class IteratorTools {
         return out;
     }
 
-
-    public static Iterator<Integer[]> combinations(int[] posCounts) {
-        return new Iterator<Integer[]>() {
+    public static Iterator<int[]> combinations(int[] posCounts) {
+        return new Iterator<int[]>() {
 
             long current = 0;
             long cap = calculateCap();
@@ -108,11 +91,11 @@ public class IteratorTools {
             }
 
             @Override
-            public Integer[] next() {
+            public int[] next() {
                 if (current >= cap)
                     throw new IndexOutOfBoundsException("No more combinations found.");
 
-                Integer[] combination = new Integer[posCounts.length];
+                int[] combination = new int[posCounts.length];
                 for (int i = 0; i < posCounts.length; i++) {
                     combination[i] = Math.toIntExact((current / frequency[i]) % posCounts[i]);
                 }
@@ -120,6 +103,12 @@ public class IteratorTools {
                 return combination;
             }
         };
+    }
+    public static <T> Iterator<List<T>> getCombination(Iterator<int[]> combination, List<T>[] data) {
+        return apply(combination, indices ->
+                IntStream.range(0, data.length)
+                .mapToObj(i -> data[i].get(indices[i]))
+                .toList());
     }
 
     public static List<List<Phrase>> cartesianProduct(List<List<Phrase>> lists) {
