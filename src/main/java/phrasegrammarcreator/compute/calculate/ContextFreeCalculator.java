@@ -4,18 +4,15 @@ import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.compute.Occurrence;
 import phrasegrammarcreator.compute.SingleOccurrence;
-import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.SubPhrase;
-import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 

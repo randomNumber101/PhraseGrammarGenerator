@@ -1,4 +1,4 @@
-package phrasegrammarcreator.core.derive.possibilities;
+package phrasegrammarcreator.core.rules;
 
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.phrases.Phrase;

@@ -1,16 +1,10 @@
 package phrasegrammarcreator.core;
 
-import phrasegrammarcreator.compute.Derivation;
-import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.compute.calculate.ContextFreeCalculator;
 import phrasegrammarcreator.compute.calculate.DerivationsCalculator;
-import phrasegrammarcreator.compute.calculate.MixedCalculator;
 import phrasegrammarcreator.compute.pick.derivation.DerivationChooser;
 import phrasegrammarcreator.compute.pick.derivation.SmartChooser;
-import phrasegrammarcreator.core.derive.impl.DerivationNode;
-import phrasegrammarcreator.core.derive.impl.DerivationTree;
-import phrasegrammarcreator.core.derive.impl.SingleDerivationPointer;
-import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Vocabulary;
 import phrasegrammarcreator.core.phrases.words.WordDictionary;
@@ -28,8 +22,6 @@ public class FormalGrammar{
     private WordDictionary dictionary;
     private Phrase startPhrase;
 
-    private DerivationsCalculator calculator;
-    private DerivationChooser chooser;
 
     public FormalGrammar(String name, Vocabulary vocabulary, List<Rule> rules, WordDictionary dictionary, Phrase startPhrase) {
         this.name = name;
@@ -38,9 +30,6 @@ public class FormalGrammar{
         this.dictionary = dictionary;
         this.startPhrase = startPhrase;
         this.ruleContainer = new CfRuleContainer(rules);
-
-        calculator = new ContextFreeCalculator(ruleContainer);
-        chooser = new SmartChooser(this);
     }
 
 

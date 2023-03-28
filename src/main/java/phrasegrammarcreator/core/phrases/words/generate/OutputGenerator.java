@@ -1,25 +1,24 @@
 package phrasegrammarcreator.core.phrases.words.generate;
 
-import phrasegrammarcreator.core.derive.possibilities.IteratorTools;
+import phrasegrammarcreator.util.IteratorTools;
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.words.WordTerminal;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public abstract class OutputGenerator implements Function<EndPhrase, List<Datum>> {
 
-    public enum WordGenerationPolicy {
-        SINGLE_RANDOM,
-        ALL_POSSIBILITIES;
-    }
-
     protected WordGenerationPolicy policy;
 
-    public OutputGenerator(WordGenerationPolicy policy) {
+    protected Random random;
+
+    public OutputGenerator(Random random, WordGenerationPolicy policy) {
         this.policy = policy;
+        this.random = random;
     }
 
     @Override
@@ -35,7 +34,7 @@ public abstract class OutputGenerator implements Function<EndPhrase, List<Datum>
         switch (policy) {
             case SINGLE_RANDOM ->
             {
-                List<String> randomWords = endPhrase.stream().map(WordTerminal::getRandomWord).toList();
+                List<String> randomWords = endPhrase.stream().map(wt -> wt.getRandomWord(random)).toList();
                 return List.of(datum.apply(randomWords));
             }
             default -> {

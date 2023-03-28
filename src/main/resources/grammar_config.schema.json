@@ -82,7 +82,27 @@
         "Setting": {
             "type": "object",
             "additionalProperties": true,
-            "title": "Settings"
+            "title": "Settings",
+            "properties": {
+                "output-dir": {
+                    "type": "string"
+                },
+                "task": {
+                    "type": "string"
+                },
+                "word-generation": {
+                    "type": "string"
+                },
+                "phrase-count-cap": {
+                    "type": "integer"
+                },
+                "search-tree-depth-cap": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "output-dir", "task", "word-generation", "phrase-count-cap", "search-tree-depth-cap"
+            ]
         },
         "Output": {
             "type": "object",

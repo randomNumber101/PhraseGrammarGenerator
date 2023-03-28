@@ -1,11 +1,7 @@
-package phrasegrammarcreator.main.pipeline;
+package phrasegrammarcreator.util.pipeline;
 
-import org.jetbrains.annotations.NotNull;
-import phrasegrammarcreator.core.derive.possibilities.IteratorTools;
-import phrasegrammarcreator.io.out.jsonObjects.DataSet;
-import phrasegrammarcreator.main.GenerationInstance;
+import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Function;
 

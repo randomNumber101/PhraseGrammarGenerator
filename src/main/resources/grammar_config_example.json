@@ -1,7 +1,11 @@
 {
     "Settings" : [
         {
-            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out"
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "task": "masking",
+            "word-generation": "single",
+            "phrase-count-cap": 1000,
+            "search-tree-depth-cap": 10
         }
     ],
     "Grammars": [

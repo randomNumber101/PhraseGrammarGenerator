@@ -8,6 +8,7 @@ import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 
@@ -22,8 +23,8 @@ public class BracketTreeGenerator extends OutputGenerator{
 
     BracketCounter[] brackets;
 
-    public BracketTreeGenerator(WordGenerationPolicy policy) {
-        super(policy);
+    public BracketTreeGenerator(Random random, WordGenerationPolicy policy) {
+        super(random, policy);
     }
 
 

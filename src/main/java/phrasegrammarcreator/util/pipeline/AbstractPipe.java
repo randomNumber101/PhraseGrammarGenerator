@@ -1,10 +1,7 @@
-package phrasegrammarcreator.main.pipeline;
+package phrasegrammarcreator.util.pipeline;
 
 import org.jetbrains.annotations.NotNull;
-import phrasegrammarcreator.io.out.jsonObjects.DataSet;
-import phrasegrammarcreator.main.GenerationInstance;
 
-import java.util.Collection;
 import java.util.function.Function;
 
 public abstract class AbstractPipe<I,O> implements Function<I, O> {

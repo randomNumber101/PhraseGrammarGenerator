@@ -1,16 +1,16 @@
 package phrasegrammarcreator.core.phrases.words.generate;
 
 import phrasegrammarcreator.core.phrases.EndPhrase;
-import phrasegrammarcreator.io.out.jsonObjects.Datum;
-import phrasegrammarcreator.main.Randomizer;
+import phrasegrammarcreator.util.Randomizer;
 
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public class RandomMaskingGenerator extends OutputGenerator{
 
-    public RandomMaskingGenerator(WordGenerationPolicy policy) {
-        super(policy);
+    public RandomMaskingGenerator(Random random, WordGenerationPolicy policy) {
+        super(random, policy);
     }
 
     @Override
@@ -26,8 +26,7 @@ public class RandomMaskingGenerator extends OutputGenerator{
     @Override
     protected Function<List<String>, String> getLabelGenerator() {
         return parts -> {
-            Randomizer randomizer = Randomizer.getInstance();
-            int maskedWord = randomizer.nextInt(parts.size());
+            int maskedWord = random.nextInt(parts.size());
 
             StringBuilder label = new StringBuilder();
 

@@ -1,6 +1,6 @@
 package phrasegrammarcreator.core.derive.possibilities.tree;
 
-import phrasegrammarcreator.core.derive.possibilities.IteratorTools;
+import phrasegrammarcreator.util.IteratorTools;
 import phrasegrammarcreator.core.phrases.Phrase;
 
 import java.util.Iterator;

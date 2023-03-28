@@ -1,11 +1,9 @@
-package phrasegrammarcreator.main.pipeline;
+package phrasegrammarcreator.util.pipeline;
 
-import phrasegrammarcreator.core.derive.possibilities.IteratorTools;
+import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ParallelPipe<I,O> extends AbstractPipe<Iterator<I>, Iterator<O>>{
 

@@ -4,6 +4,7 @@ import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.derive.possibilities.tree.ProductPossibilities;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.main.GenerationInstance;
 
 import java.util.Iterator;

@@ -1,6 +1,6 @@
 package phrasegrammarcreator.core.derive.possibilities.tree;
 
-import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;

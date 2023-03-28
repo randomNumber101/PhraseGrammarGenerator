@@ -3,17 +3,18 @@ package phrasegrammarcreator.compute.pick.derivation;
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.core.FormalGrammar;
-import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.derive.possibilities.tree.ChoicePossibilities;
 import phrasegrammarcreator.core.derive.possibilities.tree.Possibilities;
 import phrasegrammarcreator.core.derive.possibilities.tree.PossibilityTreeAggregator;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.rules.Rule;
-import phrasegrammarcreator.main.Randomizer;
+import phrasegrammarcreator.util.Randomizer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SmartChooser extends DerivationChooser{
@@ -38,12 +39,15 @@ public class SmartChooser extends DerivationChooser{
 
     private STRATEGY strategy = STRATEGY.NARROW_DOWN_SOFTMAX;
 
-    public SmartChooser(FormalGrammar grammar) {
+    private Randomizer random;
+
+    public SmartChooser(FormalGrammar grammar, Randomizer random) {
         super((List<Rule>)(List<?>) grammar.getRuleContainer().getRules());
         CfRuleContainer container = grammar.getRuleContainer();
         variablePossibilities = new HashMap<>();
         variableWeights = new HashMap<>();
         ruleWeights = new HashMap<>();
+        this.random = random;
 
         for (Variable v : grammar.getVocabulary().getVariables()) {
             ChoicePossibilities cp = new ChoicePossibilities(container, v.createInstance());
@@ -114,7 +118,7 @@ public class SmartChooser extends DerivationChooser{
             }
         }
 
-        Rule<?, ?> picked = orderedRules.get(Randomizer.getInstance().sample(probabilities));
+        Rule<?, ?> picked = orderedRules.get(random.sample(probabilities));
         for (Derivation d : derivations) {
             if (d.getRule() == picked)
                 return d;

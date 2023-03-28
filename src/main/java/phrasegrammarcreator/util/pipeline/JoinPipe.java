@@ -1,6 +1,5 @@
-package phrasegrammarcreator.main.pipeline;
+package phrasegrammarcreator.util.pipeline;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Function;
 

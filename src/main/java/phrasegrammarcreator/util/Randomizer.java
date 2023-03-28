@@ -1,23 +1,16 @@
-package phrasegrammarcreator.main;
+package phrasegrammarcreator.util;
 
 import java.util.Random;
 
 public class Randomizer extends Random{
 
-    private static Randomizer randomizer;
     private long seed;
 
-    private Randomizer(){
+    public Randomizer(){
         super();
         seed = nextLong();
         setSeed(seed);
     };
-
-    public static Randomizer getInstance() {
-        if (randomizer == null)
-            randomizer = new Randomizer();
-        return randomizer;
-    }
 
     public int sample(double[] distribution) {
         double pick = nextDouble();

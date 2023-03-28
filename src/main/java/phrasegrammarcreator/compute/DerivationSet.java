@@ -2,15 +2,12 @@ package phrasegrammarcreator.compute;
 
 import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.Rule;
-import phrasegrammarcreator.main.Randomizer;
+import phrasegrammarcreator.util.Randomizer;
 
 import java.util.*;
 import java.util.stream.Collector;
 
 public class DerivationSet extends HashSet<Derivation> {
-
-
-    Random random = Randomizer.getInstance();
 
     public DerivationSet(Collection<? extends Derivation> c) {
 
@@ -24,7 +21,7 @@ public class DerivationSet extends HashSet<Derivation> {
         super();
     }
 
-    public Derivation getRandom() {
+    public Derivation getRandom(Random random) {
         Derivation[] derivations = this.getArray();
         return derivations[random.nextInt(derivations.length)];
     }

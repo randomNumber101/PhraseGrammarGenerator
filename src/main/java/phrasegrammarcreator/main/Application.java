@@ -1,13 +1,9 @@
 package phrasegrammarcreator.main;
 
 import phrasegrammarcreator.core.FormalGrammar;
-import phrasegrammarcreator.core.phrases.Phrase;
-import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.io.console.info.DerivationTreeInfo;
 import phrasegrammarcreator.io.console.info.GrammarInfo;
 import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.parser.ConfigLoader;
-import phrasegrammarcreator.main.pipeline.ExecutionPipeline;
 
 import java.io.File;
 import java.net.URI;

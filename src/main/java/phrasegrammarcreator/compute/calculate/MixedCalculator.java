@@ -2,7 +2,7 @@ package phrasegrammarcreator.compute.calculate;
 
 import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.DerivationSet;
-import phrasegrammarcreator.core.derive.possibilities.CfRuleContainer;
+import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.core.rules.ContextSensitiveRule;
