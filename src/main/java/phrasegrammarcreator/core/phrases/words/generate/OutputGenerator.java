@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public abstract class OutputGenerator implements Function<EndPhrase, List<Datum>> {
+public abstract class   OutputGenerator implements Function<EndPhrase, List<Datum>> {
 
     protected WordGenerationPolicy policy;
 

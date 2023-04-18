@@ -2,7 +2,7 @@
     "Settings" : [
         {
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
-            "task": "masking",
+            "task": "tree-bracketing",
             "word-generation": "single",
             "phrase-count-cap": 1000,
             "search-tree-depth-cap": 10
@@ -15,7 +15,7 @@
             "terminals" : ["a", "b", "c"],
             "rules" : ["A -> A B| B| B C| a", "B -> b", "C -> A | c"],
             "dictionary" : {
-                "a"  :  ["YES", "NO"],
+                "a"  :  ["Peter", "Hans", "Gerhard"],
                 "b"  :  ["b"],
                 "c" :  ["c"]
             },
@@ -29,6 +29,7 @@
             "dictionary" : {
                 "n" : ["NEIN"],
                 "d" : ["DEIN"],
+
                 "jn" : ["JA", "NEIN"]
             },
             "start-phrase": "S"

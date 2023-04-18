@@ -95,7 +95,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
         Function<List<Integer>, Integer> sumFunction = l -> l.stream().mapToInt(Integer::intValue).sum();
         ListFuture<Integer, Integer> datumCountsFeature = new ListFuture<>(sumFunction);
 
-        stats.put("stats", datumCountsFeature);
+        stats.put("data count", datumCountsFeature);
 
         Function<List<Datum>, List<Datum>> statInterceptor = data ->
                 {

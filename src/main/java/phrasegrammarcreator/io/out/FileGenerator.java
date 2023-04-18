@@ -28,7 +28,7 @@ public class FileGenerator {
 
             generator.writeStartObject();
 
-
+            // Write data iterable
             generator.writeFieldName("data");
             generator.writeStartArray();
             for (Iterator<Datum> it = dataSet.getData(); it.hasNext(); ) {
@@ -36,9 +36,13 @@ public class FileGenerator {
                 generator.writeObject(datum);
             }
             generator.writeEndArray();
+
             // Need to write meta at end when all data has been processed
             generator.writeObjectField("meta", dataSet.getMetaInformation());
+
+            // Close
             generator.writeEndObject();
+            generator.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

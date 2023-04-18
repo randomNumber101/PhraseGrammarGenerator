@@ -6,6 +6,7 @@ import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +29,23 @@ public class BracketTreeGenerator extends OutputGenerator{
     }
 
 
+    /*
+     * Search in leafs for next highest nodes that are identical and create brackets based on all successive nodes
+     * for which this condition is satisfied.
+     * Gradually increase search height until tree depth is reached.
+     *
+     * Example:
+     *
+     *      A
+     *     / \         1st iteration:   N1 and N2 have B in common  -> create B brackets around N1 and N2
+     *    B   *        2nd iteration:  N1, N2, N3 have A in common  -> create A brackets around N1 and N3
+     *   / \   \       done:            return (A (B N1 N2) N3)
+     *  N1 N2  N3
+     *
+     * Note:
+     *  For this to work we insert dummy nodes (marked as "*" here) and remove them afterwards.
+     *
+     * */
     @Override
     public void initialize(EndPhrase ep) {
         Phrase p = ep.getNode().getData();
@@ -39,35 +57,37 @@ public class BracketTreeGenerator extends OutputGenerator{
         for (int i = 0; i < ep.size(); i++) {
             VariableInstance<?> node = p.get(i);
             int delta = treeDepth - nodeDepth(node);
-            brackets[i] = new BracketCounter(-delta, -delta);
+            brackets[i] = new BracketCounter(0, 0);
 
             // Pad Nodes by Depth Delta
             createDummyNodes(node, delta);
         }
 
-        /*
-         * Search in leafs for next highest nodes that are identical and create brackets.
-        * Gradually increase search height
-        * */
-
-        int layerHeight = 1;
+        int searchHeight = 1;
         VariableInstance<?> parent = null;
 
-        while (layerHeight <= treeDepth) {
+        while (searchHeight <= treeDepth) {
             for (int i = 0; i <= ep.size(); i++) {
-                VariableInstance<?> newParent = i < ep.size() ?
-                            getParent(ep.getNode().getData().get(i), layerHeight)
+                VariableInstance<? extends Variable> newParent = i < ep.size() ?
+                            getParent(ep.getNode().getData().get(i), searchHeight)
                             : null;
+
                 if (newParent != parent) {
-                    if (newParent != null)
-                        brackets[i].open();
+                    if (newParent != null) {
+                        // Skip iteration if newParent is Dummy-Node
+                        if (newParent.getBuilder().equals(DUMMY))
+                            continue;
+                        // Else, if parent changed open new bracket
+                        brackets[i].open(newParent.getBuilder());
+                    }
+                    // If old parent was set, close bracket
                     if (parent != null)
                         brackets[i - 1].close();
                     parent = newParent;
                 }
             }
             parent = null;
-            layerHeight++;
+            searchHeight++;
         }
 
         // Remove dummy nodes
@@ -96,9 +116,9 @@ public class BracketTreeGenerator extends OutputGenerator{
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < parts.size(); i++) {
             String bracketed =
-                    OPEN.repeat(brackets[i].getOpenBrackets())
+                    brackets[i].printOpen()
                     + parts.get(i)
-                    + CLOSE.repeat(brackets[i].getClosedBrackets());
+                    + brackets[i].printClosed();
             builder.append(bracketed);
         }
         return builder.toString();
@@ -152,15 +172,24 @@ public class BracketTreeGenerator extends OutputGenerator{
 
 
     private static class BracketCounter {
+
+        List<String> bracketTypes;
         public BracketCounter(int openOffset, int closedOffset) {
             openBrackets = openOffset;
             closedBrackets = closedOffset;
+            bracketTypes = new ArrayList<>();
         }
         private int openBrackets  = 0;
         private int closedBrackets = 0;
 
         public void open() {
             openBrackets++;
+            bracketTypes.add("");
+        }
+
+        public void open(Variable type) {
+            openBrackets++;
+            bracketTypes.add(type.getName());
         }
 
         public void close() {
@@ -173,6 +202,20 @@ public class BracketTreeGenerator extends OutputGenerator{
 
         public int getClosedBrackets() {
             return closedBrackets;
+        }
+
+        public String printOpen() {
+            assert openBrackets == bracketTypes.size();
+            StringBuilder builder = new StringBuilder();
+            for (int i = bracketTypes.size() - 1; i >= 0; i--) {
+                String type = bracketTypes.get(i);
+                builder.append(OPEN).append(type).append(" ");
+            }
+            return builder.toString();
+        }
+
+        public String printClosed() {
+            return CLOSE.repeat(closedBrackets);
         }
     }
 }

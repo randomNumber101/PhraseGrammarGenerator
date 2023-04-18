@@ -3,8 +3,10 @@ package phrasegrammarcreator.main;
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.io.console.info.GrammarInfo;
 import phrasegrammarcreator.io.out.FileGenerator;
+import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.parser.ConfigLoader;
 
+import java.awt.*;
 import java.io.File;
 import java.net.URI;
 
@@ -52,8 +54,8 @@ public class Application {
             //EndPhrase.ofPhrase(grammar, );
 
             ExecutionPipeline pipeline = new ExecutionPipeline();
-            FileGenerator.save(c.getInstances().get(0).settings().outputDir(), pipeline.apply(c.getInstances().get(0)));
-
+            DataSet set = pipeline.apply(c.getInstances().get(0));
+            Desktop.getDesktop().open(new File(c.getSettings().get(0).outputDir()));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -68,9 +70,6 @@ public class Application {
                 .getResource("grammar_config_example.json")
                 .toURI();
 
-        //printStream(file);
-
-        Config config = configLoader.validateAndParse(new File(configUri));
-        return config;
+        return configLoader.validateAndParse(new File(configUri));
     }
 }
