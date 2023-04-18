@@ -31,6 +31,8 @@ public class ConfigParser extends JSonObjectParser<Config> {
         settingsArrayParser = new JsonArrayParser<>(settingsParser);
         List<Settings> settings = settingsArrayParser.parse(object.getJSONArray("Settings"));
 
+
+
         JSonObjectParser<GenerationInstance> instanceParser = new JSonObjectParser<>() {
             @Override
             public GenerationInstance parse(JSONObject object) throws Exception {

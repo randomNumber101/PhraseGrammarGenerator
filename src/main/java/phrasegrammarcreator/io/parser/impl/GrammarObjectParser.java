@@ -13,6 +13,7 @@ import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;
 import phrasegrammarcreator.io.parser.core.SingleValueParser;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,17 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
         List<NonTerminal> nonTerminals = ntArrayParser.parse(object.getJSONArray("non-terminals"));
         JsonArrayParser<String, Terminal> tArrayParser = new JsonArrayParser<>(terminalParser);
         List<Terminal> terminals = tArrayParser.parse(object.getJSONArray("terminals"));
+
+        // Get mask-worthy Terminals (Terminals that should be masked, default : all)
+        List<Terminal> maskWorthy;
+        if (object.has("mask-worthy")) {
+            maskWorthy = tArrayParser.parse(object.getJSONArray("mask-worthy"));
+        }
+        else {
+            // default: all
+            maskWorthy = new ArrayList<>(terminals);
+        }
+        vocabulary.setMaskWorthy(maskWorthy);
 
         // Parse rules
         JsonArrayParser<String, List<Rule>> ruleArrayParser = new JsonArrayParser<>(ruleParser);

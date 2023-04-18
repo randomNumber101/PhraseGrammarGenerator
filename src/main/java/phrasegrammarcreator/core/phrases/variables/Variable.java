@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class Variable implements Phrasable {
 
+    boolean maskWorthy = false;
+
     public String getRegex() {
         return regex;
     }
@@ -46,6 +48,10 @@ public abstract class Variable implements Phrasable {
 
     public abstract Type getType();
     public abstract VariableInstance<?> createInstance();
+
+    public boolean isMaskWorthy() {
+        return maskWorthy;
+    }
 
 
     public static Variable ofRegex(Type type, Vocabulary dict, String regex, @Nullable String name) {

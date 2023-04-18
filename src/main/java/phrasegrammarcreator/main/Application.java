@@ -9,6 +9,7 @@ import phrasegrammarcreator.io.parser.ConfigLoader;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
+import java.util.List;
 
 public class Application {
 
@@ -54,7 +55,7 @@ public class Application {
             //EndPhrase.ofPhrase(grammar, );
 
             ExecutionPipeline pipeline = new ExecutionPipeline();
-            DataSet set = pipeline.apply(c.getInstances().get(0));
+            List<DataSet> outputs = c.getInstances().stream().map(pipeline).toList();
             Desktop.getDesktop().open(new File(c.getSettings().get(0).outputDir()));
         }
         catch (Exception e) {

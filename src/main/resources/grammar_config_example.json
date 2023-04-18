@@ -1,8 +1,18 @@
 {
     "Settings" : [
         {
+            "name": "TreeBracketsSmall",
+            "seed": 420,
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
             "task": "tree-bracketing",
+            "word-generation": "single",
+            "phrase-count-cap": 1000,
+            "search-tree-depth-cap": 10
+        },
+        {
+            "name": "MaskingSmall",
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "task": "masking",
             "word-generation": "single",
             "phrase-count-cap": 1000,
             "search-tree-depth-cap": 10
@@ -13,6 +23,7 @@
             "name" : "Grammar1",
             "non-terminals": ["A", "B", "C", "D"],
             "terminals" : ["a", "b", "c"],
+            "mask-worthy" : ["a"],
             "rules" : ["A -> A B| B| B C| a", "B -> b", "C -> A | c"],
             "dictionary" : {
                 "a"  :  ["Peter", "Hans", "Gerhard"],
@@ -39,6 +50,10 @@
         {
             "Grammar" : 0,
             "Setting" : 0
+        },
+        {
+            "Grammar" : 0,
+            "Setting" : 1
         }
     ]
 }

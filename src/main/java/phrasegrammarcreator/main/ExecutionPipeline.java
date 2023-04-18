@@ -58,7 +58,10 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
     public void build(GenerationInstance instance) {
         FormalGrammar grammar = instance.grammar();
         Settings settings = instance.settings();
+
         randomizer = new Randomizer();
+        if (settings.seed() != null)
+            randomizer.setSeed(settings.seed());
 
         possibilityPipe = buildPossibilityPipe(grammar, settings);
         derivationPipe = buildDerivationPipe(grammar, settings);

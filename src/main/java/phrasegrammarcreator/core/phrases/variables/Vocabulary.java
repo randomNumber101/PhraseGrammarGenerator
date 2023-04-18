@@ -2,6 +2,7 @@ package phrasegrammarcreator.core.phrases.variables;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class Vocabulary {
@@ -32,6 +33,10 @@ public class Vocabulary {
 
     public String toString() {
         return variables.toString();
+    }
+
+    public void setMaskWorthy(List<Terminal> terminalList) {
+        terminalList.forEach(t -> t.maskWorthy = true);
     }
 
 }

@@ -28,4 +28,8 @@ public class WordTerminal {
     public int getWordCount() {
         return wordDictionary.get(parent).size();
     }
+
+    public Terminal getParent() {
+        return parent;
+    }
 }

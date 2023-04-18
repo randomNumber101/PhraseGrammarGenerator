@@ -50,6 +50,12 @@
                         "type": "string"
                     }
                 },
+                "mask-worthy": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "rules": {
                     "type": "array",
                     "items": {
@@ -84,6 +90,12 @@
             "additionalProperties": true,
             "title": "Settings",
             "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "seed": {
+                    "type": "integer"
+                },
                 "output-dir": {
                     "type": "string"
                 },
@@ -101,7 +113,7 @@
                 }
             },
             "required": [
-                "output-dir", "task", "word-generation", "phrase-count-cap", "search-tree-depth-cap"
+                "name","output-dir", "task", "word-generation", "phrase-count-cap", "search-tree-depth-cap"
             ]
         },
         "Output": {
