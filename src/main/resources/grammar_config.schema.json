@@ -122,10 +122,10 @@
             "title": "Output",
             "properties": {
                 "Grammar": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "Setting": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "Path": {
                     "type": "string"

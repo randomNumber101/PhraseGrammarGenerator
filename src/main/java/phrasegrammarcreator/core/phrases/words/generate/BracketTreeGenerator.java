@@ -68,21 +68,28 @@ public class BracketTreeGenerator extends OutputGenerator{
 
         while (searchHeight <= treeDepth) {
             for (int i = 0; i <= ep.size(); i++) {
-                VariableInstance<? extends Variable> newParent = i < ep.size() ?
-                            getParent(ep.getNode().getData().get(i), searchHeight)
-                            : null;
+                VariableInstance<? extends Variable> newParent;
+                if (i < ep.size()) {
+                    newParent = getParent(p.get(i), searchHeight);
 
+                    // DUMMY Nodes are invisible
+                    if (newParent.getBuilder().equals(DUMMY))
+                        newParent = null;
+                }
+                else
+                    // Edge case. We're at the end of the phrase
+                    newParent = null;
+
+                // Only act when parent changes
                 if (newParent != parent) {
-                    if (newParent != null) {
-                        // Skip iteration if newParent is Dummy-Node
-                        if (newParent.getBuilder().equals(DUMMY))
-                            continue;
-                        // Else, if parent changed open new bracket
-                        brackets[i].open(newParent.getBuilder());
-                    }
                     // If old parent was set, close bracket
                     if (parent != null)
                         brackets[i - 1].close();
+
+                    // If newParent is not null open new bracket
+                    if (newParent != null) {
+                        brackets[i].open(newParent.getBuilder());
+                    }
                     parent = newParent;
                 }
             }
@@ -117,7 +124,7 @@ public class BracketTreeGenerator extends OutputGenerator{
         for (int i = 0; i < parts.size(); i++) {
             String bracketed =
                     brackets[i].printOpen()
-                    + parts.get(i)
+                    + " " + parts.get(i)
                     + brackets[i].printClosed();
             builder.append(bracketed);
         }
@@ -211,7 +218,7 @@ public class BracketTreeGenerator extends OutputGenerator{
                 String type = bracketTypes.get(i);
                 builder.append(OPEN).append(type).append(" ");
             }
-            return builder.toString();
+            return builder.toString().strip();
         }
 
         public String printClosed() {

@@ -28,33 +28,40 @@ public abstract class   OutputGenerator implements Function<EndPhrase, List<Datu
 
         Function<List<String>, String> input = getInputGenerator();
         Function<List<String>, String> label = getLabelGenerator();
-        Function<List<String>, Datum> datum = getDatumGenerator(input, label);
+        Function<List<String>, List<Datum>> datum = getDatumGenerator(input, label);
 
 
         switch (policy) {
             case SINGLE_RANDOM ->
             {
                 List<String> randomWords = endPhrase.stream().map(wt -> wt.getRandomWord(random)).toList();
-                return List.of(datum.apply(randomWords));
+                return datum.apply(randomWords);
             }
             default -> {
                 int[] posCounts = endPhrase.stream().mapToInt(WordTerminal::getWordCount).toArray();
                 Iterator<int[]> possibilities = IteratorTools.combinations(posCounts);
                 List<String>[] words = endPhrase.stream().map(WordTerminal::getAllWords).toArray(List[]::new);
 
-                Iterator<Datum> datumIterator =
+                Iterator<List<Datum>> datumIterator =
                         IteratorTools.apply(
                             IteratorTools.getCombination(possibilities, words),
                             datum
                         );
 
-                return IteratorTools.loadAll(datumIterator);
+                return IteratorTools.loadAll(datumIterator).stream().flatMap(List::stream).toList();
             }
         }
     }
 
-    protected Function<List<String>, Datum> getDatumGenerator(Function<List<String>, String> input, Function<List<String>, String> label) {
-        return parts -> new Datum(input.apply(parts), label.apply(parts));
+    /**
+     * Basic Datum Generator implementation. Generates one output per Word Combination.
+     * Should be overridden when desired.
+     * @param input input generator
+     * @param label label generator
+     * @return a list of data
+     */
+    protected Function<List<String>, List<Datum>> getDatumGenerator(Function<List<String>, String> input, Function<List<String>, String> label) {
+        return parts -> List.of(new Datum(input.apply(parts), label.apply(parts)));
     }
 
 

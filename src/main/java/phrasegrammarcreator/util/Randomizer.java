@@ -9,7 +9,7 @@ public class Randomizer extends Random{
     public Randomizer(){
         super();
         seed = nextLong();
-        setSeed(seed);
+        super.setSeed(seed);
     };
 
     public int sample(double[] distribution) {
@@ -23,6 +23,10 @@ public class Randomizer extends Random{
         return -1;
     }
 
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.seed = seed;
+    }
     public long getSeed() {
         return seed;
     }

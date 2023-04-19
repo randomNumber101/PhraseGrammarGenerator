@@ -11,6 +11,7 @@
         },
         {
             "name": "MaskingSmall",
+            "seed" : 420,
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
             "task": "masking",
             "word-generation": "single",
@@ -20,7 +21,7 @@
     ],
     "Grammars": [
         {
-            "name" : "Grammar1",
+            "name" : "ExampleGrammar",
             "non-terminals": ["A", "B", "C", "D"],
             "terminals" : ["a", "b", "c"],
             "mask-worthy" : ["a"],
@@ -33,27 +34,119 @@
             "start-phrase": "A C A B A"
         },
         {
-            "name" : "Grammar2",
-            "non-terminals": ["S","A", "B", "F", "D"],
-            "terminals" : ["n", "jn", "d"],
-            "rules" : ["A -> d", "F -> A D", "B -> D n | F"],
+            "name" : "SF",
+            "non-terminals": ["S"],
+            "terminals" : ["P", "A", "SAGT", "DASS"],
+            "rules" : [
+                "S -> P SAGT DASS S",
+                "S -> A"
+            ],
             "dictionary" : {
-                "n" : ["NEIN"],
-                "d" : ["DEIN"],
-
-                "jn" : ["JA", "NEIN"]
+                "DASS" : [", dass"],
+                "SAGT" : ["sagt", "meint", "will"] ,
+                "P" : ["Toni", "Marie", "Sunny", "Leo", "Thommy"],
+                "A" : ["alles ok ist", "es morgen schneit"]
+            },
+            "start-phrase": "S"
+        },
+        {
+            "name" : "NSF",
+            "non-terminals": ["T", "S"],
+            "terminals" : ["P", "A", "SAGT", "DASS", "UND"],
+            "rules" : [
+                "T -> S | S UND T",
+                "S -> P SAGT DASS S | A"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DASS" : [", dass"],
+                "SAGT" : ["sagt", "meint", "will"] ,
+                "P" : ["Toni", "Marie", "Sunny", "Leo", "Thommy"],
+                "A" : ["alles ok ist", "es morgen schneit"]
+            },
+            "start-phrase": "T"
+        },
+        {
+            "name" : "1-Dyck",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_s",
+                "S -> D N_s KOMMA DEREN T KOMMA V_s",
+                "T -> N_s V_s",
+                "T -> N_s KOMMA P KOMMA V_s",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "splielt", "tanzt", "singt", "schwimmt"],
+                "D" : ["die", "eine", "diese"]
+            },
+            "start-phrase": "S"
+        },
+        {
+            "name" : "2-Dyck",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_s | D N_p V_p",
+                "S -> D N_s KOMMA DEREN T KOMMA V_s | D N_p KOMMA DEREN T KOMMA V_p",
+                "T -> N_s V_s | N_p V_p",
+                "T -> N_p KOMMA P KOMMA V_p | N_p KOMMA P KOMMA V_p",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "splielt", "tanzt", "singt", "schwimmt"],
+                "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "D" : ["die"]
             },
             "start-phrase": "S"
         }
     ],
     "Outputs": [
         {
-            "Grammar" : 0,
-            "Setting" : 0
+            "Grammar" : "1-Dyck",
+            "Setting" : "TreeBracketsSmall"
         },
         {
-            "Grammar" : 0,
-            "Setting" : 1
+            "Grammar" : "1-Dyck",
+            "Setting" : "MaskingSmall"
+        },
+        {
+            "Grammar" : "2-Dyck",
+            "Setting" : "TreeBracketsSmall"
+        },
+        {
+            "Grammar" : "2-Dyck",
+            "Setting" : "MaskingSmall"
+        },
+        {
+            "Grammar" : "SF",
+            "Setting" : "TreeBracketsSmall"
+        },
+        {
+            "Grammar" : "SF",
+            "Setting" : "MaskingSmall"
+        },
+        {
+            "Grammar" : "NSF",
+            "Setting" : "TreeBracketsSmall"
+        },
+        {
+            "Grammar" : "NSF",
+            "Setting" : "MaskingSmall"
         }
     ]
 }

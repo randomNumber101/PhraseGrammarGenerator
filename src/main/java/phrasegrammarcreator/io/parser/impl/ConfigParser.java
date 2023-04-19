@@ -8,6 +8,8 @@ import phrasegrammarcreator.main.Config;
 import phrasegrammarcreator.main.GenerationInstance;
 import phrasegrammarcreator.main.Settings;
 
+import java.io.Console;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConfigParser extends JSonObjectParser<Config> {
@@ -31,13 +33,23 @@ public class ConfigParser extends JSonObjectParser<Config> {
         settingsArrayParser = new JsonArrayParser<>(settingsParser);
         List<Settings> settings = settingsArrayParser.parse(object.getJSONArray("Settings"));
 
+        // Map Grammars / Settings by name to find them faster
+        HashMap<String, FormalGrammar> grammarByName = new HashMap<>();
+        grammarList.forEach(g -> grammarByName.put(g.getName(), g));
+
+        HashMap<String, Settings> settingByName = new HashMap<>();
+        settings.forEach(s -> settingByName.put(s.name(), s));
 
 
         JSonObjectParser<GenerationInstance> instanceParser = new JSonObjectParser<>() {
             @Override
             public GenerationInstance parse(JSONObject object) throws Exception {
-                FormalGrammar grammar = grammarList.get(object.getInt("Grammar"));
-                Settings setting = settings.get(object.getInt("Setting"));
+                FormalGrammar grammar = grammarByName.get(object.getString("Grammar"));
+                if (grammar == null)
+                    throw new IllegalArgumentException("Grammar not found: " + object.getString("Grammar"));
+                Settings setting = settingByName.get(object.getString("Setting"));
+                if (setting == null)
+                    throw new IllegalArgumentException("Setting not found: " + object.getString("Setting"));
 
                 return new GenerationInstance(grammar, setting);
             }

@@ -163,8 +163,6 @@ public class SmartChooser extends DerivationChooser{
         /**
          * Weight of a PossibilityTree Leaf.
          * Calculated as the size as represented by number of Non-Terminals remaining.
-         * @param p
-         * @return
          */
         private double getPhraseWeight(Phrase p) {
             return p.stream()

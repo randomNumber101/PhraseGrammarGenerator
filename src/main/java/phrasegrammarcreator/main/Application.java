@@ -21,6 +21,7 @@ public class Application {
 
     public void start() {
         try {
+            long startTime = System.currentTimeMillis();
             Config c = loadConfig();
             FormalGrammar grammar = c.getGrammarList().get(0);
 
@@ -57,6 +58,9 @@ public class Application {
             ExecutionPipeline pipeline = new ExecutionPipeline();
             List<DataSet> outputs = c.getInstances().stream().map(pipeline).toList();
             Desktop.getDesktop().open(new File(c.getSettings().get(0).outputDir()));
+
+            long generationTime = (System.currentTimeMillis() - startTime);
+            System.out.println("Finished. Took in seconds: " + generationTime / (1000));
         }
         catch (Exception e) {
             e.printStackTrace();

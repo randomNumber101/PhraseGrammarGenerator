@@ -30,6 +30,11 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
     private Vocabulary vocabulary;
 
     public GrammarObjectParser() {
+        innit();
+    }
+
+    private void innit() {
+        // Create new vocabulary for each parsing
         vocabulary = new Vocabulary();
         nonTerminalParser = new NonTerminalParser(vocabulary);
         terminalParser = new TerminalParser(vocabulary);
@@ -39,6 +44,7 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
 
     @Override
     public FormalGrammar parse(JSONObject object) throws Exception {
+        innit();
 
         // Parse name
         String name = object.getString("name");
