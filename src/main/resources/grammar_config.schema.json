@@ -15,7 +15,10 @@
                 "Grammars": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Grammar"
+                        "oneOf": [
+                            {"$ref": "#/definitions/Grammar"},
+                            {"$ref": "#/definitions/ExternCFG"}
+                        ]
                     }
                 },
                 "Outputs": {
@@ -30,6 +33,22 @@
                 "Settings"
             ],
             "title": "GrammarConfig"
+        },
+        "ExternCFG" : {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "load-from": {
+                    "type": "string"
+                },
+                "start-phrase": {
+                    "type": "string"
+                }
+            },
+            "required": ["name", "load-from"]
         },
         "Grammar": {
             "type": "object",
@@ -127,10 +146,16 @@
                 "Setting": {
                     "type": "string"
                 },
-                "Path": {
+                "file-name": {
                     "type": "string"
+                },
+                "overwrite-file" : {
+                    "type" : "boolean"
                 }
-            }
+            },
+            "required": [
+                "Grammar","Setting", "file-name", "overwrite-file"
+            ]
         }
     }
 }

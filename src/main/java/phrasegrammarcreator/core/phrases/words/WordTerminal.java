@@ -1,8 +1,6 @@
 package phrasegrammarcreator.core.phrases.words;
 
 import phrasegrammarcreator.core.phrases.variables.Terminal;
-import phrasegrammarcreator.core.phrases.variables.VariableInstance;
-import phrasegrammarcreator.util.Randomizer;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +27,7 @@ public class WordTerminal {
         return wordDictionary.get(parent).size();
     }
 
-    public Terminal getParent() {
+    public Terminal getTerminal() {
         return parent;
     }
 }

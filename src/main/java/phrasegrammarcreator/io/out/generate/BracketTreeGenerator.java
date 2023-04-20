@@ -1,10 +1,11 @@
-package phrasegrammarcreator.core.phrases.words.generate;
+package phrasegrammarcreator.io.out.generate;
 
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.core.phrases.words.WordTerminal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,9 +56,15 @@ public class BracketTreeGenerator extends OutputGenerator{
         // Initialize Bracket Counters and Offset by Node Depth Off-Set
         brackets = new BracketCounter[ep.size()];
         for (int i = 0; i < ep.size(); i++) {
+            WordTerminal wordTerminal = ep.get(i);
             VariableInstance<?> node = p.get(i);
+
             int delta = treeDepth - nodeDepth(node);
+
+            // Add last derivation step (WordTerminal to actual word) manually
             brackets[i] = new BracketCounter(0, 0);
+            brackets[i].open(wordTerminal.getTerminal());
+            brackets[i].close();
 
             // Pad Nodes by Depth Delta
             createDummyNodes(node, delta);
@@ -122,13 +129,11 @@ public class BracketTreeGenerator extends OutputGenerator{
     private String generateBrackets(List<String> parts, BracketCounter[] brackets) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < parts.size(); i++) {
-            String bracketed =
-                    brackets[i].printOpen()
-                    + " " + parts.get(i)
-                    + brackets[i].printClosed();
-            builder.append(bracketed);
+            builder.append(brackets[i].printOpen())    // Print open brackets
+                    .append(parts.get(i)).append(" ")               // Print word
+                    .append(brackets[i].printClosed()); // Print closed brackets
         }
-        return builder.toString();
+        return builder.toString().strip();
     }
 
 
@@ -218,11 +223,13 @@ public class BracketTreeGenerator extends OutputGenerator{
                 String type = bracketTypes.get(i);
                 builder.append(OPEN).append(type).append(" ");
             }
-            return builder.toString().strip();
+            return builder.toString();
         }
 
         public String printClosed() {
-            return CLOSE.repeat(closedBrackets);
+            if (closedBrackets > 0)
+                return CLOSE.repeat(closedBrackets) + " ";
+            return "";
         }
     }
 }

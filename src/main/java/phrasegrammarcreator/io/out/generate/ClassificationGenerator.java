@@ -1,4 +1,4 @@
-package phrasegrammarcreator.core.phrases.words.generate;
+package phrasegrammarcreator.io.out.generate;
 
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.rules.CfRuleContainer;
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
+// ToDo: What task to implement?
 public class ClassificationGenerator extends BracketTreeGenerator{
 
     CfRuleContainer container;

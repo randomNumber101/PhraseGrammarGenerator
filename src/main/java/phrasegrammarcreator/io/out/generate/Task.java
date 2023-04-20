@@ -1,4 +1,4 @@
-package phrasegrammarcreator.core.phrases.words.generate;
+package phrasegrammarcreator.io.out.generate;
 
 public enum Task {
     MASKING,

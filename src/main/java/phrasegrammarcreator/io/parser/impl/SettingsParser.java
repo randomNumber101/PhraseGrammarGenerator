@@ -1,8 +1,8 @@
 package phrasegrammarcreator.io.parser.impl;
 
 import org.json.JSONObject;
-import phrasegrammarcreator.core.phrases.words.generate.Task;
-import phrasegrammarcreator.core.phrases.words.generate.WordGenerationPolicy;
+import phrasegrammarcreator.io.out.generate.Task;
+import phrasegrammarcreator.io.out.generate.WordGenerationPolicy;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.main.Settings;
 

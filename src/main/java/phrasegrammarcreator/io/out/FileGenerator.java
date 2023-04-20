@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
+import phrasegrammarcreator.main.GenerationInstance;
 import phrasegrammarcreator.main.Settings;
 
 import java.io.*;
@@ -15,12 +16,17 @@ import java.util.Iterator;
 
 public class FileGenerator {
 
-    public static void save(String outputDir, DataSet dataSet) {
+    public static void save(GenerationInstance generation, DataSet dataSet) {
+
+        String outputDir = generation.settings().outputDir();
+
+
+
         JsonFactory factory = new JsonFactory();
-        File outputFile = new File(outputDir + File.separator + generateName(dataSet));
+        File outputFile = new File(outputDir + File.separator + generateName(generation, dataSet));
         outputFile.getParentFile().mkdirs();
-        if (outputFile.exists())
-            outputFile = new File(outputDir + File.separator + generateStampedName(dataSet));
+        if (outputFile.exists() && !generation.overwriteOld())
+            outputFile = new File(outputDir + File.separator + generateStampedName(generation, dataSet));
 
         try(OutputStream out = new FileOutputStream(outputFile)) {
             JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
@@ -50,16 +56,15 @@ public class FileGenerator {
 
 
     }
-
-    public static String generateName(DataSet set) {
-        String name = set.getMetaInformation().getDataName();
+    public static String generateName(GenerationInstance generation, DataSet set) {
+        String name = generation.outputName();
         String seed = String.valueOf(set.getMetaInformation().getRandomSeed());
 
         return name + "_" + seed + ".json";
     }
 
-    public static String generateStampedName(DataSet set) {
-        String name = set.getMetaInformation().getDataName();
+    public static String generateStampedName(GenerationInstance generation, DataSet set) {
+        String name = generation.outputName();
         String seed = String.valueOf(set.getMetaInformation().getRandomSeed());
 
         return name + "_" + seed + "_" + getTimeStamp() +".json";

@@ -1,22 +1,20 @@
-package phrasegrammarcreator.core.phrases.words.generate;
+package phrasegrammarcreator.io.out.generate;
 
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.words.WordTerminal;
-import phrasegrammarcreator.io.out.jsonObjects.Datum;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class RandomMaskingGenerator extends OutputGenerator {
+public class SelectiveMaskingGenerator extends OutputGenerator {
 
     private int maskedWord = -1;
 
     private List<Integer> maskWorthyWords;
 
-    public RandomMaskingGenerator(Random random, WordGenerationPolicy policy) {
+    public SelectiveMaskingGenerator(Random random, WordGenerationPolicy policy) {
         super(random, policy);
     }
 
@@ -25,7 +23,7 @@ public class RandomMaskingGenerator extends OutputGenerator {
         maskWorthyWords = new ArrayList<>();
         for (int i = 0; i < endPhrase.size(); i++) {
             WordTerminal wt = endPhrase.get(i);
-            if (wt.getParent().isMaskWorthy())
+            if (wt.getTerminal().isMaskWorthy())
                 maskWorthyWords.add(i);
         }
     }
@@ -43,7 +41,7 @@ public class RandomMaskingGenerator extends OutputGenerator {
             StringBuilder label = new StringBuilder();
 
             for (int i = 0; i < parts.size(); i++) {
-                label.append(i == maskedWord ? "[MASK] " : parts.get(i)).append(" ");
+                label.append(i == maskedWord ? "[MASK]" : parts.get(i)).append(" ");
             }
             return label.toString().strip();
         };

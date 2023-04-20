@@ -21,6 +21,10 @@
     ],
     "Grammars": [
         {
+            "name" : "Extern CFG",
+            "load-from": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\Data\\NLTK_LARGE_GRAMMAR\\large_grammars\\atis.cfg"
+        },
+        {
             "name" : "ExampleGrammar",
             "non-terminals": ["A", "B", "C", "D"],
             "terminals" : ["a", "b", "c"],
@@ -84,7 +88,7 @@
                 "DEREN" : ["deren"],
                 "KOMMA" : [","],
                 "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
-                "V_s" : ["geht", "splielt", "tanzt", "singt", "schwimmt"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
                 "D" : ["die", "eine", "diese"]
             },
             "start-phrase": "S"
@@ -107,7 +111,7 @@
                 "DEREN" : ["deren"],
                 "KOMMA" : [","],
                 "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
-                "V_s" : ["geht", "splielt", "tanzt", "singt", "schwimmt"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
                 "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
                 "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
                 "D" : ["die"]
@@ -118,35 +122,51 @@
     "Outputs": [
         {
             "Grammar" : "1-Dyck",
-            "Setting" : "TreeBracketsSmall"
+            "Setting" : "TreeBracketsSmall",
+            "file-name": "1D-Bracket",
+            "overwrite-file": true
         },
         {
             "Grammar" : "1-Dyck",
-            "Setting" : "MaskingSmall"
+            "Setting" : "MaskingSmall",
+            "file-name": "1D-Mask",
+            "overwrite-file": true
         },
         {
             "Grammar" : "2-Dyck",
-            "Setting" : "TreeBracketsSmall"
+            "Setting" : "TreeBracketsSmall",
+            "file-name": "2D-Bracket",
+            "overwrite-file": true
         },
         {
             "Grammar" : "2-Dyck",
-            "Setting" : "MaskingSmall"
+            "Setting" : "MaskingSmall",
+            "file-name": "2D-Mask",
+            "overwrite-file": true
         },
         {
             "Grammar" : "SF",
-            "Setting" : "TreeBracketsSmall"
+            "Setting" : "TreeBracketsSmall",
+            "file-name": "SF-Bracket",
+            "overwrite-file": true
         },
         {
             "Grammar" : "SF",
-            "Setting" : "MaskingSmall"
+            "Setting" : "MaskingSmall",
+            "file-name": "SF-Mask",
+            "overwrite-file": true
         },
         {
             "Grammar" : "NSF",
-            "Setting" : "TreeBracketsSmall"
+            "Setting" : "TreeBracketsSmall",
+            "file-name": "NSF-Bracket",
+            "overwrite-file": true
         },
         {
             "Grammar" : "NSF",
-            "Setting" : "MaskingSmall"
+            "Setting" : "MaskingSmall",
+            "file-name": "NSF-Mask",
+            "overwrite-file": true
         }
     ]
 }

@@ -12,7 +12,9 @@ import phrasegrammarcreator.core.rules.Rule;
 import phrasegrammarcreator.io.parser.core.JSonObjectParser;
 import phrasegrammarcreator.io.parser.core.JsonArrayParser;
 import phrasegrammarcreator.io.parser.core.SingleValueParser;
+import phrasegrammarcreator.io.parser.impl.external.CFGLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,6 +50,23 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
 
         // Parse name
         String name = object.getString("name");
+
+        // If this is an external CFG file. Use CFG Parser instead
+        if (object.has("load-from")) {
+            String path = object.getString("load-from");
+            File file = new File(path);
+
+            String cfgName = object.getString("name");
+
+            String extension = path.substring(path.lastIndexOf('.') + 1);
+            switch (extension) {
+                case "cfg" -> {
+                    return new CFGLoader(file, cfgName).load();
+                }
+                default -> throw new IllegalArgumentException("Can't load grammar from "+ path);
+            }
+
+        }
 
         // Parse Non-Terminals, Terminals (adding them to the vocabulary)
         JsonArrayParser<String, NonTerminal> ntArrayParser = new JsonArrayParser<>(nonTerminalParser);

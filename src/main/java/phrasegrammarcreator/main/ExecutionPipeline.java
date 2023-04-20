@@ -7,9 +7,9 @@ import phrasegrammarcreator.core.derive.possibilities.PossibilitiesGenerator;
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.EndPhraseGenerator;
 import phrasegrammarcreator.core.phrases.Phrase;
-import phrasegrammarcreator.core.phrases.words.generate.BracketTreeGenerator;
-import phrasegrammarcreator.core.phrases.words.generate.OutputGenerator;
-import phrasegrammarcreator.core.phrases.words.generate.RandomMaskingGenerator;
+import phrasegrammarcreator.io.out.generate.BracketTreeGenerator;
+import phrasegrammarcreator.io.out.generate.OutputGenerator;
+import phrasegrammarcreator.io.out.generate.SelectiveMaskingGenerator;
 import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
@@ -67,7 +67,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
         derivationPipe = buildDerivationPipe(grammar, settings);
         dataPipe = buildDataPipe(grammar, settings);
         dataMergePipe = buildMergePipe(grammar, settings);
-        dataSetSaver = buildDataSaver(grammar, settings);
+        dataSetSaver = buildDataSaver(instance);
     }
 
 
@@ -90,7 +90,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
 
     private ParallelPipe<EndPhrase, Datum> buildDataPipe(FormalGrammar grammar, Settings settings) {
         OutputGenerator datumGenerator = switch (settings.task()) {
-            case MASKING -> new RandomMaskingGenerator(randomizer, settings.policy());
+            case MASKING -> new SelectiveMaskingGenerator(randomizer, settings.policy());
             case TREE_BRACKETING -> new BracketTreeGenerator(randomizer, settings.policy());
             default -> null;
         };
@@ -136,7 +136,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
         return new JoinPipe<>(datumIterator -> new DataSet(metaInformationFuture, datumIterator));
     }
 
-    private InterceptorPipe<DataSet> buildDataSaver(FormalGrammar grammar, Settings settings) {
-        return new InterceptorPipe<>(dataSet -> FileGenerator.save(settings.outputDir(), dataSet));
+    private InterceptorPipe<DataSet> buildDataSaver(GenerationInstance generation) {
+        return new InterceptorPipe<>(dataSet -> FileGenerator.save(generation, dataSet));
     }
 }

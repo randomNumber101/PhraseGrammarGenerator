@@ -1,7 +1,7 @@
 package phrasegrammarcreator.main;
 
-import phrasegrammarcreator.core.phrases.words.generate.Task;
-import phrasegrammarcreator.core.phrases.words.generate.WordGenerationPolicy;
+import phrasegrammarcreator.io.out.generate.Task;
+import phrasegrammarcreator.io.out.generate.WordGenerationPolicy;
 
 public record Settings(
         String name,

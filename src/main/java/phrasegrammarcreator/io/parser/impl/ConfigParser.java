@@ -33,31 +33,10 @@ public class ConfigParser extends JSonObjectParser<Config> {
         settingsArrayParser = new JsonArrayParser<>(settingsParser);
         List<Settings> settings = settingsArrayParser.parse(object.getJSONArray("Settings"));
 
-        // Map Grammars / Settings by name to find them faster
-        HashMap<String, FormalGrammar> grammarByName = new HashMap<>();
-        grammarList.forEach(g -> grammarByName.put(g.getName(), g));
+        JSonObjectParser<GenerationInstance> generationParser = new GenerationInstanceParser(grammarList, settings);
+        JsonArrayParser<JSONObject, GenerationInstance> generationArrayParser = new JsonArrayParser<>(generationParser);
+        List<GenerationInstance> generations = generationArrayParser.parse(object.getJSONArray("Outputs"));
 
-        HashMap<String, Settings> settingByName = new HashMap<>();
-        settings.forEach(s -> settingByName.put(s.name(), s));
-
-
-        JSonObjectParser<GenerationInstance> instanceParser = new JSonObjectParser<>() {
-            @Override
-            public GenerationInstance parse(JSONObject object) throws Exception {
-                FormalGrammar grammar = grammarByName.get(object.getString("Grammar"));
-                if (grammar == null)
-                    throw new IllegalArgumentException("Grammar not found: " + object.getString("Grammar"));
-                Settings setting = settingByName.get(object.getString("Setting"));
-                if (setting == null)
-                    throw new IllegalArgumentException("Setting not found: " + object.getString("Setting"));
-
-                return new GenerationInstance(grammar, setting);
-            }
-        };
-        JsonArrayParser<JSONObject, GenerationInstance> instanceArrayParser;
-        instanceArrayParser = new JsonArrayParser<>(instanceParser);
-        List<GenerationInstance> instances = instanceArrayParser.parse(object.getJSONArray("Outputs"));
-
-        return new Config(settings, grammarList, instances);
+        return new Config(settings, grammarList, generations);
     }
 }

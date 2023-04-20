@@ -1,4 +1,4 @@
-package phrasegrammarcreator.core.phrases.words.generate;
+package phrasegrammarcreator.io.out.generate;
 
 import phrasegrammarcreator.util.IteratorTools;
 import phrasegrammarcreator.core.phrases.EndPhrase;
