@@ -110,4 +110,8 @@ public class DerivationNode extends Node<Phrase, SingleDerivationPointer> {
         return children;
     }
 
+    public String toString() {
+        return this.getData().toString(" ");
+    }
+
 }

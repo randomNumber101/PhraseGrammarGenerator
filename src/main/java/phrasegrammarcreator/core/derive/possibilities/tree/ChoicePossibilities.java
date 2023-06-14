@@ -42,6 +42,11 @@ public class ChoicePossibilities extends Possibilities {
         return accept(aggregator);
     }
 
+    @Override
+    public void acceptUniform(PossibilityTreeTraverser traverser) {
+        traverser.choice(this);
+    }
+
     public Phrase getContainter() {
         return container;
     }

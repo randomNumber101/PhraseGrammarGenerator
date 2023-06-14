@@ -4,26 +4,26 @@ package phrasegrammarcreator.core.rules;
 import phrasegrammarcreator.core.phrases.Phrasable;
 import phrasegrammarcreator.core.phrases.Phrase;
 
-public abstract class Rule<T extends Phrasable, S extends Phrasable> {
+public abstract class Rule<L extends Phrasable, R extends Phrasable> {
 
     private final String name;
-    private final T derivationSource;
-    private final S derivationTarget;
+    private final L leftHandSide;
+    private final R rightHandSide;
     private final int lengthChange;
 
-    public Rule(String name, T from, S to) {
+    public Rule(String name, L from, R to) {
         this.name = name;
-        derivationSource = from;
-        derivationTarget = to;
+        leftHandSide = from;
+        rightHandSide = to;
         lengthChange = to.toPhrase().size() - from.toPhrase().size();
     }
 
-    public T getSource() {
-        return derivationSource;
+    public L getLHS() {
+        return leftHandSide;
     }
 
-    public Phrase getTarget() {
-        return derivationTarget.toPhrase().cleanCopy();
+    public Phrase getRHS() {
+        return rightHandSide.toPhrase().cleanCopy();
     }
 
     public int getLengthChange() {
@@ -31,7 +31,7 @@ public abstract class Rule<T extends Phrasable, S extends Phrasable> {
     }
 
     public String toString() {
-        return derivationSource.toString() + " -> " + derivationTarget.toString();
+        return leftHandSide.toString() + " -> " + rightHandSide.toPhrase().toString(" ");
     }
 
     public String getName() {

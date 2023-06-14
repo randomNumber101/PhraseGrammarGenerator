@@ -121,6 +121,12 @@
     ],
     "Outputs": [
         {
+            "Grammar" : "Extern CFG",
+            "Setting" : "MaskingSmall",
+            "file-name": "LARGE-MASKING",
+            "overwrite-file": true
+        },
+        {
             "Grammar" : "1-Dyck",
             "Setting" : "TreeBracketsSmall",
             "file-name": "1D-Bracket",
@@ -170,3 +176,4 @@
         }
     ]
 }
+

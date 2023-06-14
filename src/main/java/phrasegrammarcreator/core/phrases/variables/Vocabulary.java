@@ -8,10 +8,14 @@ import java.util.Set;
 public class Vocabulary {
 
 
-    private final HashMap<String, Variable> variables;
+    final HashMap<String, Variable> variables;
 
     public Vocabulary() {
         variables = new HashMap<>();
+    }
+
+    public Vocabulary(Vocabulary copy) {
+        variables = new HashMap<>(copy.variables);
     }
 
     public void registerVariable(String regex, Variable variable)  {

@@ -28,4 +28,9 @@ public class ProductPossibilities extends Possibilities {
     public <T> T acceptUniform(PossibilityTreeAggregator<T,T> aggregator) {
         return accept(aggregator);
     }
+
+    @Override
+    public void acceptUniform(PossibilityTreeTraverser traverser) {
+        traverser.product(this);
+    }
 }

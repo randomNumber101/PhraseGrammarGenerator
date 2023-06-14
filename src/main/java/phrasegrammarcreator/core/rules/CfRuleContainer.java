@@ -1,11 +1,8 @@
 package phrasegrammarcreator.core.rules;
 
-import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.NonTerminal;
 import phrasegrammarcreator.core.phrases.variables.Variable;
-import phrasegrammarcreator.core.rules.ContextFreeRule;
-import phrasegrammarcreator.core.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,17 +13,21 @@ public class CfRuleContainer {
     private final List<ContextFreeRule> rules;
     HashMap<Variable, List<ContextFreeRule>> variableApplicableRules;
 
-    public CfRuleContainer(List<Rule> rules) {
-        this.rules = forceContextFree(rules);
-        computeVariableRules(this.rules);
+    public CfRuleContainer() {
+        this.rules = new ArrayList<>();
     }
 
-    private void computeVariableRules(List<ContextFreeRule> cfRules) {
+    public CfRuleContainer(List<Rule> rules) {
+        this.rules = forceContextFree(rules);
+        computeVariableRules();
+    }
+
+    public void computeVariableRules() {
         variableApplicableRules = new HashMap<>();
-        for (ContextFreeRule cfr : cfRules) {
-            NonTerminal source = cfr.getSource();
+        for (ContextFreeRule cfr : this.rules) {
+            NonTerminal source = cfr.getLHS();
             if (!variableApplicableRules.containsKey(source))
-                variableApplicableRules.put(cfr.getSource(), new ArrayList<>(List.of(cfr)));
+                variableApplicableRules.put(cfr.getLHS(), new ArrayList<>(List.of(cfr)));
             else
                 variableApplicableRules.get(source).add(cfr);
         }
@@ -39,9 +40,18 @@ public class CfRuleContainer {
         return out;
     }
 
+    public List<ContextFreeRule> getRulesWithRHS(Phrase phrase) {
+        List<ContextFreeRule> output = new ArrayList<>();
+        for (ContextFreeRule rule : rules) {
+            if (rule.getRHS().equalsByBuilders(phrase))
+                output.add(rule);
+        }
+        return output;
+    }
+
     public List<Phrase> getPhrasesFor(Variable v) {
         return getRulesFor(v).stream()
-                    .map(ContextFreeRule::getTarget)
+                    .map(ContextFreeRule::getRHS)
                     .map(Phrase::cleanCopy)
                     .toList();
     }

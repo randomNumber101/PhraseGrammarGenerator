@@ -18,6 +18,7 @@ public class FileGenerator {
 
     public static void save(GenerationInstance generation, DataSet dataSet) {
 
+        int maxCount = generation.settings().possibilityCap();
         String outputDir = generation.settings().outputDir();
 
 
@@ -37,7 +38,8 @@ public class FileGenerator {
             // Write data iterable
             generator.writeFieldName("data");
             generator.writeStartArray();
-            for (Iterator<Datum> it = dataSet.getData(); it.hasNext(); ) {
+            Iterator<Datum> it = dataSet.getData();
+            for (int i = 0; it.hasNext() && i < maxCount; i++) {
                 Datum datum = it.next();
                 generator.writeObject(datum);
             }

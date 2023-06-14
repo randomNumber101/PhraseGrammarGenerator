@@ -18,8 +18,8 @@ public class RuleParser extends SingleValueParser<List<Rule>> {
 
     private int index = 0;
 
-    public final String PATTERN_STRING = "([\\w\\s]*)->([\\w\\s\\|]*)";
-    private final Pattern pattern = Pattern.compile(PATTERN_STRING, Pattern.CASE_INSENSITIVE);
+    public static final String PATTERN_STRING = "([\\w\\s]*)->([\\w\\s\\|]*)";
+    public static final Pattern pattern = Pattern.compile(PATTERN_STRING, Pattern.CASE_INSENSITIVE);
 
     private final Vocabulary vocabulary;
 

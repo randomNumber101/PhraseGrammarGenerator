@@ -14,15 +14,16 @@ import java.util.List;
 
 public class FormalGrammar{
 
-    private String name;
-    private Vocabulary vocabulary;
-    private List<Rule> rules;
+    protected String name;
+    protected Vocabulary vocabulary;
+    protected List<Rule> rules;
 
-    private CfRuleContainer ruleContainer;
-    private WordDictionary dictionary;
-    private Phrase startPhrase;
+    protected CfRuleContainer ruleContainer;
+    protected WordDictionary dictionary;
+    protected Phrase startPhrase;
 
 
+    public FormalGrammar (){}
     public FormalGrammar(String name, Vocabulary vocabulary, List<Rule> rules, WordDictionary dictionary, Phrase startPhrase) {
         this.name = name;
         this.vocabulary = vocabulary;
@@ -31,7 +32,6 @@ public class FormalGrammar{
         this.startPhrase = startPhrase;
         this.ruleContainer = new CfRuleContainer(rules);
     }
-
 
     public List<Rule> getRules() {
         return rules;

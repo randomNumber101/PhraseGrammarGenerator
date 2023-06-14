@@ -5,7 +5,6 @@ import phrasegrammarcreator.compute.DerivationSet;
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.derive.possibilities.tree.ChoicePossibilities;
-import phrasegrammarcreator.core.derive.possibilities.tree.Possibilities;
 import phrasegrammarcreator.core.derive.possibilities.tree.PossibilityTreeAggregator;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Variable;
@@ -14,7 +13,6 @@ import phrasegrammarcreator.util.Randomizer;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SmartChooser extends DerivationChooser{
@@ -51,7 +49,7 @@ public class SmartChooser extends DerivationChooser{
 
         for (Variable v : grammar.getVocabulary().getVariables()) {
             ChoicePossibilities cp = new ChoicePossibilities(container, v.createInstance());
-            calculateTillCap(cp, POSSIBILITY_CAP, DEPTH_CAP);
+            cp.buildTreeTillCap(random, POSSIBILITY_CAP, DEPTH_CAP);
             double weight = cp.accept(new EndPhrasePossibilityAggregator());
 
             variableWeights.put(v, weight);
@@ -59,18 +57,10 @@ public class SmartChooser extends DerivationChooser{
         }
 
         for (Rule<?, ?> r : rules) {
-            double weightSum = r.getTarget().stream().map(vi -> variableWeights.get(vi.getBuilder()))
+            double weightSum = r.getRHS().stream().map(vi -> variableWeights.get(vi.getBuilder()))
                     .collect(Collectors.summarizingDouble(Double::doubleValue))
                     .getSum();
             ruleWeights.put(r, weightSum);
-        }
-    }
-
-    private void calculateTillCap(Possibilities p, int possibiliyCap, int depthCap) {
-        for (int i = 0; i < depthCap; i++) {
-            if (p.getCount() > possibiliyCap)
-                return;
-            p.calculateNext();
         }
     }
 

@@ -28,7 +28,7 @@ public class ContextSensitiveCalculator extends DerivationsCalculator{
         SuffixTree suffixTree = new SuffixTree(tokenizer.getTokenizedPhrase());
         DerivationSet output = new DerivationSet();
         for (Rule r : rules) {
-            List<Occurrence> occurrences = suffixTree.searchText(tokenizer.tokenize(r.getSource().toPhrase()));
+            List<Occurrence> occurrences = suffixTree.searchText(tokenizer.tokenize(r.getLHS().toPhrase()));
             output.add(r, occurrences);
         }
         return output;

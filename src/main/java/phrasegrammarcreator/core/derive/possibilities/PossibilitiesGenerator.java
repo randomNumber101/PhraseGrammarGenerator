@@ -8,12 +8,15 @@ import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.main.GenerationInstance;
 
 import java.util.Iterator;
+import java.util.Random;
 import java.util.function.Function;
 
 public class PossibilitiesGenerator implements Function<GenerationInstance, Iterator<Phrase>> {
 
     CfRuleContainer rc;
     ProductPossibilities root;
+
+    Random random;
 
     int CAP = 100000;
     int DEPTH_CAP = 20;
@@ -26,16 +29,17 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
         depth = 0;
     }
 
-    public PossibilitiesGenerator(FormalGrammar grammar, Phrase start, int countCap, int depthCap) {
+    public PossibilitiesGenerator(FormalGrammar grammar, Phrase start, Random random, int countCap, int depthCap) {
         rc = grammar.getRuleContainer();
         root = new ProductPossibilities(rc, start);
+        this.random = random;
         depth = 0;
         CAP = countCap;
         DEPTH_CAP = depthCap;
     }
 
     private void printInfo() {
-        System.out.println("Ps: " + root.getCount());
+        System.out.println("Ps: " + root.getNextCount());
         for (Phrase p : root)
             System.out.print(p + ", ");
         System.out.println();
@@ -54,18 +58,12 @@ public class PossibilitiesGenerator implements Function<GenerationInstance, Iter
 
     @Override
     public Iterator<Phrase> apply(GenerationInstance generationInstance) {
-        long currentPossibilities = 0;
-        do {
-            root.calculateNext();
-            printInfo();
-            currentPossibilities = root.getCount();
-        }
-        while(currentPossibilities < CAP && depth++ < DEPTH_CAP);
+        root.buildTreeTillCap(random, CAP, DEPTH_CAP);
         return root.iterator();
     }
 
     public long getCurrentCount() {
-        return root.getCount();
+        return root.getNextCount();
     }
 
     public int getCurrentDepth() {

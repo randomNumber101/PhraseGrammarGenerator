@@ -33,7 +33,7 @@ public class ContextFreeCalculator extends DerivationsCalculator{
         // Remove ContextSensitive derivations
         DerivationSet derivations = lastDerivations.copy();
         derivations.removeAll(derivations.stream()
-                .filter(d -> d.getRule().getSource().toPhrase().size() > 1)
+                .filter(d -> d.getRule().getLHS().toPhrase().size() > 1)
                 .collect(Collectors.toSet()));
 
         // Remove derivations that cross interval that has been derived

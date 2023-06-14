@@ -56,12 +56,10 @@ public class GrammarObjectParser extends JSonObjectParser<FormalGrammar> {
             String path = object.getString("load-from");
             File file = new File(path);
 
-            String cfgName = object.getString("name");
-
             String extension = path.substring(path.lastIndexOf('.') + 1);
             switch (extension) {
                 case "cfg" -> {
-                    return new CFGLoader(file, cfgName).load();
+                    return new CFGLoader(file, name).load();
                 }
                 default -> throw new IllegalArgumentException("Can't load grammar from "+ path);
             }

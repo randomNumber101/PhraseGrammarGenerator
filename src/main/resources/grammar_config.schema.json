@@ -4,7 +4,7 @@
     "definitions": {
         "Config": {
             "type": "object",
-            "additionalProperties": false,
+            "additionalProperties": true,
             "properties": {
                 "Settings": {
                     "type": "array",

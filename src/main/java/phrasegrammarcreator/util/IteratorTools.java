@@ -54,7 +54,6 @@ public class IteratorTools {
         return getCombination(combinationIter, loaded);
     }
 
-
     public static <T> List<T> loadAll(Iterator<T> iterator) {
         List<T> out = new ArrayList<>();
         while (iterator.hasNext())
@@ -109,6 +108,17 @@ public class IteratorTools {
                 IntStream.range(0, data.length)
                 .mapToObj(i -> data[i].get(indices[i]))
                 .toList());
+    }
+
+    public static <E> List<E> pickNRandomElements(List<E> immutable, int n, Random r) {
+        ArrayList<E> list = new ArrayList<>(immutable);
+        int length = list.size();
+        if (length <= n || length == 0)
+            return list;
+        for (int i = length - 1; i >= length - n; --i) {
+            Collections.swap(list, i , r.nextInt(i + 1));
+        }
+        return list.subList(length - n, length);
     }
 
     public static List<List<Phrase>> cartesianProduct(List<List<Phrase>> lists) {

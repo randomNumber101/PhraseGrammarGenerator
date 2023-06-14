@@ -67,7 +67,7 @@ public class Phrase extends ArrayList<VariableInstance<? extends Variable>> impl
        List<VariableInstance<?>> beforeOccurrence = this.subList(0, occurrence.from);
        List<VariableInstance<?>> afterOccurrence = this.subList(occurrence.to, size());
 
-       Phrase replacement = rule.getTarget();
+       Phrase replacement = rule.getRHS();
        // TODO: This works only if ContextFreeGrammar
        replacement.setDerivedFromAll(this.get(occurrence.from));
 
@@ -106,5 +106,24 @@ public class Phrase extends ArrayList<VariableInstance<? extends Variable>> impl
         for (Phrase p : phrases)
             out.addAll(p);
         return out;
+    }
+
+    public List<Variable> transformToBuilders() {
+        return (List<Variable>) this.stream().map(VariableInstance::getBuilder).toList();
+    }
+
+    public boolean equalsByBuilders(Phrase phrase) {
+        List<Variable> myBuilders = transformToBuilders();
+        List<Variable> otherBuilders = phrase.transformToBuilders();
+
+        if (myBuilders.size() != otherBuilders.size())
+            return false;
+        else {
+            for (int i = 0; i < myBuilders.size(); i++) {
+                if (!myBuilders.get(i).equals(otherBuilders.get(i)))
+                    return false;
+            }
+            return true;
+        }
     }
 }

@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,20 +27,23 @@ import static phrasegrammarcreator.core.phrases.variables.Variable.Type.TERMINAL
 
 public class CFGLoader {
 
-    final String ruleRegex = "(\\w*) -> (\\w+( \\w+)*)";
-    final String startSymbolRegex = "%start (\\w+)";
+    final String ruleRegex = "([\\w']*) -> ([\\w']+( [\\w']+)*)(\\s*\\|\\s*[\\w']+( [\\w']+)*)*";
+    final String dictRegex = "([\\w']*) -> ((\"[\\w'.,]+\")(\\s*\\|\\s*(\"[\\w'.,]+\"))*)";
+    final String startSymbolRegex = "%start ([\\w']+)";
 
     private File file;
     private String name;
 
     public CFGLoader(File file, String name) {
         this.file = file;
+        this.name = name;
     }
 
     public FormalGrammar load() throws Exception {
 
-        Pattern rulePattern = Pattern.compile(ruleRegex);
-        Pattern startSymbolPattern = Pattern.compile(startSymbolRegex);
+        Pattern rulePattern = Pattern.compile(ruleRegex, Pattern.CASE_INSENSITIVE);
+        Pattern dictPattern = Pattern.compile(dictRegex, Pattern.CASE_INSENSITIVE);
+        Pattern startSymbolPattern = Pattern.compile(startSymbolRegex, Pattern.CASE_INSENSITIVE);
         
         AtomicReference<String> startSymbol = new AtomicReference<>();
         HashSet<String> allVariables = new HashSet<>();
@@ -57,10 +61,12 @@ public class CFGLoader {
             }
                 
             String lhs = matcher.group(1);
-            String[] rhs = matcher.group(2).split(" ");
+            String[] rhs = matcher.group(2).strip().split("[ |]");
 
-            allVariables.addAll(List.of(rhs));
-            nonTerminals.add(lhs);
+            synchronized (CFGLoader.class) {
+                allVariables.addAll(List.of(rhs));
+                nonTerminals.add(lhs);
+            }
         });
 
         // Register nonTerminals
@@ -75,19 +81,33 @@ public class CFGLoader {
         // Parse rules now ( .cfg rule format is compatible with this custom format)
         RuleParser parser = new RuleParser(vocabulary);
         List<Rule> rules = new ArrayList<>();
+        WordDictionary wordDictionary = new WordDictionary(terminals);
         reader =  new BufferedReader(new FileReader(file));
         reader.lines().parallel().forEach(line -> {
-            if (!rulePattern.matcher(line).find())
+            if (!rulePattern.matcher(line).find()) {
+                Matcher dictMatcher = dictPattern.matcher(line);
+                if (dictMatcher.find()) {
+                    // Add all rules of form (A -> "a1" | "a2" | ...) to dictionary instead of creating rules
+                    String lhs = dictMatcher.group(1);
+                    String rhs = dictMatcher.group(2);
+
+                    Terminal terminal = (Terminal) Variable.ofRegex(TERMINAL, vocabulary, lhs, null);
+                    List<String> entries = Arrays.stream(rhs.split("\\|"))
+                            .map(String::strip)
+                            .map(s -> s.replaceAll("\"", "")).toList();
+                    wordDictionary.add(terminal, entries);
+                }
                 return;
+            }
             try {
-                rules.addAll(parser.parse(line));
+                synchronized (CFGLoader.class) {
+                    rules.addAll(parser.parse(line));
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
 
-        // Empty Dict as Grammar doesn't necessarily have dict format
-        WordDictionary wordDictionary = new WordDictionary(terminals);
 
         // Parse start phrase
         PhraseParser phraseParser = new PhraseParser(vocabulary);

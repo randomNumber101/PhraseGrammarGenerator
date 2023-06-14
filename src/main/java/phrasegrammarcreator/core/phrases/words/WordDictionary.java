@@ -45,4 +45,17 @@ public class WordDictionary extends HashMap<Terminal, List<String>> {
         }
         return wordTerminalHashMap.get(terminal);
     }
+
+    public List<Terminal> getPossibleTerminals(String word) {
+        List<Terminal> out = new ArrayList<>();
+        for (Terminal t : keySet()) {
+            if (this.get(t).contains(word))
+                out.add(t);
+        }
+        return out;
+    }
+
+    public List<Terminal> getTerminals() {
+        return terminals;
+    }
 }

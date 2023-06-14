@@ -74,7 +74,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
     private ForkPipe<GenerationInstance, Phrase> buildPossibilityPipe(FormalGrammar grammar, Settings settings) {
         int possibilityCap = settings.possibilityCap();
         int depthCap = settings.depthCap();
-        PossibilitiesGenerator pg = new PossibilitiesGenerator(grammar, grammar.getStartPhrase(), possibilityCap, depthCap);
+        PossibilitiesGenerator pg = new PossibilitiesGenerator(grammar, grammar.getStartPhrase(), randomizer, possibilityCap, depthCap);
 
         stats.put("phrase count", pg::getCurrentCount);
         stats.put("search tree depth", pg::getCurrentDepth);

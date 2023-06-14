@@ -24,4 +24,12 @@ public class DerivationPath extends ArrayList<DerivationNode> {
         }
         return pointers;
     }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (DerivationNode node : this) {
+            builder.append(" -> ").append(node.toString());
+        }
+        return builder.toString();
+    }
 }

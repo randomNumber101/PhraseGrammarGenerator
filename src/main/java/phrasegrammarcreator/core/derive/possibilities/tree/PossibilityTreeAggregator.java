@@ -6,10 +6,10 @@ import phrasegrammarcreator.core.phrases.Phrase;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class PossibilityTreeAggregator<S, T> {
-    public abstract S product(List<T> in);
-    public abstract T choice(List<S> in);
-    public abstract T ifLeaf(ChoicePossibilities cp);
+ public abstract class PossibilityTreeAggregator<P, C> {
+    public abstract P product(List<C> in);
+    public abstract C choice(List<P> in);
+    public abstract C ifLeaf(ChoicePossibilities cp);
 
     public static class Null{
         private Null(){};
@@ -17,6 +17,23 @@ public abstract class PossibilityTreeAggregator<S, T> {
     };
 
 
+    public static class ConstrainedTreeExpander extends PossibilityTreeAggregator<Null, Null> {
+
+        @Override
+        public Null product(List<Null> in) {
+            return null;
+        }
+
+        @Override
+        public Null choice(List<Null> in) {
+            return null;
+        }
+
+        @Override
+        public Null ifLeaf(ChoicePossibilities cp) {
+            return null;
+        }
+    }
 
     public static class PhraseIteratorAggregator extends PossibilityTreeAggregator<Iterator<Phrase>, Iterator<Phrase>>{
         @Override
@@ -44,8 +61,31 @@ public abstract class PossibilityTreeAggregator<S, T> {
             return List.of(cp.container).iterator();
         }
     }
+     public static class GetCurrentCountAggregator extends PossibilityTreeAggregator<Long, Long> {
+         @Override
+         public Long product(List<Long> in) {
+             long product = 1;
+             for (Long aLong : in) {
+                 product *= aLong;
+             }
+             return product;
+         }
 
-    public static class GetCountAggregator extends PossibilityTreeAggregator<Long, Long> {
+         @Override
+         public Long choice(List<Long> in) {
+             long sum = 0;
+             for (Long aLong : in) {
+                 sum += aLong;
+             }
+             return sum;
+         }
+
+         @Override
+         public Long ifLeaf(ChoicePossibilities cp) {
+             return 1L;
+         }
+     }
+    public static class GetNextCountAggregator extends PossibilityTreeAggregator<Long, Long> {
         @Override
         public Long product(List<Long> in) {
             long product = 1;
@@ -66,7 +106,7 @@ public abstract class PossibilityTreeAggregator<S, T> {
 
         @Override
         public Long ifLeaf(ChoicePossibilities cp) {
-            return 1L;
+            return (long) Math.max(cp.to.size(), 1);
         }
     }
 
