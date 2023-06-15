@@ -10,6 +10,7 @@ import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.util.IteratorTools;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,25 +32,28 @@ public class ContextFreeParser {
     public boolean parse(String sentence) throws Exception {
         String[] parts = sentence.strip().split("\\s+");
         int N = parts.length;
-        List<NonTerminal>[][] T = new ArrayList[N][N];
+        HashSet<NonTerminal>[][] T = new HashSet[N][N];
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                T[i][j] = new ArrayList<>();
+                T[i][j] = new HashSet<>();
             }
         }
 
         for (int i = 0; i < N; i++) {
             List<Terminal> possible = grammar.getDictionary().getPossibleTerminals(parts[i]);
-            T[i][0] = possible.stream().map(grammar::getPseudoTerminal).toList();
+            for (Terminal terminal : possible) {
+                List<ContextFreeRule> unaryRules = grammar.getRuleContainer().getRulesWithRHS(new Phrase(List.of(terminal)));
+                T[i][0].addAll(unaryRules.stream().map(ContextFreeRule::getLHS).toList());
+            }
         }
 
         for (int span = 2; span <= N; span++) {
             for (int i = 0; i < N - span + 1; i++) {
-                T[i][span - 1] = new ArrayList<>();
+                T[i][span - 1] = new HashSet<>();
                 for (int k = 1; k < span; k++) {
-                    List<NonTerminal> lPartition = T[i][k - 1];
-                    List<NonTerminal> rPartition = T[i + k][span - k - 1];
+                    HashSet<NonTerminal> lPartition = T[i][k - 1];
+                    HashSet<NonTerminal> rPartition = T[i + k][span - k - 1];
                     // Iterate over all combinations, If one partition is empty no combinations will be provided
                     Iterator<List<NonTerminal>> combinations = IteratorTools.combine(List.of(lPartition.iterator(), rPartition.iterator()));
                     for (Iterator<List<NonTerminal>> it = combinations; it.hasNext(); ) {
@@ -68,7 +72,7 @@ public class ContextFreeParser {
         else {
             Variable startSymbol = startPhrase.get(0).getBuilder();
             if (startSymbol instanceof NonTerminal startSymbolNT) {
-                return T[0][N - 1].contains(startSymbol);
+                return T[0][N - 1].contains(startSymbolNT);
             }
             else
                 throw new IllegalArgumentException("Start symbol has to be a Non-Terminal!");
