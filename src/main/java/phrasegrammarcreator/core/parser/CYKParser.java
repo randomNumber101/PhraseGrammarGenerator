@@ -9,17 +9,16 @@ import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.rules.ContextFreeRule;
 import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 // TODO: Implement Parser for CF Grammars
-public class ContextFreeParser {
+public class CYKParser {
 
     private CNFGrammar grammar;
 
-    public ContextFreeParser(FormalGrammar grammar) {
+    public CYKParser(FormalGrammar grammar) {
         if (grammar instanceof CNFGrammar cnf) {
             this.grammar = cnf;
         }

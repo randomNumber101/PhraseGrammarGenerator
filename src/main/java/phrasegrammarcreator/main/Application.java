@@ -2,9 +2,8 @@ package phrasegrammarcreator.main;
 
 import phrasegrammarcreator.core.CNFGrammar;
 import phrasegrammarcreator.core.FormalGrammar;
-import phrasegrammarcreator.core.parser.ContextFreeParser;
+import phrasegrammarcreator.core.parser.CYKParser;
 import phrasegrammarcreator.io.console.info.GrammarInfo;
-import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.parser.ConfigLoader;
 
@@ -59,12 +58,12 @@ public class Application {
 
             ExecutionPipeline pipeline = new ExecutionPipeline();
 
-            String parseTestSentence00 = "you both had how last reserve less than number how most that .";
-            String parseTestSentence01 = "i need a flight from charlotte to las vegas that makes a stop in saint louis .";
-            String parseTestSentence2 = "Toni sagt ,_dass Toni sagt ,_dass Toni sagt ,_dass Toni sagt ,_dass es_morgen_schneit";
-            CNFGrammar cnfGrammar = new CNFGrammar(c.getGrammarList().get(0));
-            ContextFreeParser cykParser = new ContextFreeParser(cnfGrammar);
-            System.out.print(cykParser.parse(parseTestSentence01));
+            //String parseTestSentence00 = "you both had how last reserve less than number how most that .";
+            //String parseTestSentence01 = "i need a flight from charlotte to las vegas that makes a stop in saint louis .";
+            //String parseTestSentence2 = "Toni sagt ,_dass Toni sagt ,_dass Toni sagt ,_dass Toni sagt ,_dass es_morgen_schneit";
+            //CNFGrammar cnfGrammar = new CNFGrammar(c.getGrammarList().get(0));
+            //CYKParser cykParser = new CYKParser(cnfGrammar);
+            //System.out.print(cykParser.parse(parseTestSentence01));
 
             List<DataSet> outputs = c.getInstances().stream().map(pipeline).toList();
             Desktop.getDesktop().open(new File(c.getSettings().get(0).outputDir()));
