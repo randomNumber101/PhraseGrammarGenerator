@@ -9,6 +9,7 @@ import phrasegrammarcreator.core.phrases.EndPhraseGenerator;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.io.out.generate.BracketTreeGenerator;
 import phrasegrammarcreator.io.out.generate.OutputGenerator;
+import phrasegrammarcreator.io.out.generate.SelectiveMaskingClassGenerator;
 import phrasegrammarcreator.io.out.generate.SelectiveMaskingGenerator;
 import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
@@ -91,6 +92,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
     private ParallelPipe<EndPhrase, Datum> buildDataPipe(FormalGrammar grammar, Settings settings) {
         OutputGenerator datumGenerator = switch (settings.task()) {
             case MASKING -> new SelectiveMaskingGenerator(randomizer, settings.policy());
+            case CLASS_MASKING -> new SelectiveMaskingClassGenerator(randomizer, settings.policy());
             case TREE_BRACKETING -> new BracketTreeGenerator(randomizer, settings.policy());
             default -> null;
         };

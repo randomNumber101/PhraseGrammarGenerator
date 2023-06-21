@@ -16,24 +16,10 @@ import java.util.List;
         public static Null get() {return new Null();};
     };
 
-
-    public static class ConstrainedTreeExpander extends PossibilityTreeAggregator<Null, Null> {
-
-        @Override
-        public Null product(List<Null> in) {
-            return null;
-        }
-
-        @Override
-        public Null choice(List<Null> in) {
-            return null;
-        }
-
-        @Override
-        public Null ifLeaf(ChoicePossibilities cp) {
-            return null;
-        }
-    }
+     public static PhraseIteratorAggregator phraseIterator = new PhraseIteratorAggregator();
+     public static CurrentCountAggregator currentCount = new CurrentCountAggregator();
+     public static NextCountAggregator nextCount = new NextCountAggregator();
+     public static LeafNodesAggregator leafNodes = new LeafNodesAggregator();
 
     public static class PhraseIteratorAggregator extends PossibilityTreeAggregator<Iterator<Phrase>, Iterator<Phrase>>{
         @Override
@@ -61,7 +47,7 @@ import java.util.List;
             return List.of(cp.container).iterator();
         }
     }
-     public static class GetCurrentCountAggregator extends PossibilityTreeAggregator<Long, Long> {
+    public static class CurrentCountAggregator extends PossibilityTreeAggregator<Long, Long> {
          @Override
          public Long product(List<Long> in) {
              long product = 1;
@@ -85,7 +71,7 @@ import java.util.List;
              return 1L;
          }
      }
-    public static class GetNextCountAggregator extends PossibilityTreeAggregator<Long, Long> {
+    public static class NextCountAggregator extends PossibilityTreeAggregator<Long, Long> {
         @Override
         public Long product(List<Long> in) {
             long product = 1;
@@ -107,6 +93,22 @@ import java.util.List;
         @Override
         public Long ifLeaf(ChoicePossibilities cp) {
             return (long) Math.max(cp.to.size(), 1);
+        }
+    }
+    public static class LeafNodesAggregator extends PossibilityTreeAggregator<List<ChoicePossibilities>, List<ChoicePossibilities>> {
+        @Override
+        public List<ChoicePossibilities> product(List<List<ChoicePossibilities>> in) {
+            return in.stream().flatMap(List::stream).toList();
+        }
+
+        @Override
+        public List<ChoicePossibilities> choice(List<List<ChoicePossibilities>> in) {
+             return in.stream().flatMap(List::stream).toList();
+        }
+
+        @Override
+        public List<ChoicePossibilities> ifLeaf(ChoicePossibilities cp) {
+            return List.of(cp);
         }
     }
 

@@ -110,6 +110,23 @@ public class IteratorTools {
                 .toList());
     }
 
+    public static <T> Iterator<T> randomOrder(Random random, Collection<T> elements) {
+        ArrayList<T> residual = new ArrayList<>(elements);
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return !residual.isEmpty();
+            }
+
+            @Override
+            public T next() {
+                T pick = residual.get(random.nextInt(residual.size()));
+                residual.remove(pick);
+                return pick;
+            }
+        };
+    }
+
     public static <E> List<E> pickNRandomElements(List<E> immutable, int n, Random r) {
         ArrayList<E> list = new ArrayList<>(immutable);
         int length = list.size();

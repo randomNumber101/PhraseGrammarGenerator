@@ -1,9 +1,9 @@
 package phrasegrammarcreator.core.derive.possibilities.tree;
 
 import phrasegrammarcreator.core.phrases.Phrase;
+import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class LeafConsumer extends PossibilityTreeAggregator<PossibilityTreeAggregator.Null, PossibilityTreeAggregator.Null> {
@@ -30,7 +30,7 @@ public class LeafConsumer extends PossibilityTreeAggregator<PossibilityTreeAggre
     }
 
 
-    public static LeafConsumer calculateNextConsumer() {
+    public static LeafConsumer calculateNext() {
         return new LeafConsumer(new Consumer<ChoicePossibilities>() {
             @Override
             public void accept(ChoicePossibilities cp) {
@@ -42,4 +42,5 @@ public class LeafConsumer extends PossibilityTreeAggregator<PossibilityTreeAggre
             }
         });
     }
+
 }

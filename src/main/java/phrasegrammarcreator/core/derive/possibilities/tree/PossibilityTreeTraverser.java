@@ -3,9 +3,7 @@ package phrasegrammarcreator.core.derive.possibilities.tree;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public abstract class PossibilityTreeTraverser {
 
@@ -18,30 +16,32 @@ public abstract class PossibilityTreeTraverser {
 
     public abstract void product(ProductPossibilities factor);
 
-
-
-    public static class ConstrainedTreeExtender extends PossibilityTreeTraverser {
+    /**
+     * @Deprecated
+     */
+    @Deprecated
+    public static class LogarithmicConstrainedTreeExtender extends PossibilityTreeTraverser {
 
         private Random random;
         private final int maxNewLeaves;
         private final int maxDepth;
 
-        public ConstrainedTreeExtender(Random random, int maxNewLeaves, int maxDepth) {
+        public LogarithmicConstrainedTreeExtender(Random random, int maxNewLeaves, int maxDepth) {
             this.maxNewLeaves = maxNewLeaves;
             this.maxDepth = maxDepth;
             this.random = random;
         }
 
-        private ConstrainedTreeExtender splitOnChoices(int numChoices) {
+        private LogarithmicConstrainedTreeExtender splitOnChoices(int numChoices) {
             double division = (double) maxNewLeaves / (double) numChoices;
             int ceiled = (int) Math.ceil(division);
-            return new ConstrainedTreeExtender(random, ceiled, maxDepth - 1);
+            return new LogarithmicConstrainedTreeExtender(random, ceiled, maxDepth - 1);
         }
 
-        private ConstrainedTreeExtender splitOnFactors(int numFactors) {
+        private LogarithmicConstrainedTreeExtender splitOnFactors(int numFactors) {
             double log = Math.log(maxNewLeaves) / Math.log(numFactors);
             int ceiled = Math.max((int) Math.ceil(log), 1);
-            return new ConstrainedTreeExtender(random, ceiled, maxDepth);
+            return new LogarithmicConstrainedTreeExtender(random, ceiled, maxDepth);
         }
 
         private void extendNodeCapped(ChoicePossibilities node) {
@@ -69,6 +69,48 @@ public abstract class PossibilityTreeTraverser {
             int numFactors = product.factors.size();
             PossibilityTreeTraverser nextLayerTraverser = splitOnFactors(numFactors);
             product.factors.forEach(p -> p.acceptUniform(nextLayerTraverser));
+        }
+    }
+
+
+    /**
+     * Extends a single choice node by max {@param maxNext} nodes.
+     *
+     */
+    public static class CappedNodeExtender extends PossibilityTreeTraverser {
+
+        private Random random;
+        private int maxNext;
+
+        public CappedNodeExtender(Random random, int maxNext) {
+            this.random = random;
+            this.maxNext = maxNext;
+        }
+
+
+        @Override
+        public void choice(ChoicePossibilities cp) {
+            HashSet<Phrase> notExtended = new HashSet<>(cp.to);
+            notExtended.removeAll(cp.extended);
+
+            if (notExtended.isEmpty())
+                return;
+
+            if (notExtended.size() <= maxNext) {
+                notExtended.forEach(cp::extend);
+                return;
+            }
+
+            Iterator<Phrase> randIt = IteratorTools.randomOrder(random, notExtended);
+            for (int i = 0; i < maxNext; i++) {
+                Phrase next = randIt.next();
+                cp.extend(next);
+            }
+        }
+
+        @Override
+        public void product(ProductPossibilities cp) {
+            cp.factors.forEach(this::choice);
         }
     }
 }

@@ -4,9 +4,9 @@ import phrasegrammarcreator.core.rules.CfRuleContainer;
 import phrasegrammarcreator.core.phrases.Phrase;
 import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.variables.VariableInstance;
+import phrasegrammarcreator.util.IteratorTools;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ChoicePossibilities extends Possibilities {
 
@@ -16,6 +16,7 @@ public class ChoicePossibilities extends Possibilities {
     Phrase container;
     VariableInstance<?> from;
     List<Phrase> to;
+    HashSet<Phrase> extended = new HashSet<>();
 
     protected ArrayList<ProductPossibilities> choices;
 
@@ -53,6 +54,23 @@ public class ChoicePossibilities extends Possibilities {
 
     public List<Phrase> getDerivationPhrases() {
         return to;
+    }
+
+    public List<Phrase> getExtendable() {
+        ArrayList<Phrase> all = new ArrayList<>(to);
+        all.removeAll(extended);
+        return all;
+    }
+
+    public boolean extend(Phrase p) {
+        if (extended.contains(p) |! to.contains(p))
+            return false;
+        if (choices == null)
+            choices = new ArrayList<>();
+        choices.add(new ProductPossibilities(rc, p));
+        p.setDerivedFromAll(from);
+        extended.add(p);
+        return true;
     }
 
 

@@ -7,16 +7,34 @@
             "task": "tree-bracketing",
             "word-generation": "single",
             "phrase-count-cap": 1000,
-            "search-tree-depth-cap": 10
+            "search-tree-depth-cap": 100
         },
         {
             "name": "MaskingSmall",
             "seed" : 420,
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
-            "task": "masking",
+            "task": "class-masking",
             "word-generation": "single",
             "phrase-count-cap": 1000,
-            "search-tree-depth-cap": 10
+            "search-tree-depth-cap": 100
+        },
+        {
+            "name": "TreeBracketsLarge",
+            "seed": 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "task": "tree-bracketing",
+            "word-generation": "single",
+            "phrase-count-cap": 10000,
+            "search-tree-depth-cap": 100
+        },
+        {
+            "name": "MaskingLarge",
+            "seed" : 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "task": "class-masking",
+            "word-generation": "single",
+            "phrase-count-cap": 10000,
+            "search-tree-depth-cap": 100
         }
     ],
     "Grammars": [
@@ -91,7 +109,8 @@
                 "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
                 "D" : ["die", "eine", "diese"]
             },
-            "start-phrase": "S"
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s"]
         },
         {
             "name" : "2-Dyck",
@@ -116,61 +135,62 @@
                 "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
                 "D" : ["die"]
             },
-            "start-phrase": "S"
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
         }
     ],
     "Outputs": [
         {
             "Grammar" : "Extern CFG",
-            "Setting" : "MaskingSmall",
+            "Setting" : "MaskingLarge",
             "file-name": "LARGE-MASKING",
             "overwrite-file": true
         },
         {
             "Grammar" : "1-Dyck",
-            "Setting" : "TreeBracketsSmall",
+            "Setting" : "TreeBracketsLarge",
             "file-name": "1D-Bracket",
             "overwrite-file": true
         },
         {
             "Grammar" : "1-Dyck",
-            "Setting" : "MaskingSmall",
+            "Setting" : "MaskingLarge",
             "file-name": "1D-Mask",
             "overwrite-file": true
         },
         {
             "Grammar" : "2-Dyck",
-            "Setting" : "TreeBracketsSmall",
+            "Setting" : "TreeBracketsLarge",
             "file-name": "2D-Bracket",
             "overwrite-file": true
         },
         {
             "Grammar" : "2-Dyck",
-            "Setting" : "MaskingSmall",
+            "Setting" : "MaskingLarge",
             "file-name": "2D-Mask",
             "overwrite-file": true
         },
         {
             "Grammar" : "SF",
-            "Setting" : "TreeBracketsSmall",
+            "Setting" : "TreeBracketsLarge",
             "file-name": "SF-Bracket",
             "overwrite-file": true
         },
         {
             "Grammar" : "SF",
-            "Setting" : "MaskingSmall",
+            "Setting" : "MaskingLarge",
             "file-name": "SF-Mask",
             "overwrite-file": true
         },
         {
             "Grammar" : "NSF",
-            "Setting" : "TreeBracketsSmall",
+            "Setting" : "TreeBracketsLarge",
             "file-name": "NSF-Bracket",
             "overwrite-file": true
         },
         {
             "Grammar" : "NSF",
-            "Setting" : "MaskingSmall",
+            "Setting" : "MaskingLarge",
             "file-name": "NSF-Mask",
             "overwrite-file": true
         }

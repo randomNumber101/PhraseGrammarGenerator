@@ -77,11 +77,14 @@ public class CFGLoader {
         List<Terminal> terminals = new ArrayList<>();
         allVariables.removeAll(nonTerminals); // all - non terminals = terminals
         allVariables.forEach(regex -> terminals.add((Terminal) Variable.ofRegex(TERMINAL, vocabulary, regex, null)));
+        vocabulary.setMaskWorthy(terminals); // Make all terminals mask worthy, TODO: This is not configurarble yet
+
+        // Create dictionary
+        WordDictionary wordDictionary = new WordDictionary(terminals);
 
         // Parse rules now ( .cfg rule format is compatible with this custom format)
         RuleParser parser = new RuleParser(vocabulary);
         List<Rule> rules = new ArrayList<>();
-        WordDictionary wordDictionary = new WordDictionary(terminals);
         reader =  new BufferedReader(new FileReader(file));
         reader.lines().parallel().forEach(line -> {
             if (!rulePattern.matcher(line).find()) {
@@ -108,11 +111,10 @@ public class CFGLoader {
             }
         });
 
-
         // Parse start phrase
         PhraseParser phraseParser = new PhraseParser(vocabulary);
         Phrase startPhrase = phraseParser.parse(startSymbol.get());
-
+        
         return new FormalGrammar(name, vocabulary, rules, wordDictionary, startPhrase);
     }
 }

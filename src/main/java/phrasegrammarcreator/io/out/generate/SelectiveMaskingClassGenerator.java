@@ -1,6 +1,7 @@
 package phrasegrammarcreator.io.out.generate;
 
 import phrasegrammarcreator.core.phrases.EndPhrase;
+import phrasegrammarcreator.core.phrases.variables.Variable;
 import phrasegrammarcreator.core.phrases.words.WordTerminal;
 
 import java.util.ArrayList;
@@ -8,23 +9,26 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class SelectiveMaskingGenerator extends OutputGenerator {
+public class SelectiveMaskingClassGenerator extends OutputGenerator {
 
     private int maskedWord = -1;
 
     private List<Integer> maskWorthyWords;
 
+    private List<Variable> terminals;
+
     /**
-     * Masks one random mask worthy word, label is the word
+     * Masks one random mask worthy word, label is the class (variable) of the word
      * @param random Randomizer
      * @param policy WordGenerationPolicy
      */
-    public SelectiveMaskingGenerator(Random random, WordGenerationPolicy policy) {
+    public SelectiveMaskingClassGenerator(Random random, WordGenerationPolicy policy) {
         super(random, policy);
     }
 
     @Override
     protected void initialize(EndPhrase endPhrase) {
+        terminals = endPhrase.getNode().getData().transformToBuilders();
         maskWorthyWords = new ArrayList<>();
         for (int i = 0; i < endPhrase.size(); i++) {
             WordTerminal wt = endPhrase.get(i);
@@ -58,7 +62,7 @@ public class SelectiveMaskingGenerator extends OutputGenerator {
             if (maskWorthyWords.isEmpty())
                 return "[NONE]";
 
-            return parts.get(maskedWord);
+            return terminals.get(maskedWord).toString();
         };
     }
 }
