@@ -20,17 +20,23 @@ import java.util.List;
 
 public class FileGenerator {
 
+    public static boolean shouldGenerate(GenerationInstance generation) {
+        if (generation.overwriteOld())
+            return true;
+        File outputFile = new File(generation.settings().outputDir() + File.separator + generateName(generation));
+        return (!outputFile.exists());
+    }
+
     public static void save(GenerationInstance generation, DataSet dataSet) {
 
         int maxCount = generation.settings().possibilityCap();
         String outputDir = generation.settings().outputDir();
-        List<Datum> data = IteratorTools.loadAll(dataSet.getData());
 
         JsonFactory factory = new JsonFactory();
-        File outputFile = new File(outputDir + File.separator + generateName(generation, dataSet));
+        File outputFile = new File(outputDir + File.separator + generateName(generation));
         outputFile.getParentFile().mkdirs();
         if (outputFile.exists() && !generation.overwriteOld())
-            outputFile = new File(outputDir + File.separator + generateStampedName(generation, dataSet));
+            outputFile = new File(outputDir + File.separator + generateStampedName(generation));
 
         try(OutputStream out = new FileOutputStream(outputFile)) {
             JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
@@ -40,38 +46,41 @@ public class FileGenerator {
             generator.writeStartObject();
             generator.writeRaw("\n");
 
-            // Write meta Information
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            generator.writeObjectField("meta", dataSet.getMetaInformation());
-
             // Write data (Can be modified to instead write data iteratively)
             mapper.disable(SerializationFeature.INDENT_OUTPUT);
             generator.writeFieldName("data");
             generator.writeStartArray();
-            for (Datum datum : data) {
+            for (Iterator<Datum> it = dataSet.getData(); it.hasNext(); ) {
+                Datum datum = it.next();
                 generator.writeRaw("\n\t");
                 generator.writeObject(datum);
             }
             generator.writeEndArray();
 
+            // Write meta Information
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            generator.writeObjectField("meta", dataSet.getMetaInformation());
+
             // Close
             generator.writeEndObject();
             generator.close();
+
+            System.out.println("Saved dataset: " + dataSet.getMetaInformation().getDataName());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public static String generateName(GenerationInstance generation, DataSet set) {
+    public static String generateName(GenerationInstance generation) {
         String name = generation.outputName();
-        String seed = String.valueOf(set.getMetaInformation().getRandomSeed());
+        String seed = String.valueOf(generation.settings().seed());
 
         return name + "_" + seed + ".json";
     }
 
-    public static String generateStampedName(GenerationInstance generation, DataSet set) {
+    public static String generateStampedName(GenerationInstance generation) {
         String name = generation.outputName();
-        String seed = String.valueOf(set.getMetaInformation().getRandomSeed());
+        String seed = String.valueOf(generation.settings().seed());
 
         return name + "_" + seed + "_" + getTimeStamp() +".json";
     }

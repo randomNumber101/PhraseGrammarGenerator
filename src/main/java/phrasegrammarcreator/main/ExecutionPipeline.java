@@ -1,5 +1,6 @@
 package phrasegrammarcreator.main;
 
+import phrasegrammarcreator.compute.Derivation;
 import phrasegrammarcreator.compute.calculate.ContextFreeCalculator;
 import phrasegrammarcreator.compute.pick.derivation.SmartChooser;
 import phrasegrammarcreator.core.FormalGrammar;
@@ -7,20 +8,19 @@ import phrasegrammarcreator.core.derive.possibilities.PossibilitiesGenerator;
 import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.EndPhraseGenerator;
 import phrasegrammarcreator.core.phrases.Phrase;
-import phrasegrammarcreator.io.out.generate.BracketTreeGenerator;
-import phrasegrammarcreator.io.out.generate.OutputGenerator;
-import phrasegrammarcreator.io.out.generate.SelectiveMaskingClassGenerator;
-import phrasegrammarcreator.io.out.generate.SelectiveMaskingGenerator;
+import phrasegrammarcreator.io.out.generate.*;
 import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
 import phrasegrammarcreator.io.out.jsonObjects.MetaInformation;
+import phrasegrammarcreator.util.IteratorTools;
 import phrasegrammarcreator.util.Randomizer;
 import phrasegrammarcreator.util.futures.ListFuture;
 import phrasegrammarcreator.util.futures.SimpleFuture;
 import phrasegrammarcreator.util.pipeline.*;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -41,19 +41,34 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
 
     InterceptorPipe<DataSet> dataSetSaver;
 
-    private HashMap<String, SimpleFuture<?>> stats = new HashMap<>();
+    private final HashMap<String, SimpleFuture<?>> stats = new HashMap<>();
 
 
     @Override
     public DataSet apply(GenerationInstance generationInstance) {
         build(generationInstance);
 
+        CollectorPipe<Phrase> collector = new CollectorPipe();
+        ParallelPipe<EndPhrase, EndPhrase> lengthFilter = new ParallelPipe<>(new ForkPipe<>(new Function<EndPhrase, Iterator<EndPhrase>>() {
+            @Override
+            public Iterator<EndPhrase> apply(EndPhrase endPhrase) {
+                if (endPhrase.size() > generationInstance.settings().lengthCap())
+                    return IteratorTools.getEmpty();
+                else
+                    return List.of(endPhrase).iterator();
+            }
+        }));
+
+
         return possibilityPipe
+                .andThen(collector)
                 .andThen(derivationPipe)
+                .andThen(lengthFilter)
                 .andThen(dataPipe)
                 .andThen(dataMergePipe)
                 .andThen(dataSetSaver)
                 .apply(generationInstance);
+
     }
 
     public void build(GenerationInstance instance) {
@@ -84,7 +99,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
 
     private ParallelPipe<Phrase, EndPhrase> buildDerivationPipe(FormalGrammar grammar, Settings settings) {
         ContextFreeCalculator calculator = new ContextFreeCalculator(grammar.getRuleContainer());
-        SmartChooser chooser = new SmartChooser(grammar, randomizer);
+        SmartChooser chooser = new SmartChooser(grammar, randomizer, SmartChooser.STRATEGY.NARROW_DOWN_LINEAR);
         EndPhraseGenerator endPhraseGenerator = new EndPhraseGenerator(grammar, calculator, chooser);
         return new ParallelPipe<>(endPhraseGenerator);
     }
@@ -94,6 +109,7 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
             case MASKING -> new SelectiveMaskingGenerator(randomizer, settings.policy());
             case CLASS_MASKING -> new SelectiveMaskingClassGenerator(randomizer, settings.policy());
             case TREE_BRACKETING -> new BracketTreeGenerator(randomizer, settings.policy());
+            case BINARY_CLASSIFICATION -> new ClassificationGenerator(randomizer, settings.policy(), grammar.getRuleContainer(), grammar);
             default -> null;
         };
 
@@ -124,15 +140,13 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
                             f -> f.getValue().get()
                     ));
 
-            MetaInformation metaInformation =
-                    new MetaInformation(
-                            grammar.getName(),
-                            description,
-                            settings.task().toString(),
-                            randomizer.getSeed(),
-                            evaluatedStats
-                    );
-            return metaInformation;
+            return new MetaInformation(
+                grammar.getName(),
+                description,
+                settings.task().toString(),
+                randomizer.getSeed(),
+                evaluatedStats
+            );
         };
 
         return new JoinPipe<>(datumIterator -> new DataSet(metaInformationFuture, datumIterator));

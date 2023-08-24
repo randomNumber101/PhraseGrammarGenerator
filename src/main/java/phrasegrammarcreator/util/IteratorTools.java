@@ -54,6 +54,20 @@ public class IteratorTools {
         return getCombination(combinationIter, loaded);
     }
 
+    public static <T> Iterator<T> getEmpty() {
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public T next() {
+                return null;
+            }
+        };
+    }
+
     public static <T> List<T> loadAll(Iterator<T> iterator) {
         List<T> out = new ArrayList<>();
         while (iterator.hasNext())
@@ -62,11 +76,15 @@ public class IteratorTools {
     }
 
     public static Iterator<int[]> combinations(int[] posCounts) {
+
+        for (int i : posCounts)
+            if (i <= 0)
+                return getEmpty();
         return new Iterator<int[]>() {
 
             long current = 0;
             long cap = calculateCap();
-            int[] frequency = calculateFrequencies();
+            long[] frequency = calculateFrequencies();
 
             private long calculateCap() {
                 long product = 1;
@@ -75,8 +93,8 @@ public class IteratorTools {
                 return product;
             }
 
-            private int[] calculateFrequencies() {
-                int[] products = new int[posCounts.length];
+            private long[] calculateFrequencies() {
+                long[] products = new long[posCounts.length];
                 products[0] = 1;
                 for (int i = 1; i < posCounts.length; i++) {
                     products[i] = products[i - 1] * posCounts[i - 1];
@@ -96,6 +114,9 @@ public class IteratorTools {
 
                 int[] combination = new int[posCounts.length];
                 for (int i = 0; i < posCounts.length; i++) {
+                    if (frequency[i] == 0 || posCounts[i] == 0)
+                        System.err.println("(In-)Sanity check: " + frequency[i]);
+
                     combination[i] = Math.toIntExact((current / frequency[i]) % posCounts[i]);
                 }
                 current++;
@@ -164,5 +185,24 @@ public class IteratorTools {
             }
             return result;
         }
+    }
+
+    public static <T> Iterator<T> restrictTo(int maxNum, Iterator<T> it) {
+        return new Iterator<T>() {
+
+            private int num = 0;
+            @Override
+            public boolean hasNext() {
+                return num < maxNum && it.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (num >= maxNum)
+                    return null;
+                num++;
+                return it.next();
+            }
+        };
     }
 }

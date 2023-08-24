@@ -129,6 +129,9 @@
                 },
                 "search-tree-depth-cap": {
                     "type": "integer"
+                },
+                "phrase-length-cap": {
+                    "type": "integer"
                 }
             },
             "required": [

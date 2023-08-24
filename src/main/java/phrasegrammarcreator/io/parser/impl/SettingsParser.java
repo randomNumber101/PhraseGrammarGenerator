@@ -29,7 +29,8 @@ public class SettingsParser extends JSonObjectParser<Settings> {
 
         int possibilityCap = object.getInt("phrase-count-cap");
         int depthCap = object.getInt("search-tree-depth-cap");
+        int lengthCap = object.getInt("phrase-length-cap");
 
-        return new Settings(name, seed, outPath, policy, task, possibilityCap, depthCap);
+        return new Settings(name, seed, outPath, policy, task, possibilityCap, depthCap, lengthCap);
     }
 }

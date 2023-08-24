@@ -3,38 +3,82 @@
         {
             "name": "TreeBracketsSmall",
             "seed": 420,
-            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "tree-bracketing",
             "word-generation": "single",
             "phrase-count-cap": 1000,
-            "search-tree-depth-cap": 100
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
         },
         {
             "name": "MaskingSmall",
             "seed" : 420,
-            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "class-masking",
             "word-generation": "single",
             "phrase-count-cap": 1000,
-            "search-tree-depth-cap": 100
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
         },
         {
             "name": "TreeBracketsLarge",
             "seed": 420,
-            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "tree-bracketing",
             "word-generation": "single",
-            "phrase-count-cap": 10000,
-            "search-tree-depth-cap": 100
+            "phrase-count-cap": 100000,
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
+        },
+        {
+            "name": "TreeBracketsLargeAll",
+            "seed": 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
+            "task": "tree-bracketing",
+            "word-generation": "all",
+            "phrase-count-cap": 100000,
+            "search-tree-depth-cap": 200,
+            "phrase-length-cap": 100
         },
         {
             "name": "MaskingLarge",
             "seed" : 420,
-            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\generator_out",
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "class-masking",
             "word-generation": "single",
-            "phrase-count-cap": 10000,
-            "search-tree-depth-cap": 100
+            "phrase-count-cap": 50000,
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
+        },
+        {
+            "name": "MaskingLargeAll",
+            "seed" : 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
+            "task": "class-masking",
+            "word-generation": "all",
+            "phrase-count-cap": 50000,
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
+        },
+        {
+            "name": "ClassificationLarge",
+            "seed": 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
+            "task": "binary-classification",
+            "word-generation": "single",
+            "phrase-count-cap": 50000,
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
+        },
+        {
+            "name": "ClassificationLargeAll",
+            "seed": 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
+            "task": "binary-classification",
+            "word-generation": "all",
+            "phrase-count-cap": 50000,
+            "search-tree-depth-cap": 100,
+            "phrase-length-cap": 100
         }
     ],
     "Grammars": [
@@ -65,9 +109,9 @@
             ],
             "dictionary" : {
                 "DASS" : [",_dass"],
-                "SAGT" : ["sagt", "meint", "will"] ,
-                "P" : ["Toni", "Marie", "Sunny", "Leo", "Thommy"],
-                "A" : ["alles_ok_ist", "es_morgen_schneit"]
+                "SAGT" : ["sagt", "denkt"] ,
+                "P" : ["Toni", "Sunny"],
+                "A" : ["alles_ok_ist"]
             },
             "start-phrase": "S"
         },
@@ -141,58 +185,94 @@
     ],
     "Outputs": [
         {
+            "Grammar" : "SF",
+            "Setting" : "TreeBracketsLargeAll",
+            "file-name": "SF-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "SF",
+            "Setting" : "MaskingLargeAll",
+            "file-name": "SF-Mask",
+            "overwrite-file": false
+        },
+        {
             "Grammar" : "Extern CFG",
             "Setting" : "MaskingLarge",
             "file-name": "LARGE-MASKING",
-            "overwrite-file": true
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "Extern CFG",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "LARGE-Bracket",
+            "overwrite-file": false
         },
         {
             "Grammar" : "1-Dyck",
             "Setting" : "TreeBracketsLarge",
             "file-name": "1D-Bracket",
-            "overwrite-file": true
+            "overwrite-file": false
         },
         {
             "Grammar" : "1-Dyck",
             "Setting" : "MaskingLarge",
             "file-name": "1D-Mask",
-            "overwrite-file": true
+            "overwrite-file": false
         },
         {
             "Grammar" : "2-Dyck",
             "Setting" : "TreeBracketsLarge",
             "file-name": "2D-Bracket",
-            "overwrite-file": true
+            "overwrite-file": false
         },
         {
             "Grammar" : "2-Dyck",
             "Setting" : "MaskingLarge",
             "file-name": "2D-Mask",
-            "overwrite-file": true
-        },
-        {
-            "Grammar" : "SF",
-            "Setting" : "TreeBracketsLarge",
-            "file-name": "SF-Bracket",
-            "overwrite-file": true
-        },
-        {
-            "Grammar" : "SF",
-            "Setting" : "MaskingLarge",
-            "file-name": "SF-Mask",
-            "overwrite-file": true
+            "overwrite-file": false
         },
         {
             "Grammar" : "NSF",
             "Setting" : "TreeBracketsLarge",
             "file-name": "NSF-Bracket",
-            "overwrite-file": true
+            "overwrite-file": false
         },
         {
             "Grammar" : "NSF",
             "Setting" : "MaskingLarge",
             "file-name": "NSF-Mask",
-            "overwrite-file": true
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "1-Dyck",
+            "Setting" : "ClassificationLarge",
+            "file-name": "1D-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck",
+            "Setting" : "ClassificationLarge",
+            "file-name": "2D-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "SF",
+            "Setting" : "ClassificationLargeAll",
+            "file-name": "SF-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "NSF",
+            "Setting" : "ClassificationLarge",
+            "file-name": "NSF-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "Extern CFG",
+            "Setting" : "ClassificationLarge",
+            "file-name": "LARGE-Classify",
+            "overwrite-file": false
         }
     ]
 }

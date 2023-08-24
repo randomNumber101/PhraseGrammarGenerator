@@ -16,6 +16,8 @@ public abstract class   OutputGenerator implements Function<EndPhrase, List<Datu
 
     protected Random random;
 
+    private final int MAX_NUM_POSSIBILITIES = 4096;
+
     public OutputGenerator(Random random, WordGenerationPolicy policy) {
         this.policy = policy;
         this.random = random;
@@ -40,8 +42,9 @@ public abstract class   OutputGenerator implements Function<EndPhrase, List<Datu
             default -> {
                 int[] posCounts = endPhrase.stream().mapToInt(WordTerminal::getWordCount).toArray();
                 Iterator<int[]> possibilities = IteratorTools.combinations(posCounts);
-                List<String>[] words = endPhrase.stream().map(WordTerminal::getAllWords).toArray(List[]::new);
+                possibilities = IteratorTools.restrictTo(MAX_NUM_POSSIBILITIES, possibilities);
 
+                List<String>[] words = endPhrase.stream().map(WordTerminal::getAllWords).toArray(List[]::new);
                 Iterator<List<Datum>> datumIterator =
                         IteratorTools.apply(
                             IteratorTools.getCombination(possibilities, words),

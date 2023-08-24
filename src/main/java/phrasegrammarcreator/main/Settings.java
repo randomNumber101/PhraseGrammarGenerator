@@ -10,4 +10,5 @@ public record Settings(
         WordGenerationPolicy policy,
         Task task,
         int possibilityCap,
-        int depthCap) {}
+        int depthCap,
+        int lengthCap) {}

@@ -35,12 +35,13 @@ public class SmartChooser extends DerivationChooser{
 
     private HashMap<Rule, Double> ruleWeights;
 
-    private STRATEGY strategy = STRATEGY.NARROW_DOWN_SOFTMAX;
+    private STRATEGY strategy = STRATEGY.NARROW_DOWN_LINEAR;
 
     private Randomizer random;
 
-    public SmartChooser(FormalGrammar grammar, Randomizer random) {
+    public SmartChooser(FormalGrammar grammar, Randomizer random, STRATEGY strategy) {
         super((List<Rule>)(List<?>) grammar.getRuleContainer().getRules());
+        this.strategy = strategy;
         CfRuleContainer container = grammar.getRuleContainer();
         variablePossibilities = new HashMap<>();
         variableWeights = new HashMap<>();

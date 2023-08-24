@@ -4,6 +4,7 @@ import phrasegrammarcreator.core.CNFGrammar;
 import phrasegrammarcreator.core.FormalGrammar;
 import phrasegrammarcreator.core.parser.CYKParser;
 import phrasegrammarcreator.io.console.info.GrammarInfo;
+import phrasegrammarcreator.io.out.FileGenerator;
 import phrasegrammarcreator.io.out.jsonObjects.DataSet;
 import phrasegrammarcreator.io.parser.ConfigLoader;
 
@@ -65,7 +66,7 @@ public class Application {
             //CYKParser cykParser = new CYKParser(cnfGrammar);
             //System.out.print(cykParser.parse(parseTestSentence01));
 
-            List<DataSet> outputs = c.getInstances().stream().map(pipeline).toList();
+            List<DataSet> outputs = c.getInstances().stream().filter(FileGenerator::shouldGenerate).map(pipeline).toList();
             Desktop.getDesktop().open(new File(c.getSettings().get(0).outputDir()));
 
             long generationTime = (System.currentTimeMillis() - startTime);
