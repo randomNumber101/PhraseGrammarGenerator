@@ -28,34 +28,8 @@ public class Application {
             FormalGrammar grammar = c.getGrammarList().get(0);
 
             GrammarInfo grammarInfo = new GrammarInfo(System.out, grammar);
-            grammarInfo.printInfo();
+            // grammarInfo.printInfo();
 
-            /*
-
-
-            for (int i = 0; i < 32; i++, grammar.next()){}
-
-
-            DerivationTreeInfo treeInfo = new DerivationTreeInfo(System.out, grammar.getDerivationTree());
-            treeInfo.printInfo();
-            //grammarInfo.printPossibleDerivations();
-
-            Phrase headPhrase = grammar.getDerivationTree().getHead().getData();
-            System.out.println(headPhrase.toString(" "));
-            VariableInstance current = headPhrase.get(0);
-            do {
-                System.out.print(current + " <- ");
-                current = current.getDerivedFrom();
-            }
-            while (current != null);
-            System.out.println("root");
-
-            */
-
-
-            //PossibilitiesGenerator generator = new PossibilitiesGenerator(grammar, grammar.getStartPhrase());
-
-            //EndPhrase.ofPhrase(grammar, );
 
             ExecutionPipeline pipeline = new ExecutionPipeline();
 
@@ -77,6 +51,7 @@ public class Application {
             e.printStackTrace();
         }
     }
+
 
 
     private Config loadConfig() throws Exception {

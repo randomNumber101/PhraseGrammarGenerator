@@ -31,6 +31,9 @@ public class SettingsParser extends JSonObjectParser<Settings> {
         int depthCap = object.getInt("search-tree-depth-cap");
         int lengthCap = object.getInt("phrase-length-cap");
 
+        // TODO: Add adjustable strategy:
+        // strategy = parseStrategy(object.getString("derivation-pick-strategy"));
+
         return new Settings(name, seed, outPath, policy, task, possibilityCap, depthCap, lengthCap);
     }
 }

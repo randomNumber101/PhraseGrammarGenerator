@@ -5,18 +5,21 @@ import phrasegrammarcreator.core.phrases.EndPhrase;
 import phrasegrammarcreator.core.phrases.words.WordTerminal;
 import phrasegrammarcreator.io.out.jsonObjects.Datum;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public abstract class   OutputGenerator implements Function<EndPhrase, List<Datum>> {
+public abstract class OutputGenerator implements Function<EndPhrase, List<Datum>> {
 
     protected WordGenerationPolicy policy;
 
     protected Random random;
 
     private final int MAX_NUM_POSSIBILITIES = 4096;
+
+    protected boolean hasAdditionalStats = false;
 
     public OutputGenerator(Random random, WordGenerationPolicy policy) {
         this.policy = policy;
@@ -30,7 +33,9 @@ public abstract class   OutputGenerator implements Function<EndPhrase, List<Datu
 
         Function<List<String>, String> input = getInputGenerator();
         Function<List<String>, String> label = getLabelGenerator();
-        Function<List<String>, List<Datum>> datum = getDatumGenerator(input, label);
+        Function<List<String>, List<Datum>> datum =
+                hasAdditionalStats? getAdvancedDatumGenerator(endPhrase, input, label)
+                : getDatumGenerator(input, label);
 
 
         switch (policy) {
@@ -65,6 +70,15 @@ public abstract class   OutputGenerator implements Function<EndPhrase, List<Datu
      */
     protected Function<List<String>, List<Datum>> getDatumGenerator(Function<List<String>, String> input, Function<List<String>, String> label) {
         return parts -> List.of(new Datum(input.apply(parts), label.apply(parts)));
+    }
+
+    protected Function<List<String>, List<Datum>> getAdvancedDatumGenerator(EndPhrase endPhrase, Function<List<String>, String> input, Function<List<String>, String> label) {
+        HashMap<String, Integer> additionalStats = calculateAdditionalStats(endPhrase);
+        return parts -> List.of(new Datum(input.apply(parts), label.apply(parts), additionalStats));
+    }
+
+    protected HashMap<String, Integer> calculateAdditionalStats(EndPhrase endPhrase) {
+        return null;
     }
 
 

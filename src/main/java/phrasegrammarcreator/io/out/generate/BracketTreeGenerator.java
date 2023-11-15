@@ -141,13 +141,7 @@ public class BracketTreeGenerator extends OutputGenerator{
         if (vi == null)
             return null;
 
-        VariableInstance<?> current = vi;
-        for (int i = 0; i < height; i++) {
-            current = current.getDerivedFrom();
-            if (current == null)
-                return null;
-        }
-        return current;
+        return vi.getParent(height);
     }
 
     private int treeDepth(EndPhrase p) {
@@ -162,12 +156,8 @@ public class BracketTreeGenerator extends OutputGenerator{
         if (depths.containsKey(instance))
             return depths.get(instance);
 
-        int depth = 0;
-        VariableInstance<?> current = instance.getDerivedFrom();
-        while (current != null) {
-            depth++;
-            current = current.getDerivedFrom();
-        }
+        int depth = instance.getDepth();
+
         depths.put(instance, depth);
         return depth;
     }

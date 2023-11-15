@@ -37,4 +37,25 @@ public class VariableInstance<T extends Variable> {
         else
             return super.equals(other);
     }
+
+    public VariableInstance<?> getParent(int height) {
+        VariableInstance<?> current = this;
+        for (int i = 0; i < height; i++) {
+            current = current.getDerivedFrom();
+            if (current == null)
+                return null;
+        }
+        return current;
+    }
+
+    public int getDepth() {
+        int depth = 0;
+        VariableInstance<?> current = this.getDerivedFrom();
+        while (current != null) {
+            depth++;
+            current = current.getDerivedFrom();
+        }
+        return depth;
+    }
+
 }

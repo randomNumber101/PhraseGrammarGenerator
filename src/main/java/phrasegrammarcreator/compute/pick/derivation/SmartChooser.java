@@ -37,6 +37,7 @@ public class SmartChooser extends DerivationChooser{
 
     private STRATEGY strategy = STRATEGY.NARROW_DOWN_LINEAR;
 
+
     private Randomizer random;
 
     public SmartChooser(FormalGrammar grammar, Randomizer random, STRATEGY strategy) {

@@ -6,7 +6,7 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "tree-bracketing",
             "word-generation": "single",
-            "phrase-count-cap": 1000,
+            "phrase-count-cap": 10000,
             "search-tree-depth-cap": 100,
             "phrase-length-cap": 100
         },
@@ -16,9 +16,9 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "class-masking",
             "word-generation": "single",
-            "phrase-count-cap": 1000,
-            "search-tree-depth-cap": 100,
-            "phrase-length-cap": 100
+            "phrase-count-cap": 10000,
+            "search-tree-depth-cap": 200,
+            "phrase-length-cap": 200
         },
         {
             "name": "TreeBracketsLarge",
@@ -46,7 +46,7 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "class-masking",
             "word-generation": "single",
-            "phrase-count-cap": 50000,
+            "phrase-count-cap": 100000,
             "search-tree-depth-cap": 100,
             "phrase-length-cap": 100
         },
@@ -56,7 +56,7 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "class-masking",
             "word-generation": "all",
-            "phrase-count-cap": 50000,
+            "phrase-count-cap": 100000,
             "search-tree-depth-cap": 100,
             "phrase-length-cap": 100
         },
@@ -66,7 +66,7 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "binary-classification",
             "word-generation": "single",
-            "phrase-count-cap": 50000,
+            "phrase-count-cap": 100000,
             "search-tree-depth-cap": 100,
             "phrase-length-cap": 100
         },
@@ -76,7 +76,7 @@
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
             "task": "binary-classification",
             "word-generation": "all",
-            "phrase-count-cap": 50000,
+            "phrase-count-cap": 100000,
             "search-tree-depth-cap": 100,
             "phrase-length-cap": 100
         }
@@ -157,6 +157,20 @@
             "mask-worthy": ["N_s", "V_s"]
         },
         {
+            "name" : "1-Dyck-Vanilla",
+            "non-terminals": ["S"],
+            "terminals" : ["BL", "BR"],
+            "rules" : [
+                "S -> S S",
+                "S -> BL S BR | BL BR"
+            ],
+            "dictionary" : {
+                "BL" : ["["],
+                "BR" : ["]"]
+            },
+            "start-phrase": "S"
+        },
+        {
             "name" : "2-Dyck",
             "non-terminals": ["S", "T", "P"],
             "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
@@ -165,7 +179,178 @@
                 "S -> D N_s V_s | D N_p V_p",
                 "S -> D N_s KOMMA DEREN T KOMMA V_s | D N_p KOMMA DEREN T KOMMA V_p",
                 "T -> N_s V_s | N_p V_p",
-                "T -> N_p KOMMA P KOMMA V_p | N_p KOMMA P KOMMA V_p",
+                "T -> N_s KOMMA P KOMMA V_s | N_p KOMMA P KOMMA V_p",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
+                "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "D" : ["die"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "2-Dyck-OOD",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s KOMMA DEREN T KOMMA V_s | D N_p KOMMA DEREN T KOMMA V_p",
+                "T -> N_s V_s | N_p V_p",
+                "T -> N_s KOMMA P KOMMA V_s | N_p KOMMA P KOMMA V_p",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
+                "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "D" : ["die"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+
+        },
+        {
+            "name" : "2-Dyck-Commaless",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_s | D N_p V_p",
+                "S -> D N_s DEREN T V_s | D N_p DEREN T V_p",
+                "T -> N_s V_s | N_p V_p",
+                "T -> N_s P V_s | N_p P V_p",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
+                "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "D" : ["die"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "2-Dyck-Span-Reg",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p", "TN_s", "TV_s", "TN_p", "TV_p"],
+            "rules" : [
+                "S -> D N_s KOMMA DEREN T KOMMA V_s | D N_p KOMMA DEREN T KOMMA V_p",
+                "T -> T UND T | TN_s TV_s"
+            ],
+            "dictionary" : {
+                "UND" : ["und"],
+                "DEREN" : ["deren"],
+                "KOMMA" : [","],
+                "N_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "V_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
+                "N_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "V_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "TN_s" : ["Bärin", "Katja", "Tochter", "Mutter"],
+                "TV_s" : ["geht", "spielt", "tanzt", "singt", "schwimmt"],
+                "TN_p" : ["Bären", "Teller", "Hünde", "Flaschen"],
+                "TV_p" : ["fliegen", "fallen", "liegen", "stehen"],
+                "D" : ["die"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "2-Dyck-Vanilla",
+            "non-terminals": ["S"],
+            "terminals" : ["BL", "BR", "BL_", "BR_"],
+            "rules" : [
+                "S -> S S",
+                "S -> BL S BR | BL BR",
+                "S -> BL_ S BR_ | BL_ BR_"
+            ],
+            "dictionary" : {
+                "BL" : ["["],
+                "BR" : ["]"],
+                "BL_" : ["{"],
+                "BR_" : ["}"]
+            },
+            "start-phrase": "S"
+        },
+        {
+            "name" : "2-Dyck-English",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_s | D N_p V_p",
+                "S -> D N_s KOMMA DEREN T KOMMA V_s | D N_p KOMMA DEREN T KOMMA V_p",
+                "T -> N_s V_s | N_p V_p",
+                "T -> N_s KOMMA P KOMMA V_s | N_s KOMMA P KOMMA V_s",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["and"],
+                "DEREN" : ["whose"],
+                "KOMMA" : [","],
+                "N_s" : ["bear", "Monica", "daughter", "mother"],
+                "V_s" : ["walks", "plays", "dences", "sings", "swims"],
+                "N_p" : ["bears", "plates", "dogs", "bottles"],
+                "V_p" : ["fly", "fall", "lay", "stay"],
+                "D" : ["the"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "2-Dyck-English-Commaless",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_s | D N_p V_p",
+                "S -> D N_s DEREN T V_s | D N_p DEREN T V_p",
+                "T -> N_s V_s | N_p V_p",
+                "T -> N_s P V_s | N_p P V_p",
+                "P -> DEREN T",
+                "P -> P UND P"
+            ],
+            "dictionary" : {
+                "UND" : ["and"],
+                "DEREN" : ["whose"],
+                "N_s" : ["bear", "Monica", "daughter", "mother"],
+                "V_s" : ["walks", "plays", "dences", "sings", "swims"],
+                "N_p" : ["bears", "plates", "dogs", "bottles"],
+                "V_p" : ["fly", "fall", "lay", "stay"],
+                "D" : ["the"]
+            },
+            "start-phrase": "S",
+            "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "2-Dyck-Wrong",
+            "non-terminals": ["S", "T", "P"],
+            "terminals" : ["UND", "DEREN", "KOMMA", "D", "N_s", "V_s", "N_p", "V_p"],
+            "rules" : [
+                "S -> S UND S",
+                "S -> D N_s V_p | D N_p V_s",
+                "S -> D N_s KOMMA DEREN T KOMMA V_p | D N_p KOMMA DEREN T KOMMA V_s",
+                "T -> N_s V_p | N_p V_s",
+                "T -> N_s KOMMA P KOMMA V_p | N_p KOMMA P KOMMA V_s",
                 "P -> DEREN T",
                 "P -> P UND P"
             ],
@@ -197,39 +382,9 @@
             "overwrite-file": false
         },
         {
-            "Grammar" : "Extern CFG",
-            "Setting" : "MaskingLarge",
-            "file-name": "LARGE-MASKING",
-            "overwrite-file": false
-        },
-        {
-            "Grammar" : "Extern CFG",
-            "Setting" : "TreeBracketsLarge",
-            "file-name": "LARGE-Bracket",
-            "overwrite-file": false
-        },
-        {
-            "Grammar" : "1-Dyck",
-            "Setting" : "TreeBracketsLarge",
-            "file-name": "1D-Bracket",
-            "overwrite-file": false
-        },
-        {
-            "Grammar" : "1-Dyck",
-            "Setting" : "MaskingLarge",
-            "file-name": "1D-Mask",
-            "overwrite-file": false
-        },
-        {
-            "Grammar" : "2-Dyck",
-            "Setting" : "TreeBracketsLarge",
-            "file-name": "2D-Bracket",
-            "overwrite-file": false
-        },
-        {
-            "Grammar" : "2-Dyck",
-            "Setting" : "MaskingLarge",
-            "file-name": "2D-Mask",
+            "Grammar" : "SF",
+            "Setting" : "ClassificationLargeAll",
+            "file-name": "SF-Classify",
             "overwrite-file": false
         },
         {
@@ -245,9 +400,69 @@
             "overwrite-file": false
         },
         {
+            "Grammar" : "NSF",
+            "Setting" : "ClassificationLarge",
+            "file-name": "NSF-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "Extern CFG",
+            "Setting" : "MaskingLarge",
+            "file-name": "LARGE-MASKING",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "Extern CFG",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "LARGE-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "Extern CFG",
+            "Setting" : "ClassificationLarge",
+            "file-name": "LARGE-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "1-Dyck",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "1D-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "1-Dyck",
+            "Setting" : "MaskingLarge",
+            "file-name": "1D-Mask",
+            "overwrite-file": false
+        },
+        {
             "Grammar" : "1-Dyck",
             "Setting" : "ClassificationLarge",
             "file-name": "1D-Classify",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "1-Dyck-Vanilla",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "1DV-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck-Vanilla",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2DV-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2D-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck",
+            "Setting" : "MaskingLarge",
+            "file-name": "2D-Mask",
             "overwrite-file": false
         },
         {
@@ -257,21 +472,39 @@
             "overwrite-file": false
         },
         {
-            "Grammar" : "SF",
-            "Setting" : "ClassificationLargeAll",
-            "file-name": "SF-Classify",
+            "Grammar" : "2-Dyck-OOD",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2DOOD-Bracket",
+            "overwrite-file": true
+        },
+        {
+            "Grammar" : "2-Dyck-Commaless",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2DCL-Bracket",
             "overwrite-file": false
         },
         {
-            "Grammar" : "NSF",
-            "Setting" : "ClassificationLarge",
-            "file-name": "NSF-Classify",
+            "Grammar" : "2-Dyck-Commaless",
+            "Setting" : "MaskingLarge",
+            "file-name": "2DCL-Mask",
             "overwrite-file": false
         },
         {
-            "Grammar" : "Extern CFG",
-            "Setting" : "ClassificationLarge",
-            "file-name": "LARGE-Classify",
+            "Grammar" : "2-Dyck-Span-Reg",
+            "Setting" : "MaskingSmall",
+            "file-name": "2DS-Mask",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck-English",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2DENG-Bracket",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "2-Dyck-English-Commaless",
+            "Setting" : "TreeBracketsLarge",
+            "file-name": "2DENGCL-Bracket",
             "overwrite-file": false
         }
     ]

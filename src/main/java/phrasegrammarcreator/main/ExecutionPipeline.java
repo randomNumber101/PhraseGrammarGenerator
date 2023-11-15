@@ -117,7 +117,6 @@ public class ExecutionPipeline extends AbstractPipe<GenerationInstance, DataSet>
         ListFuture<Integer, Integer> datumCountsFeature = new ListFuture<>(sumFunction);
 
         stats.put("data count", datumCountsFeature);
-
         Function<List<Datum>, List<Datum>> statInterceptor = data ->
                 {
                     datumCountsFeature.add(data::size);
