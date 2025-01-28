@@ -32,6 +32,12 @@ public class PhraseParser extends SingleValueParser<Phrase> {
         String[] regexes = phrase.strip().split("\\s+");
         ArrayList<Variable> list = new ArrayList<>();
         for (String reg : regexes) {
+
+            // Empty phrase if only variable is 'empty"
+            if (reg.equals("empty")) {
+                continue;
+            }
+
             Variable var = vocabulary.getVariable(reg);
             if (var == null) {
                 String error = String.format("No registered variable found with regex \"%s\" in \"%s\"", reg, phrase);

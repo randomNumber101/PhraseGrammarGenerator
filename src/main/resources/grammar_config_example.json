@@ -1,6 +1,16 @@
 {
     "Settings" : [
         {
+            "name": "MaskingITF",
+            "seed" : 420,
+            "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Implementing Transformers\\experiment\\datasets",
+            "task": "class-masking",
+            "word-generation": "single",
+            "phrase-count-cap": 10000,
+            "search-tree-depth-cap": 500,
+            "phrase-length-cap": 75
+        },
+        {
             "name": "TreeBracketsSmall",
             "seed": 420,
             "output-dir": "C:\\Users\\MKhal\\OneDrive\\Desktop\\UNI\\Bachelorarbeit\\DEV\\server-export\\data",
@@ -366,9 +376,96 @@
             },
             "start-phrase": "S",
             "mask-worthy": ["N_s", "V_s", "N_p", "V_p"]
+        },
+        {
+            "name" : "ITF-1-Dyck",
+            "non-terminals": ["S", "P1", "P2"],
+            "terminals" : ["A", "B", "C", "D", "BL1", "BR1"],
+            "rules" : [
+                "S -> S S | BL1 BR1",
+                "S -> BL1 S BR1",
+                "S -> P1 | P2",
+                "P1 -> A B P1 | C D P1 | A B | C D",
+                "P2 -> B A P2 | D C P2 | B A | D C"
+            ],
+            "dictionary" : {
+                "A" : ["A"],
+                "B" : ["B"],
+                "C" : ["C"],
+                "D" : ["D"],
+                "BL1" : ["("],
+                "BR1" : [")"]
+            },
+            "start-phrase": "S"
+        },
+        {
+            "name" : "ITF-2-Dyck",
+            "non-terminals": ["S", "P1", "P2"],
+            "terminals" : ["A", "B", "C", "D", "BL1", "BR1", "BL2", "BR2"],
+            "rules" : [
+                "S -> S S | BL1 BR1 | BL2 BR2",
+                "S -> BL1 S BR1 | BL2 S BR2",
+                "S -> P1 | P2",
+                "P1 -> A B P1 | C D P1 | A B | C D",
+                "P2 -> B A P2 | D C P2 | B A | D C"
+            ],
+            "dictionary" : {
+                "A" : ["A"],
+                "B" : ["B"],
+                "C" : ["C"],
+                "D" : ["D"],
+                "BL1" : ["("],
+                "BR1" : [")"],
+                "BL2" : ["["],
+                "BR2" : ["]"]
+            },
+            "start-phrase": "S"
+        },
+        {
+            "name" : "ITF-3-Dyck",
+            "non-terminals": ["S", "P1", "P2"],
+            "terminals" : ["A", "B", "C", "D", "BL1", "BR1", "BL2", "BR2", "BL3", "BR3"],
+            "rules" : [
+                "S -> S S | BL1 BR1 | BL2 BR2 | BL3 BR3",
+                "S -> BL1 S BR1 | BL2 S BR2 | BL3 S BR3",
+                "S -> P1 | P2",
+                "P1 -> A B P1 | C D P1 | A B | C D",
+                "P2 -> B A P2 | D C P2 | B A | D C"
+            ],
+            "dictionary" : {
+                "A" : ["A"],
+                "B" : ["B"],
+                "C" : ["C"],
+                "D" : ["D"],
+                "BL1" : ["("],
+                "BR1" : [")"],
+                "BL2" : ["["],
+                "BR2" : ["]"],
+                "BL3" : ["{"],
+                "BR3" : ["}"]
+            },
+            "start-phrase": "S"
         }
     ],
     "Outputs": [
+        {
+            "Grammar" : "ITF-1-Dyck",
+            "Setting" : "MaskingITF",
+            "file-name": "1D-MASK",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "ITF-2-Dyck",
+            "Setting" : "MaskingITF",
+            "file-name": "2D-MASK",
+            "overwrite-file": false
+        },
+        {
+            "Grammar" : "ITF-2-Dyck",
+            "Setting" : "MaskingITF",
+            "file-name": "3D-MASK",
+            "overwrite-file": false
+        },
         {
             "Grammar" : "SF",
             "Setting" : "TreeBracketsLargeAll",

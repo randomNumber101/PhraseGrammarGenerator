@@ -94,7 +94,7 @@ public class IteratorTools {
             }
 
             private long[] calculateFrequencies() {
-                long[] products = new long[posCounts.length];
+                long[] products = new long[Math.max(posCounts.length, 1)];
                 products[0] = 1;
                 for (int i = 1; i < posCounts.length; i++) {
                     products[i] = products[i - 1] * posCounts[i - 1];
